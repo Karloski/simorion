@@ -4,12 +4,14 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 
+import org.simorion.ui.model.Model;
 import org.simorion.ui.view.View;
 
 //Example
 public class ExampleMode extends DeviceMode {
 
 	private ExampleView instance = new ExampleView(16, 16);
+	private Model model;
 	
 	/**
 	 * An example implementation of a controller view.
@@ -160,6 +162,10 @@ public class ExampleMode extends DeviceMode {
 	
 	public View getView() {
 		return instance;
+	}
+	
+	public void register(Model m) {
+		model = m;
 	}
 	
 }
