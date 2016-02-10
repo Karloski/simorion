@@ -5,7 +5,9 @@ import java.awt.Color;
 import javax.swing.JButton;
 
 /**
- * View interface which defines methods for a view for the Simori-On. 
+ * View interface which defines methods for a view for the Simori-On.
+ * <p>TODO: Exceptions. I wanted to do some concrete implementations first to get
+ * a better feel for what exceptions would make sense.</p>
  * @author Karl
  *
  */
@@ -60,6 +62,11 @@ public interface View {
 	 * @param color The color to use.
 	 */
 	void lightColumn(int column, Color color);
+	
+	/**
+	 * Resets the colour of all buttons for this view.
+	 */
+	void clearButtons();
 	
 	/**
 	 * Retrieves and returns whether or not the button at coordinate {@code x}, {@code y} is lit.
