@@ -2,7 +2,6 @@ package org.simorion.ui.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -58,12 +57,8 @@ public class PerformanceView extends JFrame {
 		// Mode buttons and the ON/OK contain text whereas MidiButtons do not
 		CircularTextButton(String s) {
 			super(s);
-			
-			setContentAreaFilled(false);		
-		}
-		
-		protected void paintComponent(Graphics g){
-			
+			// Code here to make circular text buttons
+					
 		}
 	}
 	
@@ -150,44 +145,44 @@ public class PerformanceView extends JFrame {
 	 */
 	public PerformanceView() {
 		setTitle("Simori-ON");
-		setSize(505, 530);
+		setSize(605, 630);
 		
 		setLayout(null);
 		// Panel to hold all the MidiButtons
-		buttonPanel.setBounds(49, 49, 402, 402); add(buttonPanel);
+		buttonPanel.setBounds(59, 59, 482, 482); add(buttonPanel);
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		buttonPanel.setLayout(null);
 		// Setting bounds for each button
-		btnON.setBounds(230, 5, 40, 40);	 add(btnON);
+		btnON.setBounds(275, 5, 50, 50);	 add(btnON);
 		btnON.setBorder(BorderFactory.createLineBorder(Color.black));		
 			
-		btnL1.setBounds(5, 70, 40, 40); 	 add(btnL1);
+		btnL1.setBounds(5, 84, 50, 50); 	 add(btnL1);
 		btnL1.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR1.setBounds(455, 70, 40, 40);	 add(btnR1);
+		btnR1.setBounds(545, 84, 50, 50);	 add(btnR1);
 		btnR1.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL2.setBounds(5, 145, 40, 40);	 add(btnL2);
+		btnL2.setBounds(5, 174, 50, 50);	 add(btnL2);
 		btnL2.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR2.setBounds(455, 145, 40, 40);	 add(btnR2);
+		btnR2.setBounds(545, 174, 50, 50);	 add(btnR2);
 		btnR2.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL3.setBounds(5, 220, 40, 40);	 add(btnL3);
+		btnL3.setBounds(5, 264, 50, 50);	 add(btnL3);
 		btnL3.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR3.setBounds(455, 220, 40, 40);	 add(btnR3);
+		btnR3.setBounds(545, 264, 50, 50);	 add(btnR3);
 		btnR3.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL4.setBounds(5, 295, 40, 40);	 add(btnL4);
+		btnL4.setBounds(5, 354, 50, 50);	 add(btnL4);
 		btnL4.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR4.setBounds(455, 295, 40, 40);	 add(btnR4);
+		btnR4.setBounds(545, 354, 50, 50);	 add(btnR4);
 		btnR4.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		dispLCD.setBounds(100, 455, 200, 40);add(dispLCD);
+		dispLCD.setBounds(120, 545, 240, 50);add(dispLCD);
 		dispLCD.setEditable(false);
 		// Read only but with white background
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnOK.setBounds(360, 455, 40, 40);	 add(btnOK);
+		btnOK.setBounds(432, 545, 50, 50);	 add(btnOK);
 		btnOK.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		int xLocationOfButton = 0;
@@ -203,7 +198,7 @@ public class PerformanceView extends JFrame {
 				j++;
 			}	
 			
-			allMidiButtons[k].setBounds(1+(25*xLocationOfButton), 376-(25*yLocationOfButton), 25, 25); buttonPanel.add(allMidiButtons[k]);
+			allMidiButtons[k].setBounds(1+(30*xLocationOfButton), 451-(30*yLocationOfButton), 30, 30); buttonPanel.add(allMidiButtons[k]);
 			// Setting bounds of the button depending on it's co-ords
 			if((k+1)%16 == 0) {
 				// When reaching 16 buttons - go back to left hand side of grid and increment y
