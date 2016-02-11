@@ -1,18 +1,24 @@
 package org.simorion.ui.view;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.management.RuntimeErrorException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+import org.simorion.ui.controller.ModeMaster;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * GUI for the SimoriOn
@@ -48,6 +54,41 @@ public class PerformanceView extends JFrame {
 	 */
 	private class CircularButton extends JButton {
 		// Code here to make buttons circular
+		public CircularButton() {
+			super();
+			setOpaque(false);
+			setFocusPainted(false);
+			setLayout(null);
+			setBorderPainted(true);
+			setContentAreaFilled(false);
+			setBorder(new CircularBorder(getWidth()/2));
+			setBounds(getX(), getY(), getWidth(), getHeight());
+		}
+	}
+	
+	private class CircularBorder implements Border {
+
+		int radius;
+		
+		public CircularBorder(int radius) {
+			this.radius = radius;
+		}
+		
+		@Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+			//System.out.println("Drawing the border");
+			g.drawRoundRect(x, y, width-1, height-1, radius, radius);			
+		}
+
+		@Override
+		public Insets getBorderInsets(Component c) {
+			return new Insets(radius, radius, radius, radius);
+		}
+
+		@Override
+		public boolean isBorderOpaque() {
+			return false;
+		}
 		
 	}
 	
@@ -59,7 +100,7 @@ public class PerformanceView extends JFrame {
 		CircularTextButton(String s) {
 			super(s);
 			
-			setContentAreaFilled(false);		
+			setContentAreaFilled(false);
 		}
 		
 		protected void paintComponent(Graphics g){
@@ -87,7 +128,7 @@ public class PerformanceView extends JFrame {
 		 */
 		public int getYLoc() {return y; }
 		
-		MidiButton(int xLoc, int yLoc) {
+		MidiButton(final int xLoc, final int yLoc) {
 			// When instantiating each button in the grid they are all given 
 			// their x and y co-ordinates
 			x = xLoc;
@@ -95,6 +136,7 @@ public class PerformanceView extends JFrame {
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me) {
 					// Code here for what to do when the button is pressed
+					ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
 				}
 			});
 		}
@@ -105,11 +147,21 @@ public class PerformanceView extends JFrame {
 	 * Distinguishes what happens when a mode button is pressed
 	 */
 	private class ModeButton extends CircularTextButton {
-		ModeButton(String s) {
+		ModeButton(final String s) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
 					// Code here for what to do when the mode button is pressed
+					switch(s.charAt(0)) {
+					case 'L':
+						ModeMaster.getInstance().getMode().onLButtonPress(me, s.charAt(1)-48);
+						break;
+					case 'R':
+						ModeMaster.getInstance().getMode().onRButtonPress(me, s.charAt(1)-48);
+						break;
+					default:
+						throw new RuntimeException("Mode button doesn't know what to do!");
+					}
 				}
 			});
 		}
@@ -124,6 +176,7 @@ public class PerformanceView extends JFrame {
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
 					// What to do when the OK button is pressed
+					ModeMaster.getInstance().getMode().onOKButtonPress(me);
 				}
 			});
 		}
@@ -138,6 +191,7 @@ public class PerformanceView extends JFrame {
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
 					// What to do when the ON button is pressed
+					ModeMaster.getInstance().getMode().onOnOffButtonPress(me);
 				}
 			});
 		}
