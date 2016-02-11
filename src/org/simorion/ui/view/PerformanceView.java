@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.management.RuntimeErrorException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,8 +15,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import org.simorion.ui.controller.ModeMaster;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * GUI for the SimoriOn
