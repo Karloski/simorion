@@ -5,7 +5,7 @@ import org.simorion.common.Voice;
 
 /**
  * Class allowing a Model to be written to for the middle-end, primarily
- * for Stream use. Not for use within the MVC section of code.
+ * for Stream use. Not for use within the View section of code.
  * @author Edmund Smith
  */
 public interface WritableModel extends Model {
@@ -17,5 +17,11 @@ public interface WritableModel extends Model {
 	public void setLoopPoint(Layer l, int loopPoint);
 	
 	public void setTempo(float beatsPerSecond);
+	
+	void setLit(int layer, int xLoc, int yLoc);
+	
+	void setUnLit(int layer, int xLoc, int yLoc);
+	
+	void toggleLit(int layer, int xLoc, int yLoc);
 	
 }

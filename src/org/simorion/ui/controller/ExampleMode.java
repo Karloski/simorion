@@ -1,6 +1,7 @@
 package org.simorion.ui.controller;
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
@@ -9,6 +10,10 @@ import org.simorion.ui.view.View;
 
 //Example
 public class ExampleMode extends DeviceMode {
+
+	public ExampleMode(ModeMaster m) {
+		super(m);
+	}
 
 	private ExampleView instance = new ExampleView(16, 16);
 	private Model model;
@@ -166,6 +171,17 @@ public class ExampleMode extends DeviceMode {
 	
 	public void register(Model m) {
 		model = m;
+	}
+
+
+	@Override
+	public void onOKButtonPress(MouseEvent e) {
+		System.out.println("OK button pressed");
+	}
+	
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
+		System.out.printf("Matrix button (%3d, %3d) pressed%n", buttonColumn, buttonRow);
 	}
 	
 }

@@ -1,6 +1,6 @@
 package org.simorion.common;
 
-interface WritableRow extends Row {
+public interface WritableRow extends Row {
 
 	/**
 	 * Sets the appropriate cell to be lit/considered active
