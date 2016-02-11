@@ -42,14 +42,24 @@ public class ModeMaster implements Controller {
 		return instance;
 	}
 	
-	//public static final DeviceMode PERFORMANCE_MODE;
+	public static final DeviceMode PERFORMANCE_MODE;
 	public static final DeviceMode ON_OFF_MODE;
 	public static final DeviceMode EXAMPLE;
+
+	public static final DeviceMode CHANGE_LAYER_MODE = null;
+	public static final DeviceMode SAVE_CONFIG_MODE = null;
+	public static final DeviceMode LOAD_CONFIG_MODE = null;
+	public static final DeviceMode MASTER_SLAVE_MODE = null;
+	public static final DeviceMode CHANGE_LOOP_POINT_MODE = null;
+	public static final DeviceMode CHANGE_LOOP_SPEED_MODE = null;
+	public static final DeviceMode CHANGE_VELOCITY_MODE = null;
+	public static final DeviceMode CHANGE_VOICE_MODE = null;
 	
 	static {
 		instance = new ModeMaster();
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
+		PERFORMANCE_MODE = null; //TODO
 		
 		instance.changeMode(EXAMPLE);
 	}

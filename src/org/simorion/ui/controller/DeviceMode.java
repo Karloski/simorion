@@ -2,6 +2,7 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
+import org.simorion.ui.model.Model;
 import org.simorion.ui.view.View;
 
 /**
@@ -12,6 +13,7 @@ import org.simorion.ui.view.View;
 public abstract class DeviceMode implements Controller {
 	
 	private final ModeMaster modeMaster;
+	protected Model model;
 	
 	public DeviceMode(ModeMaster m) {
 		modeMaster = m;
@@ -46,6 +48,11 @@ public abstract class DeviceMode implements Controller {
 	public void onOnOffButtonPress(MouseEvent e) {
 		System.out.println("OnOff button pressed");
 		//TODO: Change mode logic
+	}
+	
+	@Override
+	public void register(Model m) {
+		model = m;
 	}
 	
 }
