@@ -5,7 +5,9 @@ import java.awt.Color;
 import javax.swing.JButton;
 
 /**
- * View interface which defines methods for a view for the Simori-On. 
+ * View interface which defines methods for a view for the Simori-On.
+ * <p>TODO: Exceptions. I wanted to do some concrete implementations first to get
+ * a better feel for what exceptions would make sense.</p>
  * @author Karl
  *
  */
@@ -48,16 +50,23 @@ public interface View {
 	void lightButton(int x, int y, Color color);
 	
 	/**
-	 * Convenience method that sets the colour of a row or column to {@code color} for position {@code position}.
-	 * The {@code position} argument determines the particular column or row to set, and the isRow argument determines
-	 * whether we're setting a column or row.
-	 * The method will set the entire row or column, regardless of the position of the button in the row
-	 * or column.
-	 * @param position The position of the row or column to set.
-	 * @param isRow Whether we're setting a row or column.
-	 * @param color The color to set.
+	 * Convenience method that lights the entire row that {@code row} is on.
+	 * @param row The row to light.
+	 * @param color The colour to use.
 	 */
-	void lightButton(int position, boolean isRow, Color color);
+	void lightRow(int row, Color color);
+	
+	/**
+	 * Convenience method that lights the entire column that {@code column} is on.
+	 * @param column The column to light.
+	 * @param color The color to use.
+	 */
+	void lightColumn(int column, Color color);
+	
+	/**
+	 * Resets the colour of all buttons for this view.
+	 */
+	void clearButtons();
 	
 	/**
 	 * Retrieves and returns whether or not the button at coordinate {@code x}, {@code y} is lit.
@@ -71,12 +80,18 @@ public interface View {
 	boolean isLit(int x, int y);
 	
 	/**
-	 * Convenience method to determine if an entire column or row has been lit.
-	 * @param position The column or row to check.
-	 * @param isRow If set to true, will treat position as the row coordinate, otherwise will treat it as a column.
-	 * @return True if the entire column or row is lit, false otherwise.
+	 * Determines if the row of buttons {@code row} is on are lit. 
+	 * @param row The row to check.
+	 * @return True if all buttons are lit, false otherwise.
 	 */
-	boolean isLit(int position, boolean isRow);
+	boolean isRowLit(int row);
+	
+	/**
+	 * Determines if the column of buttons {@code column} is on are lit. 
+	 * @param column The column to check.
+	 * @return True if all buttons are lit, false otherwise.
+	 */
+	boolean isColumnLit(int column);
 	
 	/**
 	 * Retrieves and returns the current textual output of the LCD for this view.
