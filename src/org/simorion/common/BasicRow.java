@@ -72,5 +72,10 @@ public class BasicRow implements Row, WritableRow {
 		lights &= and;
 		lights |= or;
 	}
+
+	@Override
+	public int cellCount() {
+		return 16;
+	}
 	
 }
