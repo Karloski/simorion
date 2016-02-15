@@ -52,13 +52,13 @@ public class PerformanceView extends JFrame {
 		// Code here to make buttons circular
 		public CircularButton() {
 			super();
-			setOpaque(false);
-			setFocusPainted(false);
-			setLayout(null);
-			setBorderPainted(true);
-			setContentAreaFilled(false);
-			setBorder(new CircularBorder(getWidth()/2));
-			setBounds(getX(), getY(), getWidth(), getHeight());
+			//setOpaque(false);
+			//setFocusPainted(false);
+			//setLayout(null);
+			//setBorderPainted(true);
+			//setContentAreaFilled(false);
+			//setBorder(new CircularBorder(getWidth()/2));
+			//setBounds(getX(), getY(), getWidth(), getHeight());
 		}
 	}
 	
@@ -96,12 +96,12 @@ public class PerformanceView extends JFrame {
 		CircularTextButton(String s) {
 			super(s);
 			
-			setContentAreaFilled(false);
+			//setContentAreaFilled(false);
 		}
 		
-		protected void paintComponent(Graphics g){
+		//protected void paintComponent(Graphics g){
 			
-		}
+		//}
 	}
 	
 	/*
@@ -132,6 +132,16 @@ public class PerformanceView extends JFrame {
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me) {
 					// Code here for what to do when the button is pressed
+					
+					// Code for changing button colour
+					//if(getBackground() == buttonPanel.getBackground()) {
+						//setBackground(Color.orange);
+					//}
+					//else {
+						//setBackground(null);
+					//}
+					
+					//
 					ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
 				}
 			});
@@ -172,6 +182,9 @@ public class PerformanceView extends JFrame {
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
 					// What to do when the OK button is pressed
+					//if(getBackground() == buttonPanel.getBackground()) {
+						//setBackground(Color.orange);
+					//}
 					ModeMaster.getInstance().getMode().onOKButtonPress(me);
 				}
 			});
