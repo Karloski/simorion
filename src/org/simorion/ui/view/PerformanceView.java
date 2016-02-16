@@ -1,9 +1,7 @@
 package org.simorion.ui.view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -12,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import org.simorion.ui.controller.ModeMaster;
 
@@ -21,7 +18,7 @@ import org.simorion.ui.controller.ModeMaster;
  * all buttons are created and added - all containing action listeners
  * 
  * @author Petar Krstic
- * @version 1.0
+ * @version 2.0
  */
 
 public class PerformanceView extends JFrame { 
@@ -29,6 +26,7 @@ public class PerformanceView extends JFrame {
 	// Initialise the array to hold them all
 	MidiButton[] allMidiButtons = new MidiButton[256];
 	
+	private JPanel 		outerPanel	= new JPanel();
 	private JPanel 		buttonPanel = new JPanel();
 	private JTextField	dispLCD		= new JTextField();
 	// All the mode buttons
@@ -49,45 +47,31 @@ public class PerformanceView extends JFrame {
 	 * Class to make a button circular (no text)
 	 */
 	private class CircularButton extends JButton {
-		// Code here to make buttons circular
+					 
 		public CircularButton() {
-			super();
-			//setOpaque(false);
-			//setFocusPainted(false);
-			//setLayout(null);
-			//setBorderPainted(true);
-			//setContentAreaFilled(false);
-			//setBorder(new CircularBorder(getWidth()/2));
-			//setBounds(getX(), getY(), getWidth(), getHeight());
+			
+			setBackground(Color.white);
+			setContentAreaFilled(false);
 		}
+			 
+		protected void paintComponent(Graphics g) {
+			if (getModel().isArmed()) {
+				g.setColor(Color.orange);
+			} else {
+			    g.setColor(getBackground());
+			}
+			g.fillOval(0, 0, 29, 29);
+			 
+			super.paintComponent(g);
+		}
+			 
+		protected void paintBorder(Graphics g) {
+			g.setColor(Color.black);
+			g.drawOval(0, 0, 29, 29);
+		}
+			 
 	}
-	
-	private class CircularBorder implements Border {
-
-		int radius;
 		
-		public CircularBorder(int radius) {
-			this.radius = radius;
-		}
-		
-		@Override
-		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-			//System.out.println("Drawing the border");
-			g.drawRoundRect(x, y, width-1, height-1, radius, radius);			
-		}
-
-		@Override
-		public Insets getBorderInsets(Component c) {
-			return new Insets(radius, radius, radius, radius);
-		}
-
-		@Override
-		public boolean isBorderOpaque() {
-			return false;
-		}
-		
-	}
-	
 	/*
 	 * Class to make a button circular (with text)
 	 */
@@ -95,13 +79,25 @@ public class PerformanceView extends JFrame {
 		// Mode buttons and the ON/OK contain text whereas MidiButtons do not
 		CircularTextButton(String s) {
 			super(s);
-			
-			//setContentAreaFilled(false);
+			setBackground(Color.white);
+			setContentAreaFilled(false);
 		}
-		
-		//protected void paintComponent(Graphics g){
-			
-		//}
+			 
+		protected void paintComponent(Graphics g) {
+			if (getModel().isArmed()) {
+				g.setColor(Color.orange);
+			} else {
+			    g.setColor(getBackground());
+			}
+			g.fillOval(0, 0, 49, 49);
+			 
+			super.paintComponent(g);
+		}
+			 
+		protected void paintBorder(Graphics g) {
+			g.setColor(Color.black);
+			g.drawOval(0, 0, 49, 49);
+		}
 	}
 	
 	/*
@@ -213,44 +209,52 @@ public class PerformanceView extends JFrame {
 	 */
 	public PerformanceView() {
 		setTitle("Simori-ON");
-		setSize(605, 630);
+		setSize(607, 632);
 		
 		setLayout(null);
+		//getContentPane().setBackground(Color.white);
+		
+		// Panel to hold everything
+		outerPanel.setBounds(1, 1, 598, 600); add(outerPanel);
+		outerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		outerPanel.setLayout(null);
+		outerPanel.setBackground(Color.white);
 		// Panel to hold all the MidiButtons
-		buttonPanel.setBounds(59, 59, 482, 482); add(buttonPanel);
+		buttonPanel.setBounds(59, 59, 482, 482); outerPanel.add(buttonPanel);
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		buttonPanel.setLayout(null);
+		buttonPanel.setBackground(Color.white);
 		// Setting bounds for each button
-		btnON.setBounds(275, 5, 50, 50);	 add(btnON);
+		btnON.setBounds(275, 5, 50, 50);	 outerPanel.add(btnON);
 		btnON.setBorder(BorderFactory.createLineBorder(Color.black));		
 			
-		btnL1.setBounds(5, 84, 50, 50); 	 add(btnL1);
+		btnL1.setBounds(5, 84, 50, 50); 	 outerPanel.add(btnL1);
 		btnL1.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR1.setBounds(545, 84, 50, 50);	 add(btnR1);
+		btnR1.setBounds(545, 84, 50, 50);	 outerPanel.add(btnR1);
 		btnR1.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL2.setBounds(5, 174, 50, 50);	 add(btnL2);
+		btnL2.setBounds(5, 174, 50, 50);	 outerPanel.add(btnL2);
 		btnL2.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR2.setBounds(545, 174, 50, 50);	 add(btnR2);
+		btnR2.setBounds(545, 174, 50, 50);	 outerPanel.add(btnR2);
 		btnR2.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL3.setBounds(5, 264, 50, 50);	 add(btnL3);
+		btnL3.setBounds(5, 264, 50, 50);	 outerPanel.add(btnL3);
 		btnL3.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR3.setBounds(545, 264, 50, 50);	 add(btnR3);
+		btnR3.setBounds(545, 264, 50, 50);	 outerPanel.add(btnR3);
 		btnR3.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnL4.setBounds(5, 354, 50, 50);	 add(btnL4);
+		btnL4.setBounds(5, 354, 50, 50);	 outerPanel.add(btnL4);
 		btnL4.setBorder(BorderFactory.createLineBorder(Color.black));
-		btnR4.setBounds(545, 354, 50, 50);	 add(btnR4);
+		btnR4.setBounds(545, 354, 50, 50);	 outerPanel.add(btnR4);
 		btnR4.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		dispLCD.setBounds(120, 545, 240, 50);add(dispLCD);
+		dispLCD.setBounds(120, 545, 240, 50); outerPanel.add(dispLCD);
 		dispLCD.setEditable(false);
 		// Read only but with white background
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		btnOK.setBounds(432, 545, 50, 50);	 add(btnOK);
+		btnOK.setBounds(432, 545, 50, 50);	 outerPanel.add(btnOK);
 		btnOK.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		int xLocationOfButton = 0;
