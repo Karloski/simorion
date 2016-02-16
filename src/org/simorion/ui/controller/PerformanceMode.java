@@ -108,7 +108,8 @@ public class PerformanceMode extends DeviceMode {
         return instance;
     }
      
-    public void onOnOffButtonPressed(MouseEvent e) {
+    @Override
+    public void onOnOffButtonPress(MouseEvent e) {
         instance.clearButtons();
         changeMode(ModeMaster.ON_OFF_MODE);
     }

@@ -1,9 +1,11 @@
 package org.simorion.ui.model;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.simorion.common.Layer;
+import org.simorion.common.ReadonlyRow;
 import org.simorion.common.Row;
 import org.simorion.common.Stream;
 import org.simorion.common.StreamFormat;
@@ -73,6 +75,24 @@ public class DummyModel implements Model, WritableModel {
 			if(i < 0 || i > 15) throw new RuntimeException("Row index "+i+" not in range 0-16");
 			return rows[i];
 		}
+
+
+		@Override
+		public Iterable<? extends Row> getRows() {
+			return Arrays.asList(rows);
+		}
+
+
+		@Override
+		public ReadonlyRow getReadonlyRow(int i) {
+			return getWritableRow(i);
+		}
+
+
+		@Override
+		public Iterable<? extends ReadonlyRow> getReadonlyRows() {
+			return Arrays.asList(rows);
+		}
 	}
 	
 	private static class DummyRow implements WritableRow {
@@ -116,6 +136,11 @@ public class DummyModel implements Model, WritableModel {
 		@Override
 		public void applyMask(int and, int or) {
 			//Do nothing
+		}
+
+		@Override
+		public int cellCount() {
+			return 16;
 		}
 		
 	}
