@@ -1,5 +1,6 @@
 package org.simorion.common;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Collection;
  * 
  * @author Edmund Smith
  */
-public class BasicLayer implements Layer {
+public class BasicLayer implements ReadonlyLayer, Layer, WritableLayer {
 
 	WritableRow[] rows;
 	Voice voice;
@@ -74,6 +75,35 @@ public class BasicLayer implements Layer {
 					+" is outside the range 0 to "+rows.length);
 		}
 		return rows[i];
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ReadonlyRow getReadonlyRow(int i) {
+		return getRow(i);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Iterable<? extends ReadonlyRow> getReadonlyRows() {
+		return Arrays.asList(rows);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Iterable<? extends Row> getRows() {
+		return Arrays.asList(rows);
+	}
+
+	@Override
+	public WritableRow getWritableRow(int row) {
+		return rows[row];
 	}
 
 }
