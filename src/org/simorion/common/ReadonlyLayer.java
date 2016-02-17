@@ -53,5 +53,11 @@ public interface ReadonlyLayer {
 	 * @return a collection of all rows
 	 */
 	public Iterable<? extends ReadonlyRow> getReadonlyRows();
+	
+	/**
+	 * Get the currently displaying LCD message.
+	 * @return The currently displaying LCD message
+	 */
+	public String getLCDMessage();
 
 }

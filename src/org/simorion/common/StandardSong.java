@@ -32,7 +32,7 @@ public class StandardSong implements Song {
 			layers[i] = new BasicLayer(rows, 
 					MIDIVoices.getVoice(al.getMIDIVoice()),
 					(byte) al.getVelocity(),
-					al.getLayerID(), al.getLoopPoint());
+					al.getLayerID(), al.getLoopPoint(), al.getLCDMessage());
 			
 		}
 		

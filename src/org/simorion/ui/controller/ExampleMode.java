@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+import org.simorion.common.util.Util;
+import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.model.Model;
 import org.simorion.ui.view.View;
 
@@ -15,7 +17,7 @@ public class ExampleMode extends DeviceMode {
 		super(m);
 	}
 
-	private ExampleView instance = new ExampleView(16, 16);
+	private ExampleView instance = new ExampleView();
 	private Model model;
 	
 	/**
@@ -27,142 +29,143 @@ public class ExampleMode extends DeviceMode {
 	 */
 	private class ExampleView implements View {
 
-		private int rows; // The number of rows of matrix buttons. This is essentially the height.
-		private int columns; // The number of columns of matrix buttons. This is essentially the width.
-		private String lcdOutput = ""; // The current LCD output.
-		
-		JButton[] buttons; // An array of all matrix buttons for this view.
-		
-		/**
-		 * Constructor for this view.
-		 * @param columns The number of columns of matrix buttons.
-		 * @param rows The number of rows of matrix button.
-		 */
-		public ExampleView(int rows, int columns) {	
-			buttons = new JButton[rows * columns];	
-			this.columns = columns;
-			this.rows = rows;
-		}
-		
 		/** {@inheritDoc} */
 		@Override
-		public JButton getButton(int x, int y) {
-			// if (outOfBounds(x) || outOfBounds(y)) throw new OutOfBoundsException();
-			return buttons[x * rows + y];
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public JButton[] getButtons() {
-			return buttons;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public JButton[] getColumn(int y) {
-			// if (outOfBounds(y)) throw new OutOfBoundsException();
-			// The length of this array should be equal to the number of rows (height).
-			JButton[] ret = new JButton[rows];
-			
-			// Add the button to ret for each button on this column, keeping y (the column) constant.
-			for (int i = 0; i < rows; i++) {
-				ret[i] = getButton(y, i);
-			}
-			
-			return ret;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public JButton[] getRow(int x) {
-			// if (outOfBounds(x)) throw new OutOfBoundsException();
-			// The length of this array should be equal to the number of columns (width).
-			JButton[] ret = new JButton[columns];
-			
-			// Add the button to ret for each button on this column, keeping x (the row) constant.
-			for (int i = 0; i < columns; i++) {
-				ret[i] = getButton(i, x);
-			}
-
-			return ret;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public void lightButton(int x, int y, Color color) {
-			// if (outOfBounds(x) || outOfBounds(y)) throw new OutOfBoundsException();
-			getButton(x, y).setBackground(color);
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public void lightRow(int row, Color color) {
-			for (int i = 0; i < columns; i++) {
-				lightButton(i, row, color);
-			}
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public void lightColumn(int column, Color color) {
-			for (int i = 0; i < rows; i++) {
-				lightButton(column, i, color);
-			}	
-		}
-
+    	public Pair<Integer, Integer> gridSize() {    		
+			// Return a new pair representing the size of this view's button matrix.
+    		return new Pair<Integer, Integer>(Util.count(model.getCurrentLayer().getRows()), model.getCurrentLayer().getRow(0).cellCount());
+    	}
+    	
 		/** {@inheritDoc} */
 		@Override
 		public boolean isLit(int x, int y) {
-			return getButton(x, y).getBackground() == Color.ORANGE ? true : false;
+			return model.getCurrentLayer().getRow(y).isLit(x);
 		}
-
+		
 		/** {@inheritDoc} */
 		@Override
-		public boolean isRowLit(int row) {
-			for (int i = 0; i < columns; i++) {
-				if (!isLit(i, row)) return false;
-			}
-			return true;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public boolean isColumnLit(int column) {
-			for (int i = 0; i < columns; i++) {
-				if (!isLit(column, i)) return false;
-			}
-			return true;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public String getLCDOutput() {
-			return lcdOutput;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public void setLCDOutput(String text) {
-			this.lcdOutput = text;
-		}
-
-		/** {@inheritDoc} */
-		// TODO: This will be determined based on what the application is doing.
-		@Override
-		public boolean isActive() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public void clearButtons() {
-			for (int r = 0; r < rows; r++) {
-				for (int c = 0; c < columns; c++) {
-					lightButton(r, c, null);
+		public boolean[][] getLit() {
+			// Create the two-dimensional boolean array to return, lengths each equal to the size of this view's grid.
+			boolean[][] grid = new boolean[gridSize().left][gridSize().right];
+			
+			// Iterate over each row.
+			for (int r = 0; r < grid.length; r++) {
+				// Iterate over each column.
+				for (int c = 0; c < grid[r].length; c++) {
+					// If the button at coor r, c is lit, set it to true in the grid variable.
+					if (isLit(r, c)) grid[r][c] = true;
 				}
 			}
-		}		
+			
+			// Return the grid.
+			return grid;
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		public boolean isRowLit(int x) {
+			// Each row should contain the same number of buttons.
+			int columns = gridSize().right;
+			
+			// Keeping the row constant, check the state of each button.
+			for (int i = 0; i < columns; i++) {
+				if (!isLit(x, i)) return false;
+			}
+			
+			// Not all the buttons on this row are lit.
+			return true;
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getLitRow() {
+			
+			// Get the number of rows from the gridSize method.
+			int rows = gridSize().left;
+			
+			// Iterate over each row.
+			for (int r = 0; r < rows; r++) {
+				// If this row is lit, return it.
+				if (isRowLit(r)) return r;
+			}
+			
+			// No rows are lit.
+			return -1;			
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		public boolean isColumnLit(int y) {			
+			// Each row should contain the same number of buttons.
+			int rows = gridSize().left;
+			
+			// Keeping the row constant, check the state of each button.
+			for (int i = 0; i < rows; i++) {
+				if (!isLit(i, y)) return false;
+			}
+			
+			// Not all the buttons on this row are lit.
+			return true;
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getLitColumn() {
+			
+			// Get the number of columns from the gridSize method.
+			int columns = gridSize().right;
+			
+			// Iterate over each column.
+			for (int c = 0; c < columns; c++) {
+				// If this column is lit, return it.
+				if (isColumnLit(c)) return c;
+			}
+			
+			// No column is lit.
+			return -1;			
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		public String getLCDMessage() {
+			return model.getCurrentLayer().getLCDMessage();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getVoiceId() {
+			return model.getCurrentLayer().getVoice().getMidiVoice();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public String getVoiceName() {
+			return model.getCurrentLayer().getVoice().getName();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getCurrentLayerId() {
+			return model.getCurrentLayer().getLayerNumber();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getLoopPoint() {
+			return model.getCurrentLayer().getLoopPoint();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public int getVelocity() {
+			return model.getCurrentLayer().getVelocity();
+		}
+		
+		/** {@inheritDoc} */
+		@Override
+		public byte getNote(int y) {
+			return model.getCurrentLayer().getRow(y).getNote();
+		}
 	}
 	
 	public View getView() {

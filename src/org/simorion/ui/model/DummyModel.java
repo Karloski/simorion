@@ -93,6 +93,13 @@ public class DummyModel implements Model, WritableModel {
 		public Iterable<? extends ReadonlyRow> getReadonlyRows() {
 			return Arrays.asList(rows);
 		}
+
+
+		@Override
+		public String getLCDMessage() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	private static class DummyRow implements WritableRow {
