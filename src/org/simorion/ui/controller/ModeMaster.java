@@ -46,22 +46,29 @@ public class ModeMaster implements Controller {
 	public static final DeviceMode ON_OFF_MODE;
 	public static final DeviceMode EXAMPLE;
 
-	public static final DeviceMode CHANGE_LAYER_MODE = null;
-	public static final DeviceMode SAVE_CONFIG_MODE = null;
-	public static final DeviceMode LOAD_CONFIG_MODE = null;
-	public static final DeviceMode MASTER_SLAVE_MODE = null;
-	public static final DeviceMode CHANGE_LOOP_POINT_MODE = null;
-	public static final DeviceMode CHANGE_LOOP_SPEED_MODE = null;
-	public static final DeviceMode CHANGE_VELOCITY_MODE = null;
-	public static final DeviceMode CHANGE_VOICE_MODE = null;
+	public static final DeviceMode CHANGE_LAYER_MODE;
+	public static final DeviceMode SAVE_CONFIG_MODE;
+	public static final DeviceMode LOAD_CONFIG_MODE;
+	public static final DeviceMode MASTER_SLAVE_MODE;
+	public static final DeviceMode CHANGE_LOOP_POINT_MODE;
+	public static final DeviceMode CHANGE_LOOP_SPEED_MODE;
+	public static final DeviceMode CHANGE_VELOCITY_MODE;
+	public static final DeviceMode CHANGE_VOICE_MODE;
 	
 	static {
 		instance = new ModeMaster();
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
-		PERFORMANCE_MODE = new PerformanceMode(instance); //null; //TODO
-		
-		instance.changeMode(EXAMPLE);
+		PERFORMANCE_MODE = new PerformanceMode(instance); //TODO
+		CHANGE_LAYER_MODE = new ChangeLayerMode(instance);
+		SAVE_CONFIG_MODE = new SaveConfigMode(instance);
+		LOAD_CONFIG_MODE = new LoadConfigMode(instance);
+		MASTER_SLAVE_MODE = new MasterSlaveMode(instance);
+		CHANGE_LOOP_POINT_MODE = new ChangeLPointMode(instance);
+		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
+		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
+		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
+		instance.changeMode(ON_OFF_MODE);
 	}
 
 	@Override
