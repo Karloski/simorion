@@ -59,7 +59,7 @@ public class ModeMaster implements Controller {
 		instance = new ModeMaster();
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
-		PERFORMANCE_MODE = null; //TODO
+		PERFORMANCE_MODE = new PerformanceMode(instance); //null; //TODO
 		
 		instance.changeMode(EXAMPLE);
 	}
