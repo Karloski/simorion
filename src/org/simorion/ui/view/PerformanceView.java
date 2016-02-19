@@ -1,6 +1,7 @@
 package org.simorion.ui.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,7 +29,7 @@ public class PerformanceView extends JFrame {
 	
 	private JPanel 		outerPanel	= new JPanel();
 	private JPanel 		buttonPanel = new JPanel();
-	private JTextField	dispLCD		= new JTextField();
+	private JTextField	dispLCD		= new JTextField("LCD");
 	// All the mode buttons
 	final ModeButton 	btnL1 		= new ModeButton("L1");
 	final ModeButton 	btnL2 		= new ModeButton("L2");
@@ -81,6 +82,7 @@ public class PerformanceView extends JFrame {
 			super(s);
 			setBackground(Color.white);
 			setContentAreaFilled(false);
+			setFont(new Font("Cambria", Font.PLAIN, 21));
 		}
 			 
 		protected void paintComponent(Graphics g) {
@@ -212,7 +214,6 @@ public class PerformanceView extends JFrame {
 		setSize(607, 632);
 		
 		setLayout(null);
-		//getContentPane().setBackground(Color.white);
 		
 		// Panel to hold everything
 		outerPanel.setBounds(1, 1, 598, 600); add(outerPanel);
@@ -220,7 +221,7 @@ public class PerformanceView extends JFrame {
 		outerPanel.setLayout(null);
 		outerPanel.setBackground(Color.white);
 		// Panel to hold all the MidiButtons
-		buttonPanel.setBounds(59, 59, 482, 482); outerPanel.add(buttonPanel);
+		buttonPanel.setBounds(58, 58, 484, 484); outerPanel.add(buttonPanel);
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		buttonPanel.setLayout(null);
 		buttonPanel.setBackground(Color.white);
@@ -253,6 +254,7 @@ public class PerformanceView extends JFrame {
 		// Read only but with white background
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
+		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
 		
 		btnOK.setBounds(432, 545, 50, 50);	 outerPanel.add(btnOK);
 		btnOK.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -270,7 +272,7 @@ public class PerformanceView extends JFrame {
 				j++;
 			}	
 			
-			allMidiButtons[k].setBounds(1+(30*xLocationOfButton), 451-(30*yLocationOfButton), 30, 30); buttonPanel.add(allMidiButtons[k]);
+			allMidiButtons[k].setBounds(2+(30*xLocationOfButton), 452-(30*yLocationOfButton), 30, 30); buttonPanel.add(allMidiButtons[k]);
 			// Setting bounds of the button depending on it's co-ords
 			if((k+1)%16 == 0) {
 				// When reaching 16 buttons - go back to left hand side of grid and increment y
