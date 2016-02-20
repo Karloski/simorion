@@ -5,7 +5,7 @@ package org.simorion.common;
  * 
  * @author Edmund Smith
  */
-public interface ReadonlyLayer {
+public interface ImmutableLayer {
 
 
 	/**
@@ -46,12 +46,12 @@ public interface ReadonlyLayer {
 	 * @param i the row index, indexed from bottom left up
 	 * @return the row at index i
 	 */
-	public ReadonlyRow getReadonlyRow(int i);
+	public ImmutableRow getRow(int i);
 
 	/**
 	 * Get a collection of all rows for iteration
 	 * @return a collection of all rows
 	 */
-	public Iterable<? extends ReadonlyRow> getReadonlyRows();
+	public Iterable<? extends ImmutableRow> getRows();
 
 }

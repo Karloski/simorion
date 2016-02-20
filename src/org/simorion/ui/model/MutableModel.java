@@ -1,6 +1,6 @@
 package org.simorion.ui.model;
 
-import org.simorion.common.Layer;
+import org.simorion.common.MutableLayer;
 import org.simorion.common.Voice;
 
 /**
@@ -8,13 +8,13 @@ import org.simorion.common.Voice;
  * for Stream use. Not for use within the View section of code.
  * @author Edmund Smith
  */
-public interface WritableModel extends Model {
+public interface MutableModel extends ImmutableModel {
 
-	public void setVoice(Layer l, Voice voice);
+	public void setVoice(MutableLayer l, Voice voice);
 	
-	public void setVelocity(Layer l, int velocity);
+	public void setVelocity(MutableLayer l, int velocity);
 	
-	public void setLoopPoint(Layer l, int loopPoint);
+	public void setLoopPoint(MutableLayer l, int loopPoint);
 	
 	public void setTempo(float beatsPerSecond);
 	

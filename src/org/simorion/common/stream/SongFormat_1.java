@@ -4,9 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.simorion.common.ReadonlyLayer;
-import org.simorion.common.ReadonlyRow;
-import org.simorion.common.ReadonlySong;
+import org.simorion.common.ImmutableLayer;
+import org.simorion.common.ImmutableRow;
+import org.simorion.common.ImmutableSong;
 import org.simorion.common.SongBuilder;
 /**
  * Initial exploratory attempt at a song serialiser
@@ -33,10 +33,10 @@ public class SongFormat_1 implements SongFormat {
 	 * Serialised a song into a byte array with the format _1
 	 */
 	@Override
-	public byte[] serialise(ReadonlySong song) throws UnsupportedEncodingException, IOException {
+	public byte[] serialise(ImmutableSong song) throws UnsupportedEncodingException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		baos.write("\u0001\u0016\u0016\u0016".getBytes("UTF-8"));
-		for(ReadonlyLayer l : song.getLayers()) {
+		for(ImmutableLayer l : song.getLayers()) {
 			byte[] b = new byte[4];
 			b[0] = (byte)l.getLayerNumber();
 			b[1] = (byte)l.getVoice().getMidiVoice();
@@ -44,7 +44,7 @@ public class SongFormat_1 implements SongFormat {
 			b[3] = (byte)l.getLoopPoint();
 			b[4] = (byte)song.getBPM();
 			baos.write(b);
-			for(ReadonlyRow r : l.getReadonlyRows()) {
+			for(ImmutableRow r : l.getRows()) {
 				byte[] b1 = new byte[
 				                     r.cellCount()/8+
 				                     (r.cellCount()%8==0?0:1)

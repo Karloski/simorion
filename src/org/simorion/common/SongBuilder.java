@@ -11,11 +11,12 @@ import java.util.List;
  */
 public class SongBuilder {
 
-	List<AddLayer> layers;
+	public List<AddLayer> layers;
 	private byte rows, cells, layerCount;
 	
 	public SongBuilder() {
 		layers = new ArrayList<AddLayer>();
+		layerCount = rows = cells = -1;
 	}
 	
 	/**
@@ -63,7 +64,7 @@ public class SongBuilder {
 		
 		private final AddLayer parent;
 		
-		long mask;
+		public long mask;
 		
 		private AddRow(AddLayer parent) {
 			this.parent = parent;

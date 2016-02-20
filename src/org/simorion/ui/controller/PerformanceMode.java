@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.View;
  
 public class PerformanceMode extends DeviceMode {

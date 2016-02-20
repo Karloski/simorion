@@ -5,7 +5,7 @@ package org.simorion.common;
  * 
  * @author Edmund Smith
  */
-public interface ReadonlyRow {
+public interface ImmutableRow {
 
 	public boolean isLit(int cell);
 	

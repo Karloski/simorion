@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.View;
  
 /**
@@ -113,7 +113,7 @@ public class ChangeLPointMode extends DeviceMode {
     }
 
 	@Override
-	public void register(Model model) {
+	public void register(ImmutableModel model) {
 		// TODO Auto-generated method stub
 		
 	}

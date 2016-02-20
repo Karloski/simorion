@@ -8,23 +8,26 @@ import java.util.Comparator;
 import org.simorion.common.SongBuilder.AddLayer;
 import org.simorion.common.SongBuilder.AddRow;
 import org.simorion.common.util.Util;
+import org.simorion.engine.BasicLayer;
+import org.simorion.engine.MIDIVoices;
 
 public class StandardSong implements Song {
 
 	private BasicLayer[] layers;
-	
+	private float tempo;
 	
 	public StandardSong() {
 		layers = new BasicLayer[16];
+		tempo = 1;
 	}
 	
 	public void loadFrom(final SongBuilder sb) {
 		layers = new BasicLayer[sb.getLayerCount()];
 		
 		for(int i = 0; i < layers.length; i++) {
-			Collection<WritableRow> rows = new ArrayList<WritableRow>(sb.getRows());
+			Collection<MutableRow> rows = new ArrayList<MutableRow>(sb.getRows());
 			AddLayer al = sb.layers.get(i);
-			for(Util.Pair<WritableRow, AddRow> pair : 
+			for(Util.Pair<MutableRow, AddRow> pair : 
 				Util.zip(rows, al.getRows())) {
 				pair.left.applyMask(0, (int) pair.right.mask);
 			}
@@ -46,19 +49,31 @@ public class StandardSong implements Song {
 	}
 
 	@Override
-	public Collection<? extends ReadonlyLayer> getLayers() {
+	public Collection<? extends MutableLayer> getLayers() {
 		return Arrays.asList(layers);
 	}
 
 	@Override
 	public float getTempo() {
-		return 0; //TODO: is tempo per-layer or per-song?
+		return tempo;
 	}
 
 	@Override
 	public byte getBPM() {
-		// TODO: is BPM per-layer or per-song?
-		return 0;
+		return (byte)(tempo * 60);
+	}
+
+	@Override
+	public void setBPM(byte bpm) {
+		tempo = bpm/60;
+	}
+
+	@Override
+	public void setTempo(float bps) {
+		if(Float.isNaN(bps) || Float.isInfinite(bps) || bps <= 0)
+			throw new IllegalArgumentException("beats per second must be a" +
+					" positive number");
+		tempo = bps;
 	}
 	
 }

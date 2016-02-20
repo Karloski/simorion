@@ -1,12 +1,12 @@
 package org.simorion.common;
 
-import org.simorion.ui.model.Model;
-import org.simorion.ui.model.WritableModel;
+import org.simorion.ui.model.ImmutableModel;
+import org.simorion.ui.model.MutableModel;
 
 public interface StreamFormat {
 
-	public byte[] toBytes(Model m);
+	public byte[] toBytes(ImmutableModel m);
 	
-	public void fromBytes(WritableModel w, byte[] bytes);
+	public void fromBytes(MutableModel w, byte[] bytes);
 	
 }
