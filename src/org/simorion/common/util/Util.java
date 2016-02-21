@@ -106,4 +106,58 @@ public final class Util {
 		for(T t : it) count++;
 		return count;
 	}
+	
+	/**
+	 * Iterates over a bitstring of a certain length
+	 * @param l The bitstring
+	 * @param length The length of the bitstring
+	 * @return Iterable representing the bitstring
+	 */
+	private static Iterable<Boolean> bitstringImpl(final long l, final int length) {
+		return new Iterable<Boolean>() {
+
+			@Override
+			public Iterator<Boolean> iterator() {
+				return new Iterator<Boolean>() {
+					int offset = 0;
+					
+					@Override
+					public boolean hasNext() {
+						return offset < length;
+					}
+
+					@Override
+					public Boolean next() {
+						return (l & (1 << (offset++))) != 0;
+					}
+
+					@Override
+					public void remove() {
+						offset++;
+					}
+					
+				};
+			}
+			
+		};
+	}
+	
+	/**
+	 * Iterates over a bitstring stored in a long
+	 * @param l The bitstring
+	 * @return Iterable of the bitstring
+	 */
+	public static Iterable<Boolean> bitstring(final long l) {
+		return bitstringImpl(l, 64);
+	}
+	
+
+	/**
+	 * Iterates over a bitstring stored in an int
+	 * @param l The bitstring
+	 * @return Iterable of the bitstring
+	 */
+	public static Iterable<Boolean> bitstring(final int i) {
+		return bitstringImpl(i, 32);
+	}
 }
