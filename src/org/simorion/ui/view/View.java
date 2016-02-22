@@ -1,8 +1,10 @@
 package org.simorion.ui.view;
 
-import java.awt.Color;
+import java.awt.Container;
+import java.util.Collection;
 
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
 
 import org.simorion.common.util.Util.Pair;
 
@@ -16,11 +18,65 @@ import org.simorion.common.util.Util.Pair;
 public interface View {
 
 	/**
+	 * The title of this view.
+	 * @return The title of this view.
+	 */
+	String getTitle();
+	
+	/**
+	 * The total size of this view, including all elements, in pixels.
+	 * @return The total size of this view in pixels.
+	 */
+	Pair<Integer, Integer> getSize();
+	
+	/**
+	 * This view's implementation of the outer panel as a JComponent.
+	 * @return This view's implementation of the outer panel.
+	 */
+	JComponent getOuterPanel();
+	
+	/**
+	 * This view's implementation of the button panel as a JComponent.
+	 * @return This view's implementation of the button panel.
+	 */
+	JComponent getButtonPanel();
+	
+	/**
+	 * This view's ON button implementation. Should include attributes such as colour, position and so forth.
+	 * @return This view's ON button implementation.
+	 */
+	AbstractButton getOnButton();
+	
+	/**
+	 * This view's OK button implementation. Should include attributes such as colour, position and so forth.
+	 * @return This view's OK button implementation.
+	 */
+	AbstractButton getOKButton();
+	
+	/**
+	 * An iterable list of all the mode buttons for this view.
+	 * @return An iterable list of all the mode buttons for this view.
+	 */
+	Iterable<AbstractButton> getModeButtons();
+	
+	/**
+	 * An iterable list of all the MIDI buttons for this view.
+	 * @return An iterable list of all the MIDI buttons for this view.
+	 */
+	Iterable<AbstractButton> getMidiButtons();
+	
+	/**
+	 * This view's implementation of the LCD Screen.
+	 * @return This view's implementation of the LCD Screen.
+	 */
+	JComponent getLCDScreen();
+	
+	/**
 	 * Returns the size of the inner grid for this view as a {@code Pair<Integer, Integer>} where the left represents
 	 * the number of rows and the right represents the number of columns.
 	 * @return A {@code Pair<Integer, Integer>} representing the width and height of this views inner grid.
 	 */
-	Pair<Integer, Integer> gridSize();
+	Pair<Integer, Integer> matrixSize();
 	
 	/**
 	 * Retrieves and returns whether or not the button at coordinate {@code x}, {@code y} is lit.
@@ -38,29 +94,17 @@ public interface View {
 	boolean isRowLit(int x);
 	
 	/**
-	 * Retrieves and returns the first lit row for this view.
-	 * @return The first row on the grid whose buttons are all lit.
-	 */
-	int getLitRow();
-	
-	/**
-	 * Retrieves and returns a two-dimensional boolean array of the state of all matrix buttons for this view.
-	 * @return A two-dimensional boolean array of the state of each matrix button for this view.
-	 */
-	boolean[][] getLit();
-	
-	/**
 	 * Determines if the column of buttons {@code column} is on are lit. 
 	 * @param x The column to check.
 	 * @return True if all buttons are lit, false otherwise.
 	 */
 	boolean isColumnLit(int y);
-
+	
 	/**
-	 * Retrieves and returns the first lit column for this view.
-	 * @return The first column on the grid whose buttons are all lit.
+	 * Retrieves and returns a collection of iterable items representing all the currently lit matrix buttons for this view.
+	 * @return
 	 */
-	int getLitColumn();
+	Collection<Iterable<Boolean>> getLitButtons();
 	
 	/**
 	 * Retrieves and returns the current textual output of the LCD for this view.
