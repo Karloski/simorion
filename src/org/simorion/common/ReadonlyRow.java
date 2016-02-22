@@ -6,6 +6,13 @@ package org.simorion.common;
  * @author Edmund Smith
  */
 public interface ReadonlyRow {
+	
+	/**
+	 * Retrieves and returns cell state for this row.
+	 * @return Cell state for this row.
+	 */
+	public int getLit();
+	
 
 	public boolean isLit(int cell);
 	

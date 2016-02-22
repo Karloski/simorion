@@ -149,6 +149,12 @@ public class DummyModel implements Model, WritableModel {
 		public int cellCount() {
 			return 16;
 		}
+
+		@Override
+		public int getLit() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 		
 	}
 
