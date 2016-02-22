@@ -6,10 +6,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 
-import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.controller.ModeMaster;
 
 public class ButtonFactory {
@@ -18,8 +16,8 @@ public class ButtonFactory {
 		CIRCULAR, CIRCULARTEXT, MIDI, MODE, ONOFF, OK
 	}
 	
-	public static JButton createButton(Pair<Integer, Integer> coordinate) {		
-		return new MidiButton(coordinate.left, coordinate.right);
+	public static JButton createButton(int x, int y) {		
+		return new MidiButton(x, y);
 	}
 	
 	public static JButton createButton(String text, Button buttonType) {

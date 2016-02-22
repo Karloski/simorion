@@ -1,18 +1,8 @@
 package org.simorion.ui.view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import org.simorion.ui.controller.ModeMaster;
 
@@ -39,21 +29,49 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		
+	}
+	
+	/**
+	 * Should be called when a mode is changed.
+	 */
+	public void draw() {
+		
+		// Invalidate the view for re-drawing.
+		invalidate();
+		
+		// Get the current view.
 		View view = ModeMaster.getInstance().getView();
 		
-		setTitle(view.getTitle());
-		setSize(view.getSize().left, view.getSize().right);		
-		outerPanel = (JPanel) add(view.getOuterPanel());
-		buttonPanel = (JPanel) outerPanel.add(view.getButtonPanel());
+		// Draw the Simori-ON based on the current view.
+		setTitle(view.getTitle()); // Set the title.
+		setSize(view.getSize().left, view.getSize().right); // Set the size in pixels.
+		
+		outerPanel = (JPanel) add(view.getOuterPanel()); // Add the outer panel.
+		buttonPanel = (JPanel) outerPanel.add(view.getButtonPanel()); // Add the inner panel.
+		
+		// Add the ON and OK buttons.
 		outerPanel.add(view.getOnButton());
 		outerPanel.add(view.getOKButton());
+		
+		// Add the LCD Screen.
 		outerPanel.add(view.getLCDScreen());
+		
+		// Add each MODE button.
 		for (AbstractButton button : view.getModeButtons()) {
 			outerPanel.add(button);
 		}
+		
+		// Add each MIDI (matrix) button.
 		for (AbstractButton button : view.getMidiButtons()) {
 			buttonPanel.add(button);
 		}
+		
+	}
+	
+	/**
+	 * Should be called when the current mode is altered.
+	 */
+	public void update() {
 		
 	}
 

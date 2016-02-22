@@ -3,18 +3,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.simorion.common.Row;
-import org.simorion.common.util.Util;
 import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.View;
@@ -29,7 +25,8 @@ public class OnOffMode extends DeviceMode {
 	private OnOffView instance = new OnOffView();
      
     /**
-     * Implementation of the View interface for the OnOffView
+     * Implementation of the View interface for the OnOffView.
+     * This defines how the Simori-ON should look for this view.
      * @author Karl Brown
      *
      */
@@ -49,15 +46,16 @@ public class OnOffMode extends DeviceMode {
     	
 		/** {@inheritDoc} */
 		@Override
-    	public Pair<Integer, Integer> matrixSize() {    		
+    	public Pair<Integer, Integer> getMatrixSize() {    		
 			// Return a new pair representing the size of this view's button matrix.
-    		return new Pair<Integer, Integer>(Util.count(model.getCurrentLayer().getRows()), model.getCurrentLayer().getRow(0).cellCount());
+    		return new Pair<Integer, Integer>(16, 16);
     	}
 		
 		/** {@inheritDoc} */
 		@Override
     	public JComponent getOuterPanel() {
     		
+			// Create and define the outer JPanel.
     		JPanel outerPanel = new JPanel();
     		
     		outerPanel.setBounds(1, 1, 598, 600);
@@ -73,6 +71,7 @@ public class OnOffMode extends DeviceMode {
 		@Override
 		public JComponent getButtonPanel() {
 			
+			// Create and define the inner JPanel.
 			JPanel buttonPanel = new JPanel();
 			
 			buttonPanel.setBounds(58, 58, 484, 484);
@@ -87,18 +86,31 @@ public class OnOffMode extends DeviceMode {
 		/** {@inheritDoc} */
 		@Override
     	public AbstractButton getOnButton() {
-			AbstractButton btnON = ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
+			
+			// Use the ButtonFactory to create the ON/OFF button.
+			AbstractButton btnON = ButtonFactory.createButton("ON", ButtonFactory.Button.ONOFF);
+			
+			// Define it.
 			btnON.setBounds(275, 5, 50, 50);
 			btnON.setBorder(BorderFactory.createLineBorder(Color.black));
-			return btnON;		
+			
+			// Return it.
+			return btnON;
+			
 		}
 		
 		/** {@inheritDoc} */
 		@Override
-    	public AbstractButton getOKButton() {			
+    	public AbstractButton getOKButton() {
+			
+			// Use the ButtonFactory to create the OK button.
 			AbstractButton btnOK = ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
+			
+			// Define it.
 			btnOK.setBounds(432, 545, 50, 50);
 			btnOK.setBorder(BorderFactory.createLineBorder(Color.black));
+			
+			// Return it.
 			return btnOK;
 		}
 		
@@ -106,12 +118,16 @@ public class OnOffMode extends DeviceMode {
 		@Override
     	public Iterable<AbstractButton> getModeButtons() {			
 			
+			// A list of buttons to return as an iterable.
 			List<AbstractButton> buttons = new ArrayList<AbstractButton>();
 			
+			// Four buttons for the left side.
 			for (int i = 1; i < 5; i++) {
 				
+				// Create the button from the ButtonFactory.
 				AbstractButton b = ButtonFactory.createButton("L" + i, ButtonFactory.Button.MODE);
 				
+				// Each button has its own bounds (position).
 				switch (i) {
 				case 1:
 					b.setBounds(5, 84, 50, 50);
@@ -126,14 +142,18 @@ public class OnOffMode extends DeviceMode {
 					b.setBounds(5, 354, 50, 50);
 				}
 				
+				// Each button has a black border.
 				b.setBorder(BorderFactory.createLineBorder(Color.black));
 				buttons.add(b);
 			}
 			
+			// Four buttons for the right side.
 			for (int i = 1; i < 5; i++) {
 				
-				AbstractButton b = ButtonFactory.createButton("L" + i, ButtonFactory.Button.MODE);
+				// Create the button from the ButtonFactory.
+				AbstractButton b = ButtonFactory.createButton("R" + i, ButtonFactory.Button.MODE);
 				
+				// Each button has its own bounds (position).
 				switch (i) {
 				case 1:
 					b.setBounds(545, 84, 50, 50);
@@ -148,6 +168,7 @@ public class OnOffMode extends DeviceMode {
 					b.setBounds(545, 354, 50, 50);
 				}
 				
+				// Each button has a black border.
 				b.setBorder(BorderFactory.createLineBorder(Color.black));
 				buttons.add(b);
 			}
@@ -162,14 +183,18 @@ public class OnOffMode extends DeviceMode {
 			
 			List<AbstractButton> buttons = new ArrayList<AbstractButton>();
 			
+			// FIXME: Matrix size takes from model, however there is as of yet no model implementations.
+			//int noButtons = matrixSize().left * matrixSize().right;
+			int noButtons = 256; // 16 * 16
+			
 			int xLocationOfButton = 0;
 			int yLocationOfButton = 0;
 			// j is a variable which is incremented when the end of the grid is reached (every 16 buttons)
 			int j = 0;
 			
-			for (int k = 0; k < buttons.size(); k++) {
+			for (int k = 0; k < noButtons; k++) {
 				
-				AbstractButton b = ButtonFactory.createButton(new Pair<Integer, Integer>(k % 16, j));
+				AbstractButton b = ButtonFactory.createButton(k % 16, j);
 				
 				// Create new MidiButton with it's location parameters
 				if ((k + 1) % 16 == 0){
@@ -200,6 +225,7 @@ public class OnOffMode extends DeviceMode {
 		@Override
 		public JComponent getLCDScreen() {
 			
+			// Create and define the LCD screen.
 			JTextField dispLCD = new JTextField();
 			
 			dispLCD.setBounds(120, 545, 240, 50);
@@ -211,98 +237,6 @@ public class OnOffMode extends DeviceMode {
 			return dispLCD;
 			
 		}
-    	
-		/** {@inheritDoc} */
-		@Override
-		public boolean isLit(int x, int y) {
-			return model.getCurrentLayer().getRow(y).isLit(x);
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public Collection<Iterable<Boolean>> getLitButtons() {
-			
-			List<Iterable<Boolean>> lit = new ArrayList<Iterable<Boolean>>();
-			
-			for (Row r : model.getCurrentLayer().getRows()) {				
-				lit.add(Util.bitstring(r.getLit()));			
-			}
-			
-			return lit;
-			
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public boolean isRowLit(int x) {
-			// Each row should contain the same number of buttons.
-			int columns = matrixSize().right;
-			
-			// Keeping the row constant, check the state of each button.
-			for (int i = 0; i < columns; i++) {
-				if (!isLit(x, i)) return false;
-			}
-			
-			// Not all the buttons on this row are lit.
-			return true;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public boolean isColumnLit(int y) {			
-			// Each row should contain the same number of buttons.
-			int rows = matrixSize().left;
-			
-			// Keeping the row constant, check the state of each button.
-			for (int i = 0; i < rows; i++) {
-				if (!isLit(i, y)) return false;
-			}
-			
-			// Not all the buttons on this row are lit.
-			return true;
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		public String getLCDMessage() {
-			return model.getCurrentLayer().getLCDMessage();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public int getVoiceId() {
-			return model.getCurrentLayer().getVoice().getMidiVoice();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public String getVoiceName() {
-			return model.getCurrentLayer().getVoice().getName();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public int getCurrentLayerId() {
-			return model.getCurrentLayer().getLayerNumber();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public int getLoopPoint() {
-			return model.getCurrentLayer().getLoopPoint();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public int getVelocity() {
-			return model.getCurrentLayer().getVelocity();
-		}
-		
-		/** {@inheritDoc} */
-		@Override
-		public byte getNote(int y) {
-			return model.getCurrentLayer().getRow(y).getNote();
-		} 
         
     }
      
@@ -317,14 +251,13 @@ public class OnOffMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("OK button pressed");
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+		// Set button to lit (or unlit) in the model.
+		// Model then updates the view.
 	}
      
 }
