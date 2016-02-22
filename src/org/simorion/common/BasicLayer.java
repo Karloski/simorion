@@ -24,7 +24,12 @@ public class BasicLayer implements ReadonlyLayer, Layer, WritableLayer {
 	 */
 	int loopPoint;
 	
-	BasicLayer(Collection<WritableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint) {
+	/**
+	 * Current output of the LCD.
+	 */
+	String lcdMessage;
+	
+	BasicLayer(Collection<WritableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint, String lcdMessage) {
 		this.rows = rows.toArray(new WritableRow[0]); //Allocates its own array
 		//see http://shipilev.net/blog/2016/arrays-wisdom-ancients/ for details
 		this.voice = voice;
@@ -104,6 +109,11 @@ public class BasicLayer implements ReadonlyLayer, Layer, WritableLayer {
 	@Override
 	public WritableRow getWritableRow(int row) {
 		return rows[row];
+	}
+
+	@Override
+	public String getLCDMessage() {
+		return lcdMessage;
 	}
 
 }

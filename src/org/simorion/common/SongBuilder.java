@@ -111,6 +111,11 @@ public class SongBuilder {
 			return this;
 		}
 		
+		public AddLayer setLCDMessage(String s) {
+			lcdMessage = s;
+			return this;
+		}
+		
 		public List<AddRow> addRows(int rows) {
 			for(int i = 0; i < rows; i++) {
 				this.rows.add(new AddRow(this));
@@ -138,7 +143,12 @@ public class SongBuilder {
 			return layerId;
 		}
 		
+		public String getLCDMessage() {
+			return lcdMessage;
+		}
+		
 		private int velocity, voice, loopPoint, layerId;
+		private String lcdMessage;
 		
 		public SongBuilder done() {
 			return parent; 

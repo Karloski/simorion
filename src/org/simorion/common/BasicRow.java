@@ -31,6 +31,14 @@ public class BasicRow implements Row, WritableRow {
 	public byte getNote() {
 		return note;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLit() {
+		return lights;
+	}
 
 	/**
 	 * {@inheritDoc}
