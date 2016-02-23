@@ -28,7 +28,7 @@ public class GUI extends JFrame {
 	 * Also where the array of MidiButtons is made
 	 */
 	public GUI() {
-		
+		draw();
 	}
 	
 	/**

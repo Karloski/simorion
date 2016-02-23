@@ -26,7 +26,7 @@ public class PerformanceMode extends DeviceMode {
      
     /**
      * Implementation of the View interface for the PerformanceView
-     * @author Karl Brown
+     * @author Karl Brown, Petar Krstic
      *
      */
     private class PerformanceView implements View {
