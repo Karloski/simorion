@@ -29,10 +29,14 @@ public interface MutableModel extends ImmutableModel {
 	
 	public void setTopmostLayer(int layerID);
 	
-	void setLit(int layer, int xLoc, int yLoc);
+	public void setLit(int layer, int xLoc, int yLoc);
 	
-	void setUnLit(int layer, int xLoc, int yLoc);
+	public void setUnLit(int layer, int xLoc, int yLoc);
 	
-	void toggleLit(int layer, int xLoc, int yLoc);
+	public void toggleLit(int layer, int xLoc, int yLoc);
+	
+	public MutableLayer getCurrentLayer();
+	
+	public void setLCDDisplay(String text);
 	
 }

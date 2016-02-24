@@ -12,7 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.simorion.common.util.Util.Pair;
+import org.simorion.engine.MIDIVoices;
 import org.simorion.ui.model.ImmutableModel;
+import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.View;
  
@@ -23,8 +25,11 @@ import org.simorion.ui.view.View;
  */
 public class ChangeVoiceMode extends DeviceMode {
  
+	private int voice;
+	
     public ChangeVoiceMode(ModeMaster m) {
 		super(m);
+		voice = -1;
 	}
 
 	private ChangeVoiceView instance = new ChangeVoiceView();
@@ -36,6 +41,8 @@ public class ChangeVoiceMode extends DeviceMode {
      */
     private class ChangeVoiceView implements View {
 
+    	JComponent lcdScreen;
+    	
 		/** {@inheritDoc} */
 		@Override
     	public String getTitle() {
@@ -228,7 +235,9 @@ public class ChangeVoiceMode extends DeviceMode {
 		/** {@inheritDoc} */
 		@Override
 		public JComponent getLCDScreen() {
-			
+			if(lcdScreen != null) {
+				return lcdScreen;
+			}
 			// Create and define the LCD screen.
 			JTextField dispLCD = new JTextField();
 			
@@ -237,9 +246,17 @@ public class ChangeVoiceMode extends DeviceMode {
 			dispLCD.setBackground(Color.WHITE);
 			dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
 			dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
-			
+			dispLCD.setText(model.getLCDDisplay());
+			lcdScreen = dispLCD;
 			return dispLCD;
 			
+		}
+		
+		public boolean isLit(int x, int y) {
+			if(voice == -1) return false;
+			return (16*y+x+1) == voice ||
+					voice / 16 == y ||
+					x - (voice % 16) == 0;
 		}
          
     }
@@ -247,30 +264,29 @@ public class ChangeVoiceMode extends DeviceMode {
     public View getView() {
         return instance;
     }
-     
-    public void onMatrixButtonPressed(MouseEvent e, int x, int y){
-    	// FIXME: This should be handled by the controller and not deferred to the view.
-        /* instance.clearButtons();
-        instance.lightRow(y, Color.ORANGE);
-        instance.lightColumn(x, Color.ORANGE); */
-    }
-
-	@Override
-	public void register(ImmutableModel model) {
-		// TODO Auto-generated method stub
-		
-	}
-
+    
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(voice != -1) {
+			model.setVoice(model.getCurrentLayer(),
+				MIDIVoices.getVoice(voice));
+		}
+		changeMode(ModeMaster.PERFORMANCE_MODE);
+		voice = -1;
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+		voice = 16*buttonRow + buttonColumn + 1;
+		model.setLit(model.getCurrentLayerId(), buttonColumn, buttonRow);
+		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());
+	}
+	
+	@Override
+	void onChangedTo() {
+		System.out.println(model);
+		voice = model.getCurrentLayer().getVoice().getMidiVoice();
+		model.setLCDDisplay(model.getCurrentLayer().getVoice().getName());
 	}
      
 }

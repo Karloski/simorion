@@ -249,12 +249,6 @@ public class ChangeLSpeedMode extends DeviceMode {
     }
 
 	@Override
-	public void register(ImmutableModel model) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
