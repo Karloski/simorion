@@ -2,14 +2,14 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.View;
 
 public class ModeMaster implements Controller {
 	
 	private static ModeMaster instance;
 	
-	private Model model;
+	private ImmutableModel model;
 	
 	private DeviceMode deviceMode;
 	
@@ -23,7 +23,7 @@ public class ModeMaster implements Controller {
 	}
 
 	@Override
-	public void register(Model model) {
+	public void register(ImmutableModel model) {
 		this.model = model;
 	}
 

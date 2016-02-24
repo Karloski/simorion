@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.simorion.common.ReadonlySong;
+import org.simorion.common.ImmutableSong;
 import org.simorion.common.SongBuilder;
 
 /**
@@ -25,7 +25,7 @@ public class NetworkSongReaderWriter implements SongWriter, SongReader {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void write(SongFormat format, ReadonlySong s) throws IOException {
+	public void write(SongFormat format, ImmutableSong s) throws IOException {
 		socket.getOutputStream().write(format.serialise(s));
 	}
 	

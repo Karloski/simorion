@@ -1,4 +1,6 @@
-package org.simorion.common;
+package org.simorion.engine;
+
+import org.simorion.common.Voice;
 
 /**
  * Dummy Voice implementation, with the same identical responses

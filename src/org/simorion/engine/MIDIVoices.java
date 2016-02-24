@@ -1,4 +1,6 @@
-package org.simorion.common;
+package org.simorion.engine;
+
+import org.simorion.common.Voice;
 
 /**
  * One stop shop for associating MIDI voice bytes with a Voice object

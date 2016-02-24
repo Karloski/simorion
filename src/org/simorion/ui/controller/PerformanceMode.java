@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.View;

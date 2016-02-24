@@ -20,5 +20,5 @@ public interface SongReader {
 	 * @throws IOException In case of any IO failure, e.g. FileNotFound
 	 */
 	public void readTo(final SongFormat format, final SongBuilder song) throws IOException;
-	
+	//TODO: Specific exception classes
 }
