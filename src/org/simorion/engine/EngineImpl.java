@@ -80,27 +80,20 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public int getCurrentLayerId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return topmostLayer;
 	}
 
 	@Override
 	public ImmutableLayer getLayer(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return song.getLayerArray()[i];
 	}
 
 	@Override
 	public int getTick() {
-		// TODO Auto-generated method stub
+		// TODO Timing stuff
 		return 0;
 	}
-
-	/*@Override
-	public void load(Song s) {
-		//TODO
-	}*/
-
+	
 	@Override
 	public Song getSong() {
 		return song;
