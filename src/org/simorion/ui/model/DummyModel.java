@@ -72,6 +72,13 @@ public class DummyModel implements MutableModel {
 		public Iterable<? extends MutableRow> getRows() {
 			return Arrays.asList(rows);
 		}
+
+
+		@Override
+		public String getLCDMessage() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	private static class DummyRow implements MutableRow {
@@ -120,6 +127,12 @@ public class DummyModel implements MutableModel {
 		@Override
 		public int cellCount() {
 			return 16;
+		}
+
+		@Override
+		public int getLit() {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 		
 	}

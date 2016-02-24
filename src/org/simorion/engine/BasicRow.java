@@ -33,6 +33,14 @@ public class BasicRow implements MutableRow {
 	public byte getNote() {
 		return note;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLit() {
+		return lights;
+	}
 
 	/**
 	 * {@inheritDoc}
