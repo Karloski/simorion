@@ -1,14 +1,17 @@
 package org.simorion.ui.model;
 
-import org.simorion.common.Layer;
-import org.simorion.common.Stream;
-import org.simorion.common.StreamFormat;
+import org.simorion.common.ImmutableLayer;
+import org.simorion.common.stream.SongFormat;
+import org.simorion.common.stream.SongWriter;
 
-public interface Model {
+public interface ImmutableModel {
 
-	public void sendToStream(Stream s, StreamFormat f);
-	
-	public void receiveFromStream(Stream s, StreamFormat f);
+	/**
+	 * Serialise an ImmutableModel to a stream
+	 * @param stream The SongWriter to send the song to
+	 * @param format The format for serialising the ImmutableModel
+	 */
+	public void sendToStream(SongWriter stream, SongFormat format);
 	
 	/**
 	 * Get the current tempo in beats per second
@@ -20,7 +23,7 @@ public interface Model {
 	 * Get a reference to the layer currently being manipulated
 	 * @return Layer being manipulated
 	 */
-	public Layer getCurrentLayer();
+	public ImmutableLayer getCurrentLayer();
 	
 	/**
 	 * Get the index of the layer currently being manipulated
@@ -33,7 +36,7 @@ public interface Model {
 	 * @param i The index of the layer
 	 * @return layer number i
 	 */
-	public Layer getLayer(int i);
+	public ImmutableLayer getLayer(int i);
 	
 	//720720 is the lowest common multiple of [1..16] inclusive
 	/**

@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.simorion.common.util.Util.Pair;
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.View;
  
@@ -256,7 +256,7 @@ public class ChangeVoiceMode extends DeviceMode {
     }
 
 	@Override
-	public void register(Model model) {
+	public void register(ImmutableModel model) {
 		// TODO Auto-generated method stub
 		
 	}

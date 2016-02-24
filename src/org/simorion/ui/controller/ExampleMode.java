@@ -12,8 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.common.util.Util.Pair;
-import org.simorion.ui.model.Model;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.View;
 
@@ -25,7 +25,7 @@ public class ExampleMode extends DeviceMode {
 	}
 
 	private ExampleView instance = new ExampleView();
-	private Model model;
+	private ImmutableModel model;
 	
 	/**
 	 * An example implementation of a controller view.
@@ -247,7 +247,7 @@ public class ExampleMode extends DeviceMode {
 		return instance;
 	}
 	
-	public void register(Model m) {
+	public void register(ImmutableModel m) {
 		model = m;
 	}
 

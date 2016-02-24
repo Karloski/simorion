@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.simorion.common.Row;
+import org.simorion.common.ImmutableRow;
 import org.simorion.common.util.Util;
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.View;
 
 /**
@@ -18,7 +18,7 @@ import org.simorion.ui.view.View;
 public abstract class DeviceMode implements Controller {
 	
 	private final ModeMaster modeMaster;
-	protected Model model;
+	protected ImmutableModel model;
 	
 	public DeviceMode(ModeMaster m) {
 		modeMaster = m;
@@ -56,7 +56,7 @@ public abstract class DeviceMode implements Controller {
 	}
 	
 	@Override
-	public void register(Model m) {
+	public void register(ImmutableModel m) {
 		model = m;
 	}
 	
@@ -118,7 +118,7 @@ public abstract class DeviceMode implements Controller {
 		
 		List<Iterable<Boolean>> lit = new ArrayList<Iterable<Boolean>>();
 		
-		for (Row r : model.getCurrentLayer().getRows()) {				
+		for (ImmutableRow r : model.getCurrentLayer().getRows()) {				
 			lit.add(Util.bitstring(r.getLit()));
 		}
 		
