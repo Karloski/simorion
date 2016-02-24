@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 import org.simorion.common.MutableLayer;
 import org.simorion.common.MutableRow;
-import org.simorion.common.StreamFormat;
 import org.simorion.common.Voice;
+import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 
@@ -78,6 +78,27 @@ public class DummyModel implements MutableModel {
 		public String getLCDMessage() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+
+		@Override
+		public void setLoopPoint(byte loopPoint) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public void setVelocity(byte velocity) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		@Override
+		public void setVoice(Voice v) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 	
@@ -159,13 +180,13 @@ public class DummyModel implements MutableModel {
 	}
 
 	@Override
-	public void setVelocity(MutableLayer l, int velocity) {
+	public void setVelocity(MutableLayer l, byte velocity) {
 		//Ignore
 		
 	}
 
 	@Override
-	public void setLoopPoint(MutableLayer l, int loopPoint) {
+	public void setLoopPoint(MutableLayer l, byte loopPoint) {
 		//Ignore
 	}
 
@@ -216,13 +237,19 @@ public class DummyModel implements MutableModel {
 	}
 
 	@Override
-	public void sendToStream(SongWriter stream, StreamFormat f) {
+	public void sendToStream(SongWriter stream, SongFormat format) {
 		//Ignore
 	}
 
 	@Override
-	public void receiveFromStream(SongReader stream, StreamFormat f) {
+	public void receiveFromStream(SongReader stream, SongFormat format) {
 		//Ignore
+	}
+
+	@Override
+	public void setTopmostLayer(int layerID) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

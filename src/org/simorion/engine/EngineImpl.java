@@ -1,68 +1,81 @@
 package org.simorion.engine;
 
+import java.io.IOException;
+
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
 import org.simorion.common.Song;
-import org.simorion.common.Stream;
-import org.simorion.common.StreamFormat;
+import org.simorion.common.SongBuilder;
+import org.simorion.common.StandardSong;
 import org.simorion.common.Voice;
+import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 
 public class EngineImpl implements Engine {
 
+	private StandardSong song;
+	private Voice[] voices;
+	private int topmostLayer;
+	
+	public EngineImpl() {
+		song = new StandardSong();
+		voices = new Voice[16];
+		//Default voice
+		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
+	}
+	
 	@Override
 	public void setVoice(MutableLayer l, Voice voice) {
-		// TODO Auto-generated method stub
-		
+		l.setVoice(voice);
+		//TODO: soundSystem.setVoice(l, voice) or similar
 	}
 
 	@Override
-	public void setVelocity(MutableLayer l, int velocity) {
-		// TODO Auto-generated method stub
-		
+	public void setVelocity(MutableLayer l, byte velocity) {
+		l.setVelocity(velocity);
+		//TODO: soundSystem.setVelocity(l, voice)
 	}
 
 	@Override
-	public void setLoopPoint(MutableLayer l, int loopPoint) {
-		// TODO Auto-generated method stub
-		
+	public void setLoopPoint(MutableLayer l, byte loopPoint) {
+		l.setLoopPoint(loopPoint);
+		//TODO: update sound system
 	}
 
 	@Override
 	public void setTempo(float beatsPerSecond) {
-		// TODO Auto-generated method stub
-		
+		song.setTempo(beatsPerSecond);
+		//TODO: update sound system
 	}
 
 	@Override
 	public void setLit(int layer, int xLoc, int yLoc) {
-		// TODO Auto-generated method stub
-		
+		song.getLayerArray()[layer].getRow(yLoc).applyMask(-1, 1 << xLoc);
 	}
 
 	@Override
 	public void setUnLit(int layer, int xLoc, int yLoc) {
-		// TODO Auto-generated method stub
-		
+		song.getLayerArray()[layer].getRow(yLoc).applyMask(~(1 << xLoc), 0);
 	}
 
 	@Override
 	public void toggleLit(int layer, int xLoc, int yLoc) {
-		// TODO Auto-generated method stub
-		
+		if(song.getLayerArray()[layer].getRow(yLoc).isLit(xLoc)) {
+			setUnLit(layer, xLoc, yLoc);
+		} else {
+			setLit(layer, xLoc, yLoc);
+		}
 	}
 
 	@Override
 	public float getTempo() {
-		// TODO Auto-generated method stub
-		return 0;
+		return song.getTempo();
 	}
 
 	@Override
 	public ImmutableLayer getCurrentLayer() {
-		// TODO Auto-generated method stub
-		return null;
+		return song.getLayerArray()[topmostLayer];
 	}
 
 	@Override
@@ -83,28 +96,40 @@ public class EngineImpl implements Engine {
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public void load(Song s) {
-		// TODO Auto-generated method stub
-		
-	}
+		//TODO
+	}*/
 
 	@Override
 	public Song getSong() {
-		// TODO Auto-generated method stub
-		return null;
+		return song;
+	}
+	
+	@Override
+	public void setTopmostLayer(int layerID) {
+		topmostLayer = layerID;
 	}
 
 	@Override
-	public void sendToStream(SongWriter stream, StreamFormat f) {
-		// TODO Auto-generated method stub
-		
+	public void sendToStream(SongWriter stream, SongFormat f) {
+		try {
+			stream.write(f, song);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void receiveFromStream(SongReader stream, StreamFormat f) {
-		// TODO Auto-generated method stub
-		
+	public void receiveFromStream(SongReader stream, SongFormat f) {
+		SongBuilder sb = new SongBuilder();
+		try {
+			stream.readTo(f, sb);
+		} catch (IOException e) {
+			//TODO
+			e.printStackTrace();
+		}
 	}
-
+	
 }

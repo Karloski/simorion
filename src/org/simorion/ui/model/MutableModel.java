@@ -2,6 +2,8 @@ package org.simorion.ui.model;
 
 import org.simorion.common.MutableLayer;
 import org.simorion.common.Voice;
+import org.simorion.common.stream.SongFormat;
+import org.simorion.common.stream.SongReader;
 
 /**
  * Class allowing a Model to be written to for the middle-end, primarily
@@ -10,13 +12,22 @@ import org.simorion.common.Voice;
  */
 public interface MutableModel extends ImmutableModel {
 
+	/**
+	 * Serialises a stream into the model, overwriting the previous state
+	 * @param stream The stream to serialise data from
+	 * @param format The format for serialising the data
+	 */
+	public void receiveFromStream(SongReader stream, SongFormat format);
+
 	public void setVoice(MutableLayer l, Voice voice);
 	
-	public void setVelocity(MutableLayer l, int velocity);
+	public void setVelocity(MutableLayer l, byte velocity);
 	
-	public void setLoopPoint(MutableLayer l, int loopPoint);
+	public void setLoopPoint(MutableLayer l, byte loopPoint);
 	
 	public void setTempo(float beatsPerSecond);
+	
+	public void setTopmostLayer(int layerID);
 	
 	void setLit(int layer, int xLoc, int yLoc);
 	

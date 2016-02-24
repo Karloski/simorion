@@ -65,7 +65,7 @@ public class SongFormat_1 implements SongFormat {
 	/** {@inheritDoc} */
 	@Override
 	public void deserialise(SongBuilder builder, byte[] data) {
-		if(data[0] != (byte)1) {
+		if(data[0] != getFormatID()) {
 			throw new RuntimeException("Wrong song format used");
 		}
 		byte layers = data[1];
@@ -91,6 +91,16 @@ public class SongFormat_1 implements SongFormat {
 				offset += 2;
 			}	
 		}
+	}
+
+	@Override
+	public String getFormatName() {
+		return "Standin-1";
+	}
+
+	@Override
+	public byte getFormatID() {
+		return 1;
 	}
 
 }

@@ -1,15 +1,17 @@
 package org.simorion.ui.model;
 
 import org.simorion.common.ImmutableLayer;
-import org.simorion.common.StreamFormat;
-import org.simorion.common.stream.SongReader;
+import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongWriter;
 
 public interface ImmutableModel {
 
-	public void sendToStream(SongWriter stream, StreamFormat f);
-	
-	public void receiveFromStream(SongReader stream, StreamFormat f);
+	/**
+	 * Serialise an ImmutableModel to a stream
+	 * @param stream The SongWriter to send the song to
+	 * @param format The format for serialising the ImmutableModel
+	 */
+	public void sendToStream(SongWriter stream, SongFormat format);
 	
 	/**
 	 * Get the current tempo in beats per second

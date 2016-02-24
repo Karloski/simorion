@@ -100,4 +100,19 @@ public class BasicLayer implements MutableLayer {
 		return lcdMessage;
 	}
 
+	@Override
+	public void setLoopPoint(byte loopPoint) {
+		this.loopPoint = loopPoint;
+	}
+
+	@Override
+	public void setVelocity(byte velocity) {
+		this.velocity = (byte) velocity;
+	}
+
+	@Override
+	public void setVoice(Voice v) {
+		voice = v;
+	}
+
 }

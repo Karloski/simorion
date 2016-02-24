@@ -76,4 +76,8 @@ public class StandardSong implements Song {
 		tempo = bps;
 	}
 	
+	public MutableLayer[] getLayerArray() {
+		return layers;
+	}
+	
 }

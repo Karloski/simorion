@@ -27,6 +27,6 @@ public interface Song extends ImmutableSong {
 	 * Sets the tempo of the song in beats per second
 	 */
 	void setTempo(final float bps);
-	
+		
 	public Collection<? extends MutableLayer> getLayers();
 }

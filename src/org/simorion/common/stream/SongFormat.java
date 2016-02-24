@@ -32,4 +32,9 @@ public interface SongFormat {
 	 * @param data The byte array being deserialsed into the builder
 	 */
 	void deserialise(final SongBuilder builder, final byte[] data);
+	
+
+	public String getFormatName();
+	
+	public byte getFormatID();
 }
