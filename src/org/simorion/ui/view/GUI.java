@@ -71,6 +71,7 @@ public class GUI extends JFrame {
 		for (AbstractButton button : midiButtons) {
 			buttonPanel.add(button);
 		}
+
 	}
 	
 	/**

@@ -157,11 +157,11 @@ public class ButtonFactory {
 					// Code here for what to do when the button is pressed
 					
 					// Code for changing button colour
-					//if(getBackground() == buttonPanel.getBackground()) {
-						//setBackground(Color.orange);
+					//if(getBackground() == Color.white) {
+					//	setBackground(Color.orange);
 					//}
 					//else {
-						//setBackground(null);
+					//	setBackground(Color.white);
 					//}
 					
 					//
@@ -210,10 +210,6 @@ public class ButtonFactory {
 			super(s);
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
-					// What to do when the OK button is pressed
-					//if(getBackground() == buttonPanel.getBackground()) {
-						//setBackground(Color.orange);
-					//}
 					ModeMaster.getInstance().getMode().onOKButtonPress(me);
 				}
 			});
