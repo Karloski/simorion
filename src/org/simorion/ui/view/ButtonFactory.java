@@ -10,16 +10,48 @@ import javax.swing.JButton;
 
 import org.simorion.ui.controller.ModeMaster;
 
+/**
+ * Factory class for button creation.
+ * @author Karl Brown
+ *
+ */
 public class ButtonFactory {
 
 	public enum Button {
 		CIRCULAR, CIRCULARTEXT, MIDI, MODE, ONOFF, OK
 	}
 	
-	public static JButton createButton(int x, int y) {		
+	public enum Mode {
+		L1, L2, L3, L4, R1, R2, R3, R4
+	}
+	
+	/**
+	 * Creates a MIDI button with coordinate x, y.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @return A new instance of a MIDI button with cooridnate x, y.
+	 */
+	public static MidiButton createButton(int x, int y) {		
 		return new MidiButton(x, y);
 	}
 	
+	/**
+	 * Creates a MODE button for mode {@code mode}.
+	 * @param text The text for the button to display.
+	 * @param mode The mode which it relates to.
+	 * @return A new instance of a MODE button for mode {@code mode}.
+	 */
+	public static ModeButton createButton(String text, Mode mode) {
+		return new ModeButton(text, mode);
+	}
+	
+	/**
+	 * Creates a new button of type {@code buttonType}.
+	 * Midi and Mode button creation have been deferred to overloaded methods.
+	 * @param text The text for the button to display.
+	 * @param buttonType The type of button to create.
+	 * @return A new instance of a button of type {@code buttonType}
+	 */
 	public static JButton createButton(String text, Button buttonType) {
 		
 		switch (buttonType) {
@@ -27,8 +59,6 @@ public class ButtonFactory {
 				return new CircularButton();
 			case CIRCULARTEXT:
 				return new CircularTextButton(text);
-			case MODE:
-				return new ModeButton(text);
 			case OK:
 				return new OKButton(text);
 			case ONOFF:
@@ -42,7 +72,7 @@ public class ButtonFactory {
 	/*
 	 * Class to make a button circular (no text)
 	 */
-	private static class CircularButton extends JButton {
+	public static class CircularButton extends JButton {
 					 
 		public CircularButton() {
 			
@@ -71,7 +101,7 @@ public class ButtonFactory {
 	/*
 	 * Class to make a button circular (with text)
 	 */
-	private static class CircularTextButton extends JButton {
+	public static class CircularTextButton extends JButton {
 		// Mode buttons and the ON/OK contain text whereas MidiButtons do not
 		CircularTextButton(String s) {
 			setBackground(Color.white);
@@ -102,7 +132,7 @@ public class ButtonFactory {
 	 * Takes two parameters which distinguish it's co-ordinates
 	 * All the buttons in the grid
 	 */
-	private static class MidiButton extends CircularButton { // Doesn't extend CircularTextButton 
+	public static class MidiButton extends CircularButton { // Doesn't extend CircularTextButton 
 		// Variables to return where in the grid the button is
 		private int x;
 		private int y;
@@ -145,8 +175,12 @@ public class ButtonFactory {
 	 * ModeButton extends CircularTextButton
 	 * Distinguishes what happens when a mode button is pressed
 	 */
-	private static class ModeButton extends CircularTextButton {
-		ModeButton(final String s) {
+	public static class ModeButton extends CircularTextButton {
+		
+		private Mode mode;
+		public Mode getMode() { return mode; }
+		
+		ModeButton(final String s, Mode mode) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me){
@@ -163,13 +197,15 @@ public class ButtonFactory {
 					}
 				}
 			});
+			
+			this.mode = mode;
 		}
 	}
 	
 	/*
 	 * Class for an OKButton - extends CircularTextButton
 	 */
-	private static class OKButton extends CircularTextButton {
+	public static class OKButton extends CircularTextButton {
 		OKButton(String s) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
@@ -187,7 +223,7 @@ public class ButtonFactory {
 	/*
 	 * Class for an ONButton - extends CircularTextButton
 	 */
-	private static class ONButton extends CircularTextButton {
+	public static class ONButton extends CircularTextButton {
 		ONButton(String s) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
