@@ -1,31 +1,41 @@
-package org.simorion.common;
+package org.simorion.engine;
 
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.simorion.common.ImmutableLayer;
+import org.simorion.common.MutableLayer;
+import org.simorion.common.MutableRow;
+import org.simorion.common.Voice;
 
 /**
  * Implementation for a Layer, using an array of WritableRows as the backing
  * 
  * @author Edmund Smith
  */
-public class BasicLayer implements ReadonlyLayer, Layer, WritableLayer {
+public class BasicLayer implements MutableLayer {
 
-	WritableRow[] rows;
+	MutableRow[] rows;
 	Voice voice;
 	
 	/**
 	 * MIDI byte value
 	 */
 	byte velocity;
-	int layerNumber;
+	public int layerNumber;
 	
 	/**
 	 * Maximum cell index before looping
 	 */
 	int loopPoint;
 	
-	BasicLayer(Collection<WritableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint) {
-		this.rows = rows.toArray(new WritableRow[0]); //Allocates its own array
+	/**
+	 * Current output of the LCD.
+	 */
+	String lcdMessage;
+	
+	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint, String lcdMessage) {
+		this.rows = rows.toArray(new MutableRow[0]); //Allocates its own array
 		//see http://shipilev.net/blog/2016/arrays-wisdom-ancients/ for details
 		this.voice = voice;
 		this.velocity = velocity;
@@ -69,41 +79,40 @@ public class BasicLayer implements ReadonlyLayer, Layer, WritableLayer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row getRow(int i) {
+	public MutableRow getRow(int i) {
 		if(i < 0 || i >= rows.length) {
 			throw new RuntimeException("Error: index "+i
 					+" is outside the range 0 to "+rows.length);
 		}
 		return rows[i];
 	}
-	
+		
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ReadonlyRow getReadonlyRow(int i) {
-		return getRow(i);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Iterable<? extends ReadonlyRow> getReadonlyRows() {
-		return Arrays.asList(rows);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Iterable<? extends Row> getRows() {
+	public Iterable<? extends MutableRow> getRows() {
 		return Arrays.asList(rows);
 	}
 
 	@Override
-	public WritableRow getWritableRow(int row) {
-		return rows[row];
+	public String getLCDMessage() {
+		return lcdMessage;
+	}
+
+	@Override
+	public void setLoopPoint(byte loopPoint) {
+		this.loopPoint = loopPoint;
+	}
+
+	@Override
+	public void setVelocity(byte velocity) {
+		this.velocity = (byte) velocity;
+	}
+
+	@Override
+	public void setVoice(Voice v) {
+		voice = v;
 	}
 
 }

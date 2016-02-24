@@ -2,7 +2,7 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.Model;
+import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.View;
 
 /**
@@ -23,7 +23,7 @@ public interface Controller {
 	 * Register the model to manipulate
 	 * @param model Model being manipulated
 	 */
-	public void register(Model model);
+	public void register(ImmutableModel model);
 	
 	
 	public void onLButtonPress(MouseEvent e, int buttonNum);

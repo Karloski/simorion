@@ -2,7 +2,7 @@ package org.simorion.common.stream;
 
 import java.io.IOException;
 
-import org.simorion.common.ReadonlySong;
+import org.simorion.common.ImmutableSong;
 
 /**
  * Common interface for writing a Song to somewhere external, such as a file
@@ -18,6 +18,6 @@ public interface SongWriter {
 	 * @param s The song to serialse
 	 * @throws IOException In case of IO failure, e.g. FileNotFound
 	 */
-	public void write(final SongFormat format, final ReadonlySong s) throws IOException;
-	
+	public void write(final SongFormat format, final ImmutableSong s) throws IOException;
+	//TODO: specific exception classes
 }

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.simorion.common.ReadonlySong;
+import org.simorion.common.ImmutableSong;
 
 /**
  * SongWriter for writing a song to a local file
@@ -24,7 +24,7 @@ public class FileSongWriter implements SongWriter {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void write(final SongFormat format, final ReadonlySong s) throws IOException {
+	public void write(final SongFormat format, final ImmutableSong s) throws IOException {
 		Files.write(file.toPath(), format.serialise(s));
 	}
 
