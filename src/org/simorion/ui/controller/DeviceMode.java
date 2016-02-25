@@ -62,4 +62,12 @@ public abstract class DeviceMode implements Controller {
 	public void register(MutableModel m) {
 		model = m;
 	}
+	
+	public boolean needsUpdate() {
+		if(isDirty) {
+			isDirty = false;
+			return true;
+		}
+		return false;
+	}
 }
