@@ -7,7 +7,7 @@ import org.simorion.ui.view.View;
  
 /**
  * 
- * @author George Young
+ * @author George Young, Edmund Smith, Petar Krstic
  *
  */
 public class ChangeVoiceMode extends DeviceMode {
@@ -16,7 +16,7 @@ public class ChangeVoiceMode extends DeviceMode {
 	
     public ChangeVoiceMode(ModeMaster m) {
 		super(m);
-		voice = -1;
+		voice = -1;		// Ok button will not let you continue if a voice has not been chosen
 	}
 
 	private ChangeVoiceView instance = new ChangeVoiceView();
@@ -53,21 +53,20 @@ public class ChangeVoiceMode extends DeviceMode {
 				MIDIVoices.getVoice(voice));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		voice = -1;
+		voice = -1;																		// @author Edmund, Petar
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
 		voice = 16*buttonRow + buttonColumn + 1;
 		model.setLit(model.getCurrentLayerId(), buttonColumn, buttonRow);
-		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());
+		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());						// @author Edmund, Petar
 	}
 	
 	@Override
 	void onChangedTo() {
-		System.out.println(model);
 		voice = model.getCurrentLayer().getVoice().getMidiVoice();
-		model.setLCDDisplay(model.getCurrentLayer().getVoice().getName());
+		model.setLCDDisplay(model.getCurrentLayer().getVoice().getName()); 				// @author Edmund, Petar
 	}
      
 }
