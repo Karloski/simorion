@@ -52,7 +52,7 @@ public class SongReaderWriterTest {
 	}
 	
 	@Test
-	public void test() throws IOException {
+	public void testWholeWriteAndRead() throws IOException {
 		for(SongWriter sw : songWriters) {
 			sw.write(format, song);
 		}
@@ -61,7 +61,9 @@ public class SongReaderWriterTest {
 			sr.readTo(format, sb);
 			Song s = new StandardSong();
 			s.loadFrom(sb);
-			assertEquals(song, s);
+			System.out.println(song.toString());
+			System.out.println(s.toString());
+			assertTrue(song.equals(s));
 		}
 	}
 

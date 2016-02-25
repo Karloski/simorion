@@ -160,4 +160,40 @@ public final class Util {
 	public static Iterable<Boolean> bitstring(final int i) {
 		return bitstringImpl(i, 32);
 	}
+	
+	/**
+	 * Iterates over an array
+	 * @param arr
+	 * @return
+	 */
+	public static <T> Iterable<T> iterable(final T... arr) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				
+				return new Iterator<T>() {
+					
+					int offset = 0;
+					
+					@Override
+					public boolean hasNext() {
+						return offset < arr.length;
+					}
+
+					@Override
+					public T next() {
+						return arr[offset];
+					}
+
+					@Override
+					public void remove() {
+						throw new RuntimeException("UnexpectedOperation");
+					}
+					
+				};
+			}
+			
+		};
+	}
 }

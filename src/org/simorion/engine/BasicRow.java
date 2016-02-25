@@ -88,4 +88,17 @@ public class BasicRow implements MutableRow {
 		return 16;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof BasicRow) {
+			BasicRow br = (BasicRow) o;
+			return br.lights == lights && br.note == note;
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Row { "+Integer.toBinaryString(lights) + ", note = " + note + "}";
+	}
+	
 }
