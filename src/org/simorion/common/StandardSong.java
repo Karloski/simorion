@@ -24,7 +24,7 @@ public class StandardSong implements Song {
 			for(int j = 0; j < 16; j++) {
 				rows.add(new BasicRow());
 			}
-			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0, "");
+			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0);
 		}
 		tempo = 1;
 	}
@@ -43,7 +43,7 @@ public class StandardSong implements Song {
 			layers[i] = new BasicLayer(rows, 
 					MIDIVoices.getVoice(al.getMIDIVoice()),
 					(byte) al.getVelocity(),
-					al.getLayerID(), al.getLoopPoint(), al.getLCDMessage());
+					al.getLayerID(), al.getLoopPoint());
 			
 		}
 		

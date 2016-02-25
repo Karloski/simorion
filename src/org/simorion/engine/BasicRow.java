@@ -23,7 +23,7 @@ public class BasicRow implements MutableRow {
 	}
 
 	public boolean isLit(int cell) {
-		return (lights & (1 << cell)) == 1;
+		return (lights & (1 << cell)) != 0;
 	}
 
 	/**

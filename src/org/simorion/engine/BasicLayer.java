@@ -34,7 +34,7 @@ public class BasicLayer implements MutableLayer {
 	 */
 	String lcdMessage;
 	
-	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint, String lcdMessage) {
+	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint) {
 		this.rows = rows.toArray(new MutableRow[0]); //Allocates its own array
 		//see http://shipilev.net/blog/2016/arrays-wisdom-ancients/ for details
 		this.voice = voice;
