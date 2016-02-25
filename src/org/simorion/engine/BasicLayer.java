@@ -3,10 +3,11 @@ package org.simorion.engine;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
 import org.simorion.common.MutableRow;
 import org.simorion.common.Voice;
+import org.simorion.common.util.Util;
+import org.simorion.common.util.Util.Pair;
 
 /**
  * Implementation for a Layer, using an array of WritableRows as the backing
@@ -34,7 +35,7 @@ public class BasicLayer implements MutableLayer {
 	 */
 	String lcdMessage;
 	
-	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint, String lcdMessage) {
+	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint) {
 		this.rows = rows.toArray(new MutableRow[0]); //Allocates its own array
 		//see http://shipilev.net/blog/2016/arrays-wisdom-ancients/ for details
 		this.voice = voice;
@@ -113,6 +114,37 @@ public class BasicLayer implements MutableLayer {
 	@Override
 	public void setVoice(Voice v) {
 		voice = v;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof BasicLayer) {
+			BasicLayer bl = (BasicLayer) o;
+			for(Pair<MutableRow, MutableRow> pair : Util.zip(
+					Util.iterable(rows), Util.iterable(bl.rows))) {
+				if(!pair.left.equals(pair.right)) return false;
+			}
+			return (voice == bl.voice &&
+					velocity == bl.velocity &&
+					layerNumber == bl.layerNumber &&
+					loopPoint == bl.loopPoint);
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("BasicLayer {[");
+		for(MutableRow row : rows) {
+			sb.append(row.toString());
+			sb.append(",");
+		}
+		sb
+			.append("], velocity = ").append(velocity)
+			.append(", loopPoint = ").append(loopPoint)
+			.append(", voice = ").append(voice.toString())
+			.append("}");
+		return sb.toString();
 	}
 
 }

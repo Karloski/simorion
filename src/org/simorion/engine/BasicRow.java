@@ -23,7 +23,7 @@ public class BasicRow implements MutableRow {
 	}
 
 	public boolean isLit(int cell) {
-		return (lights & (1 << cell)) == 1;
+		return (lights & (1 << cell)) != 0;
 	}
 
 	/**
@@ -86,6 +86,19 @@ public class BasicRow implements MutableRow {
 	@Override
 	public int cellCount() {
 		return 16;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof BasicRow) {
+			BasicRow br = (BasicRow) o;
+			return br.lights == lights && br.note == note;
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Row { "+Integer.toBinaryString(lights) + ", note = " + note + "}";
 	}
 	
 }

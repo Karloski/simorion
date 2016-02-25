@@ -8,6 +8,7 @@ import java.util.Comparator;
 import org.simorion.common.SongBuilder.AddLayer;
 import org.simorion.common.SongBuilder.AddRow;
 import org.simorion.common.util.Util;
+import org.simorion.common.util.Util.Pair;
 import org.simorion.engine.BasicLayer;
 import org.simorion.engine.BasicRow;
 import org.simorion.engine.MIDIVoices;
@@ -24,7 +25,7 @@ public class StandardSong implements Song {
 			for(int j = 0; j < 16; j++) {
 				rows.add(new BasicRow());
 			}
-			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0, "");
+			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0);
 		}
 		tempo = 1;
 	}
@@ -43,7 +44,7 @@ public class StandardSong implements Song {
 			layers[i] = new BasicLayer(rows, 
 					MIDIVoices.getVoice(al.getMIDIVoice()),
 					(byte) al.getVelocity(),
-					al.getLayerID(), al.getLoopPoint(), al.getLCDMessage());
+					al.getLayerID(), al.getLoopPoint());
 			
 		}
 		
@@ -86,6 +87,33 @@ public class StandardSong implements Song {
 	
 	public MutableLayer[] getLayerArray() {
 		return layers;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof StandardSong) {
+			StandardSong s = (StandardSong) o;
+			for(Pair<BasicLayer,BasicLayer> pair : Util.zip(
+					Util.iterable(layers),
+					Util.iterable(s.layers))) {
+				if(!pair.left.equals(pair.right)) return false;
+			}
+			if(tempo != s.tempo) return false;
+			return true;
+		} else
+			return false;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("StandardSong {[");
+		for(BasicLayer bl : layers) {
+			sb.append(bl.toString()).append(",");
+		}
+		sb.append("], tempo = ").append(tempo);
+		sb.append("}");
+		return sb.toString();
 	}
 	
 }

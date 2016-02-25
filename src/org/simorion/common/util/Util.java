@@ -160,4 +160,40 @@ public final class Util {
 	public static Iterable<Boolean> bitstring(final int i) {
 		return bitstringImpl(i, 32);
 	}
+	
+	/**
+	 * Creates an iterable over an array, akin to a slice over the whole array
+	 * @param arr The array to iterate
+	 * @return An iterable over the array
+	 */
+	public static <T> Iterable<T> iterable(final T... arr) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				
+				return new Iterator<T>() {
+					
+					int offset = 0;
+					
+					@Override
+					public boolean hasNext() {
+						return offset < arr.length;
+					}
+
+					@Override
+					public T next() {
+						return arr[offset++];
+					}
+
+					@Override
+					public void remove() {
+						throw new RuntimeException("UnexpectedOperation");
+					}
+					
+				};
+			}
+			
+		};
+	}
 }
