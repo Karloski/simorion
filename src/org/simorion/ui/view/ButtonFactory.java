@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+import org.simorion.ui.controller.DeviceMode;
 import org.simorion.ui.controller.ModeMaster;
 
 /**
@@ -166,6 +167,11 @@ public class ButtonFactory {
 					
 					//
 					ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
+					DeviceMode mode = ModeMaster.getInstance().getMode(); 
+					mode.onMatrixButtonPress(me, xLoc, yLoc);
+					if(mode.needsUpdate()) {
+						GUI.getInstance().invalidate();
+					}
 				}
 			});
 		}

@@ -168,11 +168,7 @@ public class PerformanceMode extends DeviceMode {
 		} 
 
     }
-     
-    public View getView() {
-        return instance;
-    }
-     
+          
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
     	// FIXME: This should be handled by the controller and not deferred to the view.
@@ -180,7 +176,8 @@ public class PerformanceMode extends DeviceMode {
         changeMode(ModeMaster.ON_OFF_MODE);
     }
      
-    public void onLButtonPressed(MouseEvent e, int ButtonNum){
+    @Override
+    public void onLButtonPress(MouseEvent e, int ButtonNum){
           
         switch (ButtonNum){
             case 1 : 
@@ -198,7 +195,8 @@ public class PerformanceMode extends DeviceMode {
         }
     }
      
-    public void onRButtonPressed(MouseEvent e, int ButtonNum){
+    @Override
+    public void onRButtonPress(MouseEvent e, int ButtonNum){
           
         switch (ButtonNum){
             case 1 : 
@@ -215,17 +213,6 @@ public class PerformanceMode extends DeviceMode {
                 break;
         }
     }
-     
-    public void onMatrixPressed(MouseEvent e, int x, int y){
-        //send button pressed to model
-        if (model.getCurrentLayer().getRow(y).isLit(x)){
-        	// FIXME: This should be handled by the controller and not deferred to the view.
-            //instance.lightButton(x, y, Color.ORANGE);
-        }else{
-        	// FIXME: This should be handled by the controller and not deferred to the view.
-            //instance.lightButton(x, y, Color.WHITE);
-        }
-    }
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
@@ -235,7 +222,6 @@ public class PerformanceMode extends DeviceMode {
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+		model.getCurrentLayer().getRow(buttonRow).toggleLit(buttonColumn);
 	}
 }

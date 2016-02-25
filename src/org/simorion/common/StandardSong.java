@@ -9,6 +9,7 @@ import org.simorion.common.SongBuilder.AddLayer;
 import org.simorion.common.SongBuilder.AddRow;
 import org.simorion.common.util.Util;
 import org.simorion.engine.BasicLayer;
+import org.simorion.engine.BasicRow;
 import org.simorion.engine.MIDIVoices;
 
 public class StandardSong implements Song {
@@ -18,6 +19,13 @@ public class StandardSong implements Song {
 	
 	public StandardSong() {
 		layers = new BasicLayer[16];
+		for(int i = 0; i < 16; i++) {
+			Collection<MutableRow> rows = new ArrayList<MutableRow>();
+			for(int j = 0; j < 16; j++) {
+				rows.add(new BasicRow());
+			}
+			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0, "");
+		}
 		tempo = 1;
 	}
 	

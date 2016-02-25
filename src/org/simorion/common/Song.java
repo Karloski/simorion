@@ -28,5 +28,8 @@ public interface Song extends ImmutableSong {
 	 */
 	void setTempo(final float bps);
 		
+	/**
+	 * Gets the mutable layers of the song
+	 */
 	public Collection<? extends MutableLayer> getLayers();
 }

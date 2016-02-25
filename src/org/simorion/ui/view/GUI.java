@@ -40,7 +40,7 @@ public class GUI extends JFrame {
 	 * @author Karl Brown, Petar Krstic
 	 */
 	public GUI() {
-		
+	
 		// Get the current view.
 		// For the constructor, this will be the ONOFF view.
 		View view = ModeMaster.getInstance().getView();
@@ -71,7 +71,7 @@ public class GUI extends JFrame {
 		for (AbstractButton button : midiButtons) {
 			buttonPanel.add(button);
 		}
-
+		
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class GUI extends JFrame {
 	}
 
 	public static void main(String[] argv) {
-		GUI frame = new GUI();
+		GUI frame = getInstance();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
@@ -147,5 +147,14 @@ public class GUI extends JFrame {
 		
 		ModeMaster.getInstance().changeMode(ModeMaster.CHANGE_VOICE_MODE);
 		frame.redraw();
+	}
+	
+	private static GUI instance;
+	
+	public static GUI getInstance() {
+		
+		if (instance == null) instance = new GUI();
+		
+		return instance;
 	}
 }

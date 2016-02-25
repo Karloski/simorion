@@ -18,7 +18,7 @@ public class BasicRow implements MutableRow {
 	 */
 	byte note;
 	
-	BasicRow() {
+	public BasicRow() {
 		lights = 0;
 	}
 

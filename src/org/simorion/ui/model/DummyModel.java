@@ -251,5 +251,16 @@ public class DummyModel implements MutableModel {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setLCDDisplay(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getLCDDisplay() {
+		return "mock";
+	}
 	
 }

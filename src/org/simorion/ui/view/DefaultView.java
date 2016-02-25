@@ -229,7 +229,10 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public boolean isLit(int x, int y) {
-		return layer.getRow(y).isLit(x);
+		if(layer.getVoice().getMidiVoice() == -1) return false;
+		return (16*y+x+1) == layer.getVoice().getMidiVoice() ||
+				layer.getVoice().getMidiVoice() / 16 == y ||
+				x - (layer.getVoice().getMidiVoice() % 16) == 0;
 	}
 
 	/**

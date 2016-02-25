@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.simorion.common.ImmutableRow;
 import org.simorion.common.util.Util;
-import org.simorion.ui.model.ImmutableModel;
+import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.View;
 
 /**
@@ -18,7 +18,8 @@ import org.simorion.ui.view.View;
 public abstract class DeviceMode implements Controller {
 	
 	private final ModeMaster modeMaster;
-	protected ImmutableModel model;
+	protected MutableModel model;
+	protected boolean isDirty;
 	
 	public DeviceMode(ModeMaster m) {
 		modeMaster = m;
@@ -55,9 +56,10 @@ public abstract class DeviceMode implements Controller {
 		//TODO: Change mode logic
 	}
 	
+	void onChangedTo() {}
+	
 	@Override
-	public void register(ImmutableModel m) {
+	public void register(MutableModel m) {
 		model = m;
 	}
-	
 }
