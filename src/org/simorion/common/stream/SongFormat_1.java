@@ -23,8 +23,6 @@ import org.simorion.common.SongBuilder;
  * 		Layer loop point (1 byte), 0 for no loop
  * 
  * 	EOF?
- * 
- * @author Edmund Smith
  */
 
 public class SongFormat_1 implements SongFormat {
@@ -37,7 +35,7 @@ public class SongFormat_1 implements SongFormat {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		baos.write("\u0001\u0016\u0016\u0016".getBytes("UTF-8"));
 		for(ImmutableLayer l : song.getLayers()) {
-			byte[] b = new byte[4];
+			byte[] b = new byte[5];
 			b[0] = (byte)l.getLayerNumber();
 			b[1] = (byte)l.getVoice().getMidiVoice();
 			b[2] = (byte)l.getVelocity();
@@ -71,7 +69,8 @@ public class SongFormat_1 implements SongFormat {
 		byte layers = data[1];
 		byte rows = data[2];
 		byte cells = data[3];
-		int offset = 4;
+		byte bpm = data[4];
+		int offset = 5;
 		builder
 			.setLayerCount(layers)
 			.setRows(rows)
