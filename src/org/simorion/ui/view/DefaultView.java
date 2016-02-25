@@ -213,7 +213,7 @@ public abstract class DefaultView implements View {
 		
 		dispLCD.setBounds(120, 545, 240, 50);
 		dispLCD.setEditable(false);
-		dispLCD.setBackground(Color.BLACK);
+		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
 		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
 		

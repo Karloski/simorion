@@ -1,11 +1,15 @@
 package org.simorion.ui.view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.simorion.ui.controller.ModeMaster;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
@@ -20,7 +24,6 @@ import org.simorion.ui.view.ButtonFactory.ONButton;
  * @author Karl Brown, Petar Krstic
  * @version 2.0
  */
-
 public class GUI extends JFrame { 
 	// All the grid buttons are MidiButtons(extended JButton)
 	// Initialise the array to hold them all
@@ -29,6 +32,7 @@ public class GUI extends JFrame {
 	
 	private ONButton buttonOn;
 	private OKButton buttonOK;
+	private JTextField dispLCD;
 	
 	MidiButton[] midiButtons = new MidiButton[256];
 	List<ModeButton> modeButtons = new ArrayList<ModeButton>();
@@ -57,7 +61,7 @@ public class GUI extends JFrame {
 		buttonOK = (OKButton) outerPanel.add(view.getOKButton());
 		
 		// Add the LCD Screen.
-		outerPanel.add(view.getLCDScreen());
+		dispLCD = (JTextField) outerPanel.add(view.getLCDScreen());
 		
 		// Add each MODE button.
 		for (AbstractButton button : view.getModeButtons()) {
@@ -110,6 +114,14 @@ public class GUI extends JFrame {
 		buttonOK.setBounds(newOKButton.getBounds());
 		buttonOK.setBorder(newOKButton.getBorder());
 		
+		// Retrieve and apply the new LCD button.
+		JTextField newLCD = (JTextField) view.getLCDScreen();
+		dispLCD.setBounds(newLCD.getBounds());
+		dispLCD.setEditable(newLCD.isEditable());
+		dispLCD.setBackground(newLCD.getBackground());
+		dispLCD.setBorder(newLCD.getBorder());
+		dispLCD.setFont(newLCD.getFont());
+		
 		// Retrieve and apply the new mode button data.
 		List<AbstractButton> newModeButtons = (List<AbstractButton>) view.getModeButtons();
 		for (ModeButton button : modeButtons) {			
@@ -145,8 +157,8 @@ public class GUI extends JFrame {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		ModeMaster.getInstance().changeMode(ModeMaster.CHANGE_VOICE_MODE);
-		frame.redraw();
+		//ModeMaster.getInstance().changeMode(ModeMaster.CHANGE_VOICE_MODE);
+		//frame.redraw();
 	}
 	
 	private static GUI instance;
