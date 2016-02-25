@@ -162,9 +162,9 @@ public final class Util {
 	}
 	
 	/**
-	 * Iterates over an array
-	 * @param arr
-	 * @return
+	 * Creates an iterable over an array, akin to a slice over the whole array
+	 * @param arr The array to iterate
+	 * @return An iterable over the array
 	 */
 	public static <T> Iterable<T> iterable(final T... arr) {
 		return new Iterable<T>() {
@@ -183,7 +183,7 @@ public final class Util {
 
 					@Override
 					public T next() {
-						return arr[offset];
+						return arr[offset++];
 					}
 
 					@Override
