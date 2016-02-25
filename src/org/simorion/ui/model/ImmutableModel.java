@@ -46,4 +46,6 @@ public interface ImmutableModel {
 	 */
 	public int getTick();
 	
+	public String getLCDDisplay();
+	
 }

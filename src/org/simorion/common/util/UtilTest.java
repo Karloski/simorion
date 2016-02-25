@@ -63,7 +63,7 @@ public class UtilTest {
 		assertEquals(32, count(bitstring(0)));
 		assertEquals(64, count(bitstring(0L)));
 		
-		int example = 0b01010001110101001011010011001011;
+		int example = 0x51D4B4CB;//0b01010001110101001011010011001011;
 		Iterator<Boolean> it = bitstring(example).iterator();
 		
 		assertTrue(it.next());

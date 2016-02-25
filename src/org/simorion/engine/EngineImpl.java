@@ -17,6 +17,7 @@ public class EngineImpl implements Engine {
 	private StandardSong song;
 	private Voice[] voices;
 	private int topmostLayer;
+	protected String lcdText;
 	
 	public EngineImpl() {
 		song = new StandardSong();
@@ -74,7 +75,7 @@ public class EngineImpl implements Engine {
 	}
 
 	@Override
-	public ImmutableLayer getCurrentLayer() {
+	public MutableLayer getCurrentLayer() {
 		return song.getLayerArray()[topmostLayer];
 	}
 
@@ -123,6 +124,16 @@ public class EngineImpl implements Engine {
 			//TODO
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setLCDDisplay(String text) {
+		lcdText = text;
+	}
+
+	@Override
+	public String getLCDDisplay() {
+		return lcdText;
 	}
 	
 }

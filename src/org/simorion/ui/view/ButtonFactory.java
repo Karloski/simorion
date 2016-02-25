@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+import org.simorion.ui.controller.DeviceMode;
 import org.simorion.ui.controller.ModeMaster;
 
 public class ButtonFactory {
@@ -124,18 +125,11 @@ public class ButtonFactory {
 			y = yLoc;
 			addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent me) {
-					// Code here for what to do when the button is pressed
-					
-					// Code for changing button colour
-					//if(getBackground() == buttonPanel.getBackground()) {
-						//setBackground(Color.orange);
-					//}
-					//else {
-						//setBackground(null);
-					//}
-					
-					//
-					ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
+					DeviceMode mode = ModeMaster.getInstance().getMode(); 
+					mode.onMatrixButtonPress(me, xLoc, yLoc);
+					if(mode.needsUpdate()) {
+						GUI.getInstance().invalidate();
+					}
 				}
 			});
 		}

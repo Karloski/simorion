@@ -28,7 +28,7 @@ public class GUI extends JFrame {
 	 * Also where the array of MidiButtons is made
 	 */
 	public GUI() {
-		
+		draw();
 	}
 	
 	/**
@@ -72,14 +72,21 @@ public class GUI extends JFrame {
 	 * Should be called when the current mode is altered.
 	 */
 	public void update() {
-		
+		draw();
 	}
 
 	public static void main(String[] argv) {
 		JFrame frame = new GUI();
+		instance = (GUI)frame;
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private static GUI instance;
+	
+	public static GUI getInstance() {
+		return instance;
 	}
 }
