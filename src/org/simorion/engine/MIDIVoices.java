@@ -68,7 +68,7 @@ public class MIDIVoices {
 
 				@Override
 				public String getName() {
-					return getSynthesizer().getDefaultSoundbank().getInstruments()[i].getName();
+					return getSynthesizer().getDefaultSoundbank().getInstruments()[i-1].getName().trim();
 				}
 				
 			};
