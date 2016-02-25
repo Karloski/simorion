@@ -54,7 +54,7 @@ public class MIDIVoices {
 	 * 
 	 * This code distinguishes which instrument should be returned when a matrix button is pressed
 	 */
-	public static final Voice getVoice(int i) {
+	public static final Voice getVoice(final int i) {
 		// Passed in is (16*y + x + 1) therefore if i is less than 129 it is a midi instrument
 		// If i is between 129-175 then it is a percussion instrument
 		// 176-256 is not assigned an instrument
