@@ -52,7 +52,4 @@
             <classpath refid="simorion.classpath"/>
         </java>
     </target>
-    <target name="unitTests">
-         <echo message="Testing..." />
-     </target>
 </project>
