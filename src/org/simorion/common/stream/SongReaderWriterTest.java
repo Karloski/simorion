@@ -61,8 +61,6 @@ public class SongReaderWriterTest {
 			sr.readTo(format, sb);
 			Song s = new StandardSong();
 			s.loadFrom(sb);
-			System.out.println(song.toString());
-			System.out.println(s.toString());
 			assertTrue(song.equals(s));
 		}
 	}

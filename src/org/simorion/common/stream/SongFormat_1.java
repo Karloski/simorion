@@ -1,8 +1,10 @@
 package org.simorion.common.stream;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.ImmutableRow;
@@ -33,28 +35,16 @@ public class SongFormat_1 implements SongFormat {
 	@Override
 	public byte[] serialise(ImmutableSong song) throws UnsupportedEncodingException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos.write("\u0001\u0016\u0016\u0016".getBytes("UTF-8"));
+		baos.write("\u0001\u0010\u0010\u0010".getBytes("UTF-8"));
 		for(ImmutableLayer l : song.getLayers()) {
-			byte[] b = new byte[5];
-			b[0] = (byte)l.getLayerNumber();
-			b[1] = (byte)l.getVoice().getMidiVoice();
-			b[2] = (byte)l.getVelocity();
-			b[3] = (byte)l.getLoopPoint();
-			b[4] = (byte)song.getBPM();
-			baos.write(b);
+			baos.write(l.getLayerNumber());
+			baos.write(l.getVoice().getMidiVoice());
+			baos.write(l.getVelocity());
+			baos.write(l.getLoopPoint());
+			baos.write(song.getBPM());;
 			for(ImmutableRow r : l.getRows()) {
-				byte[] b1 = new byte[
-				                     r.cellCount()/8+
-				                     (r.cellCount()%8==0?0:1)
-				                     ];
-				for(int c = 0; c < r.cellCount()/8; c++) {
-					//int index = c / 8;
-					int index = c >> 3;
-					//int bit = c % 8;
-					int bit = c & 0x7;
-					b1[index] |= (r.isLit(c)?1:0)<<bit;
-				}
-				baos.write(b1);
+				baos.write((r.getLit()&0xff00) >> 8);
+				baos.write(r.getLit()&0xff);
 			}
 		}
 		return baos.toByteArray();
@@ -66,28 +56,27 @@ public class SongFormat_1 implements SongFormat {
 		if(data[0] != getFormatID()) {
 			throw new RuntimeException("Wrong song format used");
 		}
-		byte layers = data[1];
-		byte rows = data[2];
-		byte cells = data[3];
-		byte bpm = data[4];
-		int offset = 5;
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
+		bais.read(); //Bypass the version byte at data[0]
+		byte layers = (byte)bais.read();
+		byte rows = (byte)bais.read();
+		byte cells = (byte)bais.read();
 		builder
 			.setLayerCount(layers)
 			.setRows(rows)
 			.setCells(cells);
-		for(int layer = 0; layer < rows; layer++) {
+		for(int layer = 0; layer < layers; layer++) {
 			SongBuilder.AddLayer addedLayer = builder.addLayer();
 			addedLayer
-				.setNumber(data[offset+0])
-				.setMIDIVoice(data[offset+1])
-				.setVelocity(data[offset+2])
-				.setLoopPoint(data[offset+3]);
-			offset += 4;
+				.setNumber(bais.read())
+				.setMIDIVoice(bais.read())
+				.setVelocity(bais.read())
+				.setLoopPoint(bais.read())
+				.setBPM((byte)bais.read());
 			Iterable<SongBuilder.AddRow> addedRows = 
 					addedLayer.addRows(rows);
 			for(SongBuilder.AddRow row : addedRows) {
-				row.setMask(data[offset]<<8|data[offset+1]);
-				offset += 2;
+				row.setMask(bais.read() << 8 | bais.read());
 			}	
 		}
 	}
