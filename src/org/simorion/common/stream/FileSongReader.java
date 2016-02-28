@@ -2,7 +2,7 @@ package org.simorion.common.stream;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+//import java.nio.file.Files;
 
 import org.simorion.common.SongBuilder;
 
@@ -26,8 +26,8 @@ public class FileSongReader implements SongReader {
 	/** {@inheritDoc} */
 	@Override
 	public void readTo(SongFormat format, SongBuilder song) throws IOException {
-		byte[] data = Files.readAllBytes(file.toPath());
-		format.deserialise(song, data);
+		//byte[] data = Files.readAllBytes(file.toPath());
+		//format.deserialise(song, data);
 	}
 
 }
