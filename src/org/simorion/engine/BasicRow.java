@@ -1,11 +1,13 @@
-package org.simorion.common;
+package org.simorion.engine;
+
+import org.simorion.common.MutableRow;
 
 /**
  * Basic implementation of a Row and WritableRow. Is backed by an integer, where
  * each bit corresponds to that cell being on or off
  * @author Edmund Smith
  */
-public class BasicRow implements Row, WritableRow {
+public class BasicRow implements MutableRow {
 
 	/**
 	 * The bitstring representing the cells being on or off
@@ -16,12 +18,12 @@ public class BasicRow implements Row, WritableRow {
 	 */
 	byte note;
 	
-	BasicRow() {
+	public BasicRow() {
 		lights = 0;
 	}
 
 	public boolean isLit(int cell) {
-		return (lights & (1 << cell)) == 1;
+		return (lights & (1 << cell)) != 0;
 	}
 
 	/**
@@ -30,6 +32,14 @@ public class BasicRow implements Row, WritableRow {
 	@Override
 	public byte getNote() {
 		return note;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getLit() {
+		return lights;
 	}
 
 	/**
@@ -76,6 +86,19 @@ public class BasicRow implements Row, WritableRow {
 	@Override
 	public int cellCount() {
 		return 16;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof BasicRow) {
+			BasicRow br = (BasicRow) o;
+			return br.lights == lights && br.note == note;
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Row { "+Integer.toBinaryString(lights) + ", note = " + note + "}";
 	}
 	
 }

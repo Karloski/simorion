@@ -4,9 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.simorion.common.ReadonlyLayer;
-import org.simorion.common.ReadonlyRow;
-import org.simorion.common.ReadonlySong;
+import org.simorion.common.ImmutableLayer;
+import org.simorion.common.ImmutableRow;
+import org.simorion.common.ImmutableSong;
 import org.simorion.common.SongBuilder;
 /**
  * Initial exploratory attempt at a song serialiser
@@ -23,8 +23,6 @@ import org.simorion.common.SongBuilder;
  * 		Layer loop point (1 byte), 0 for no loop
  * 
  * 	EOF?
- * 
- * @author Edmund Smith
  */
 
 public class SongFormat_1 implements SongFormat {
@@ -33,18 +31,18 @@ public class SongFormat_1 implements SongFormat {
 	 * Serialised a song into a byte array with the format _1
 	 */
 	@Override
-	public byte[] serialise(ReadonlySong song) throws UnsupportedEncodingException, IOException {
+	public byte[] serialise(ImmutableSong song) throws UnsupportedEncodingException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		baos.write("\u0001\u0016\u0016\u0016".getBytes("UTF-8"));
-		for(ReadonlyLayer l : song.getLayers()) {
-			byte[] b = new byte[4];
+		for(ImmutableLayer l : song.getLayers()) {
+			byte[] b = new byte[5];
 			b[0] = (byte)l.getLayerNumber();
 			b[1] = (byte)l.getVoice().getMidiVoice();
 			b[2] = (byte)l.getVelocity();
 			b[3] = (byte)l.getLoopPoint();
 			b[4] = (byte)song.getBPM();
 			baos.write(b);
-			for(ReadonlyRow r : l.getReadonlyRows()) {
+			for(ImmutableRow r : l.getRows()) {
 				byte[] b1 = new byte[
 				                     r.cellCount()/8+
 				                     (r.cellCount()%8==0?0:1)
@@ -65,13 +63,14 @@ public class SongFormat_1 implements SongFormat {
 	/** {@inheritDoc} */
 	@Override
 	public void deserialise(SongBuilder builder, byte[] data) {
-		if(data[0] != (byte)1) {
+		if(data[0] != getFormatID()) {
 			throw new RuntimeException("Wrong song format used");
 		}
 		byte layers = data[1];
 		byte rows = data[2];
 		byte cells = data[3];
-		int offset = 4;
+		byte bpm = data[4];
+		int offset = 5;
 		builder
 			.setLayerCount(layers)
 			.setRows(rows)
@@ -91,6 +90,16 @@ public class SongFormat_1 implements SongFormat {
 				offset += 2;
 			}	
 		}
+	}
+
+	@Override
+	public String getFormatName() {
+		return "Standin-1";
+	}
+
+	@Override
+	public byte getFormatID() {
+		return 1;
 	}
 
 }

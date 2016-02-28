@@ -1,9 +1,7 @@
 package org.simorion.ui.controller;
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-
+import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
 public class OnOffMode extends DeviceMode {
@@ -15,91 +13,24 @@ public class OnOffMode extends DeviceMode {
 
 	private OnOffView instance = new OnOffView();
      
-    //Remember that inner classes can access outer classes with OnOffMode.this
-    private class OnOffView implements View {
+    /**
+     * Implementation of the View interface for the OnOffView.
+     * This defines how the Simori-ON should look for this view.
+     * @author Karl Brown
+     *
+     */
+    private class OnOffView extends DefaultView {
 
 		@Override
-		public JButton getButton(int x, int y) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public JButton[] getButtons() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public JButton[] getColumn(int y) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public JButton[] getRow(int x) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void lightButton(int x, int y, Color color) {
+		public void setLit(int x, int y) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void lightRow(int row, Color color) {
+		public void setLCDMessage() {
 			// TODO Auto-generated method stub
 			
-		}
-
-		@Override
-		public void lightColumn(int column, Color color) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void clearButtons() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public boolean isLit(int x, int y) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean isRowLit(int row) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean isColumnLit(int column) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public String getLCDOutput() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setLCDOutput(String text) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public boolean isActive() {
-			// TODO Auto-generated method stub
-			return false;
 		}
         
     }
@@ -115,14 +46,13 @@ public class OnOffMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("OK button pressed");
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+		// Set button to lit (or unlit) in the model.
+		// Model then updates the view.
 	}
      
 }

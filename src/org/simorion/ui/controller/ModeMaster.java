@@ -2,14 +2,15 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.Model;
+import org.simorion.engine.EngineImpl;
+import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.View;
 
 public class ModeMaster implements Controller {
 	
 	private static ModeMaster instance;
 	
-	private Model model;
+	private MutableModel model;
 	
 	private DeviceMode deviceMode;
 	
@@ -23,12 +24,15 @@ public class ModeMaster implements Controller {
 	}
 
 	@Override
-	public void register(Model model) {
+	public void register(MutableModel model) {
 		this.model = model;
 	}
 
 	public void changeMode(DeviceMode newMode) {
 		deviceMode = newMode;
+		deviceMode.register(model);
+		deviceMode.onChangedTo();
+		System.out.println("Mode changed to "+newMode.getClass().getName());
 	}
 	
 	public static ModeMaster getInstance() {
@@ -57,6 +61,7 @@ public class ModeMaster implements Controller {
 	
 	static {
 		instance = new ModeMaster();
+		instance.register(new EngineImpl());
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
 		PERFORMANCE_MODE = new PerformanceMode(instance); //TODO

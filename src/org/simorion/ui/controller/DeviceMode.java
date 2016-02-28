@@ -1,8 +1,13 @@
 package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import org.simorion.ui.model.Model;
+import org.simorion.common.ImmutableRow;
+import org.simorion.common.util.Util;
+import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.View;
 
 /**
@@ -13,7 +18,8 @@ import org.simorion.ui.view.View;
 public abstract class DeviceMode implements Controller {
 	
 	private final ModeMaster modeMaster;
-	protected Model model;
+	protected MutableModel model;
+	protected boolean isDirty;
 	
 	public DeviceMode(ModeMaster m) {
 		modeMaster = m;
@@ -50,9 +56,18 @@ public abstract class DeviceMode implements Controller {
 		//TODO: Change mode logic
 	}
 	
+	void onChangedTo() {}
+	
 	@Override
-	public void register(Model m) {
+	public void register(MutableModel m) {
 		model = m;
 	}
 	
+	public boolean needsUpdate() {
+		if(isDirty) {
+			isDirty = false;
+			return true;
+		}
+		return false;
+	}
 }

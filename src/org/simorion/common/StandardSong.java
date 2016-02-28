@@ -8,23 +8,35 @@ import java.util.Comparator;
 import org.simorion.common.SongBuilder.AddLayer;
 import org.simorion.common.SongBuilder.AddRow;
 import org.simorion.common.util.Util;
+import org.simorion.common.util.Util.Pair;
+import org.simorion.engine.BasicLayer;
+import org.simorion.engine.BasicRow;
+import org.simorion.engine.MIDIVoices;
 
 public class StandardSong implements Song {
 
 	private BasicLayer[] layers;
-	
+	private float tempo;
 	
 	public StandardSong() {
 		layers = new BasicLayer[16];
+		for(int i = 0; i < 16; i++) {
+			Collection<MutableRow> rows = new ArrayList<MutableRow>();
+			for(int j = 0; j < 16; j++) {
+				rows.add(new BasicRow());
+			}
+			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0);
+		}
+		tempo = 1;
 	}
 	
 	public void loadFrom(final SongBuilder sb) {
 		layers = new BasicLayer[sb.getLayerCount()];
 		
 		for(int i = 0; i < layers.length; i++) {
-			Collection<WritableRow> rows = new ArrayList<WritableRow>(sb.getRows());
+			Collection<MutableRow> rows = new ArrayList<MutableRow>(sb.getRows());
 			AddLayer al = sb.layers.get(i);
-			for(Util.Pair<WritableRow, AddRow> pair : 
+			for(Util.Pair<MutableRow, AddRow> pair : 
 				Util.zip(rows, al.getRows())) {
 				pair.left.applyMask(0, (int) pair.right.mask);
 			}
@@ -46,19 +58,62 @@ public class StandardSong implements Song {
 	}
 
 	@Override
-	public Collection<? extends ReadonlyLayer> getLayers() {
+	public Collection<? extends MutableLayer> getLayers() {
 		return Arrays.asList(layers);
 	}
 
 	@Override
 	public float getTempo() {
-		return 0; //TODO: is tempo per-layer or per-song?
+		return tempo;
 	}
 
 	@Override
 	public byte getBPM() {
-		// TODO: is BPM per-layer or per-song?
-		return 0;
+		return (byte)(tempo * 60);
+	}
+
+	@Override
+	public void setBPM(byte bpm) {
+		tempo = bpm/60;
+	}
+
+	@Override
+	public void setTempo(float bps) {
+		if(Float.isNaN(bps) || Float.isInfinite(bps) || bps <= 0)
+			throw new IllegalArgumentException("beats per second must be a" +
+					" positive number");
+		tempo = bps;
+	}
+	
+	public MutableLayer[] getLayerArray() {
+		return layers;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof StandardSong) {
+			StandardSong s = (StandardSong) o;
+			for(Pair<BasicLayer,BasicLayer> pair : Util.zip(
+					Util.iterable(layers),
+					Util.iterable(s.layers))) {
+				if(!pair.left.equals(pair.right)) return false;
+			}
+			if(tempo != s.tempo) return false;
+			return true;
+		} else
+			return false;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("StandardSong {[");
+		for(BasicLayer bl : layers) {
+			sb.append(bl.toString()).append(",");
+		}
+		sb.append("], tempo = ").append(tempo);
+		sb.append("}");
+		return sb.toString();
 	}
 	
 }

@@ -11,11 +11,12 @@ import java.util.List;
  */
 public class SongBuilder {
 
-	List<AddLayer> layers;
+	public List<AddLayer> layers;
 	private byte rows, cells, layerCount;
 	
 	public SongBuilder() {
 		layers = new ArrayList<AddLayer>();
+		layerCount = rows = cells = -1;
 	}
 	
 	/**
@@ -63,7 +64,7 @@ public class SongBuilder {
 		
 		private final AddLayer parent;
 		
-		long mask;
+		public long mask;
 		
 		private AddRow(AddLayer parent) {
 			this.parent = parent;
@@ -111,6 +112,11 @@ public class SongBuilder {
 			return this;
 		}
 		
+		public AddLayer setLCDMessage(String s) {
+			lcdMessage = s;
+			return this;
+		}
+		
 		public List<AddRow> addRows(int rows) {
 			for(int i = 0; i < rows; i++) {
 				this.rows.add(new AddRow(this));
@@ -138,7 +144,12 @@ public class SongBuilder {
 			return layerId;
 		}
 		
+		public String getLCDMessage() {
+			return lcdMessage;
+		}
+		
 		private int velocity, voice, loopPoint, layerId;
+		private String lcdMessage;
 		
 		public SongBuilder done() {
 			return parent; 

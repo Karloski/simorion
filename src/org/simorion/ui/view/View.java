@@ -1,8 +1,15 @@
 package org.simorion.ui.view;
 
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+
+import org.simorion.common.ImmutableRow;
+import org.simorion.common.util.Util;
+import org.simorion.common.util.Util.Pair;
 
 /**
  * View interface which defines methods for a view for the Simori-On.
@@ -14,100 +21,146 @@ import javax.swing.JButton;
 public interface View {
 
 	/**
-	 * Retrieves and returns the matrix button at coordinate x, y for this view.
-	 * @param x The x coordinate of the button.
-	 * @param y The y cooridnate of the button.
-	 * @return The matrix JButton at cooridnate x, y.
+	 * The title of this view.
+	 * @return The title of this view.
 	 */
-	JButton getButton(int x, int y);
+	String getTitle();
 	
 	/**
-	 * Retrieves and returns all matrix buttons for this view.
-	 * @return The buttons for this view.
+	 * The total size of this view, including all elements, in pixels.
+	 * @return The total size of this view in pixels.
 	 */
-	JButton[] getButtons();
+	Pair<Integer, Integer> getSize();
 	
 	/**
-	 * Retrieves and returns all buttons for the given column for this view.
-	 * @param y The column to return.
-	 * @return All matrix buttons for column {@code y}.
+	 * Returns the size of the inner grid for this view as a {@code Pair<Integer, Integer>} where the left represents
+	 * the number of rows and the right represents the number of columns.
+	 * @return A {@code Pair<Integer, Integer>} representing the width and height of this views inner grid.
 	 */
-	JButton[] getColumn(int y);
+	Pair<Integer, Integer> getMatrixSize();
 	
 	/**
-	 * Retrieves and returns all buttons for the given row for this view.
-	 * @param x The row to return.
-	 * @return All matrix buttons for row {@code x}.
+	 * This view's implementation of the outer panel as a JComponent.
+	 * @return This view's implementation of the outer panel.
 	 */
-	JButton[] getRow(int x);
+	JComponent getOuterPanel();
 	
 	/**
-	 * Sets the colour of an individual matrix button to {@code color} at position x, y for this view.
-	 * @param x The x coordinate of the matrix button.
-	 * @param y The y coordinate of the matrix button.
-	 * @param color The colour to use.
+	 * This view's implementation of the button panel as a JComponent.
+	 * @return This view's implementation of the button panel.
 	 */
-	void lightButton(int x, int y, Color color);
+	JComponent getButtonPanel();
 	
 	/**
-	 * Convenience method that lights the entire row that {@code row} is on.
-	 * @param row The row to light.
-	 * @param color The colour to use.
+	 * This view's ON button implementation. Should include attributes such as colour, position and so forth.
+	 * @return This view's ON button implementation.
 	 */
-	void lightRow(int row, Color color);
+	AbstractButton getOnButton();
 	
 	/**
-	 * Convenience method that lights the entire column that {@code column} is on.
-	 * @param column The column to light.
-	 * @param color The color to use.
+	 * This view's OK button implementation. Should include attributes such as colour, position and so forth.
+	 * @return This view's OK button implementation.
 	 */
-	void lightColumn(int column, Color color);
+	AbstractButton getOKButton();
 	
 	/**
-	 * Resets the colour of all buttons for this view.
+	 * An iterable list of all the mode buttons for this view.
+	 * @return An iterable list of all the mode buttons for this view.
 	 */
-	void clearButtons();
+	Iterable<AbstractButton> getModeButtons();
+	
+	/**
+	 * An iterable list of all the MIDI buttons for this view.
+	 * @return An iterable list of all the MIDI buttons for this view.
+	 */
+	AbstractButton[] getMidiButtons();
+	
+	/**
+	 * This view's implementation of the LCD Screen.
+	 * @return This view's implementation of the LCD Screen.
+	 */
+	JComponent getLCDScreen();
 	
 	/**
 	 * Retrieves and returns whether or not the button at coordinate {@code x}, {@code y} is lit.
-	 * <p>NOTE: I feel like this might be redundant and that the information could be retrieved through
-	 * whatever implemention of the button we use (i.e., put a flag on the button, which can be
-	 * retreved when the getButton method is called).</p>
 	 * @param x The x coordinate of the button.
 	 * @param y The y coordinate of the button.
 	 * @return True if lit, false otherwise.
 	 */
-	boolean isLit(int x, int y);
+	public boolean isLit(int x, int y);
 	
+	/**
+	 * Retrieves and returns a collection of iterable booleans representing all the currently lit matrix buttons.
+	 * @return A collection of iterable booleans representing the currently lit buttons.
+	 */
+	public Collection<Iterable<Boolean>> getLitButtons();
+	
+	/**
+	 * Performs the lighting operation for a button pressed at {@code x}, {@code y} for this view.
+	 * @param x The x coordinate of the matrix button.
+	 * @param y The y coordinate of the matrix button.
+	 */
+	public void setLit(int x, int y);
+
 	/**
 	 * Determines if the row of buttons {@code row} is on are lit. 
-	 * @param row The row to check.
+	 * @param y The row to check.
 	 * @return True if all buttons are lit, false otherwise.
 	 */
-	boolean isRowLit(int row);
-	
+	public boolean isRowLit(int x);
+
 	/**
 	 * Determines if the column of buttons {@code column} is on are lit. 
-	 * @param column The column to check.
+	 * @param x The column to check.
 	 * @return True if all buttons are lit, false otherwise.
 	 */
-	boolean isColumnLit(int column);
-	
+	public boolean isColumnLit(int y);
+
 	/**
-	 * Retrieves and returns the current textual output of the LCD for this view.
+	 * Retrieves and returns the current textual output of the LCD.
 	 * @return The textual output of the LCD.
 	 */
-	String getLCDOutput();
+	public String getLCDMessage();
 	
 	/**
 	 * Sets the LCD output for this view.
-	 * @param text The text to set
 	 */
-	void setLCDOutput(String text);
+	public void setLCDMessage();
+
+	/**
+	 * Retrieves and returns the MIDI ID of the currently applied instrument.
+	 * @return The MIDI ID of the currently applied instrument for this view.
+	 */
+	public int getVoiceId();
+
+	/**
+	 * Retrieves and returns the name of the currently applied instrument.
+	 * @return The name of the currently applied instrument for this view
+	 */
+	public String getVoiceName();
+
+	/**
+	 * Retrieves and returns the ID of the currently applied layer.
+	 * @return The ID of the currently applied layer for this view.
+	 */
+	public int getCurrentLayerId();
+
+	/**
+	 * Retrieves and returns the current loop point.
+	 * @return The current loop point for this view.
+	 */
+	public int getLoopPoint();
+
+	/**
+	 * Retrieves and returns the current velocity for notes played.
+	 * @return The current velocity for notes played on this view.
+	 */
+	public int getVelocity();
 	
-	/***
-	 * Determines whether this view is the currently active view.
-	 * @return True if this view is the currently active view, false otherwise.
+	/**
+	 * Retrieves and returns the current note for row {@code y}.
+	 * @param y The row to check.
+	 * @return The current note for row {@code y}
 	 */
-	boolean isActive();
+	public byte getNote(int y);
 }
