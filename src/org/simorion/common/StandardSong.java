@@ -41,9 +41,6 @@ public class StandardSong implements Song {
 			AddLayer al = sb.layers.get(i);
 			for(Util.Pair<MutableRow, AddRow> pair : 
 				Util.zip(rows, al.getRows())) {
-				if(pair.right.mask != 0 ) {
-					System.out.println("Mask is "+pair.right.mask);
-				}
 				pair.left.applyMask(0, (int) pair.right.mask);
 			}
 			
