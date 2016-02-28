@@ -8,6 +8,7 @@ import java.util.List;
 import org.simorion.common.ImmutableRow;
 import org.simorion.common.util.Util;
 import org.simorion.ui.view.DefaultView;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 public class PerformanceMode extends DeviceMode {
@@ -17,6 +18,10 @@ public class PerformanceMode extends DeviceMode {
 	}
     
 	private PerformanceView instance = new PerformanceView();
+	
+    public View getView() {
+        return instance;
+    }
      
     /**
      * Implementation of the View interface for the PerformanceView
@@ -72,23 +77,6 @@ public class PerformanceMode extends DeviceMode {
     		
     		// Not all the buttons on this row are lit.
     		return true;
-    	}
-    	
-    	/**
-    	 * Retrieves and returns a collection of iterable booleans representing all the currently lit matrix buttons.
-    	 * @return A collection of iterable booleans representing the currently lit buttons.
-    	 */
-    	@Override
-    	public Collection<Iterable<Boolean>> getLitButtons() {
-    		
-    		List<Iterable<Boolean>> lit = new ArrayList<Iterable<Boolean>>();
-    		
-    		for (ImmutableRow r : model.getCurrentLayer().getRows()) {				
-    			lit.add(Util.bitstring(r.getLit()));
-    		}
-    		
-    		return lit;
-    		
     	}
 
     	/**
@@ -155,24 +143,15 @@ public class PerformanceMode extends DeviceMode {
     		return model.getCurrentLayer().getRow(y).getNote();
     	}
 
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		} 
-
     }
           
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
-    	// FIXME: This should be handled by the controller and not deferred to the view.
-        //instance.clearButtons();
+    	
+    	// FIXME: State of the program should be completely cleared when turned off.
+    	// model.PerformOffOperation();
+    	// Clears all matrix buttons for all layers etc.
+    	
         changeMode(ModeMaster.ON_OFF_MODE);
     }
      
@@ -214,14 +193,12 @@ public class PerformanceMode extends DeviceMode {
         }
     }
 
+    // Does this even do anything in performance mode?
 	@Override
-	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onOKButtonPress(MouseEvent e) {}
 
 	@Override
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		model.getCurrentLayer().getRow(buttonRow).toggleLit(buttonColumn);
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		model.getCurrentLayer().getRow(x).toggleLit(y);
 	}
 }

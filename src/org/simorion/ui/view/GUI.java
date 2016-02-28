@@ -139,14 +139,37 @@ public class GUI extends JFrame {
 		for (int r = 0; r < 16; r++) {			
 			for (int c = 0; c < 16; c++) {
 				midiButtons[r * 16 + c].setBounds(newMidiButtons[r * 16 + c].getBounds());
+				if (view.isLit(r, c)) {
+					midiButtons[r * 16 + c].setBackground(Color.ORANGE);
+				}
+				else {
+					midiButtons[r * 16 + c].setBackground(null);
+				}
 			}			
 		}
+		
+		dispLCD.setText(view.getLCDMessage());
 	}
 	
 	/**
 	 * Should be called when the current mode is altered.
 	 */
 	public void update() {
+		
+		View view = ModeMaster.getInstance().getView();
+		
+		for (int r = 0; r < 16; r++) {			
+			for (int c = 0; c < 16; c++) {
+				if (view.isLit(r, c)) {
+					midiButtons[r * 16 + c].setBackground(Color.ORANGE);
+				}
+				else {
+					midiButtons[r * 16 + c].setBackground(null);
+				}
+			}			
+		}
+		
+		dispLCD.setText(view.getLCDMessage());
 		
 	}
 
@@ -156,9 +179,6 @@ public class GUI extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//ModeMaster.getInstance().changeMode(ModeMaster.CHANGE_VOICE_MODE);
-		//frame.redraw();
 	}
 	
 	private static GUI instance;

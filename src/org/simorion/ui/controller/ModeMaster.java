@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 
 import org.simorion.engine.EngineImpl;
 import org.simorion.ui.model.MutableModel;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
 
 public class ModeMaster implements Controller {
@@ -32,6 +33,7 @@ public class ModeMaster implements Controller {
 		deviceMode = newMode;
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
+		GUI.getInstance().redraw();
 		System.out.println("Mode changed to "+newMode.getClass().getName());
 	}
 	

@@ -12,6 +12,8 @@ import org.simorion.ui.view.View;
  */
 public class LoadConfigMode extends DeviceMode {
  
+	int load;
+	
     public LoadConfigMode(ModeMaster m) {
 		super(m);
 		// TODO Auto-generated constructor stub
@@ -26,17 +28,39 @@ public class LoadConfigMode extends DeviceMode {
      */
     private class LoadConfigView extends DefaultView {
 
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isLit(int x, int y) {    		
+    		return isRowLit(x) || isColumnLit(y);
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isRowLit(int x) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (load == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return (load - 1) / 16 == x;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isColumnLit(int y) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (load == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return y - ((load - 1) % 16) == 0;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public String getLCDMessage() {
+    		return model.getLCDDisplay();
+    	}
          
     }
      
@@ -46,14 +70,13 @@ public class LoadConfigMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		// Load shit.		
 	}
 
 	@Override
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		load = y * 16 + x + 1;
+		// model.setLCDDisplay(FileNames.getFileName(x, y));
 	}
      
 }

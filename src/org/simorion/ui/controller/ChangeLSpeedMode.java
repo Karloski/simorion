@@ -10,6 +10,8 @@ import org.simorion.ui.view.View;
  * @author George Young
  */
 public class ChangeLSpeedMode extends DeviceMode {
+	
+	float speed;
  
     public ChangeLSpeedMode(ModeMaster m) {
 		super(m);
@@ -25,17 +27,39 @@ public class ChangeLSpeedMode extends DeviceMode {
      */
     private class ChangeLSpeedView extends DefaultView {
 
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isLit(int x, int y) {    		
+    		return isRowLit(x) || isColumnLit(y);
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isRowLit(int x) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (speed == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return speed / 16 == x;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isColumnLit(int y) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (speed == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return y - (speed % 16) == 0;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public String getLCDMessage() {
+    		return model.getLCDDisplay();
+    	}	
          
     }
      
@@ -43,16 +67,25 @@ public class ChangeLSpeedMode extends DeviceMode {
         return instance;
     }
 
+    /** @author Karl Brown} */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(speed != -1) {
+			model.setTempo(speed);
+		}
+		changeMode(ModeMaster.PERFORMANCE_MODE);
+		speed = -1;
 	}
 
+	/** @author Karl Brown} */
 	@Override
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		float tmp = y * 16 + x;
 		
+		if (tmp <= 160) {
+			speed = tmp;
+			model.setLCDDisplay(Float.toString(speed));
+		}
 	}
      
 }
