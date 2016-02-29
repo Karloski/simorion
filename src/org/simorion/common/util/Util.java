@@ -17,6 +17,7 @@ public final class Util {
 	 * @param ts The elements of the array
 	 * @return The array containing the elements
 	 */
+	@SafeVarargs
 	public static <T> T[] asArray(T...ts) {
 		return ts;
 	}
@@ -166,6 +167,7 @@ public final class Util {
 	 * @param arr The array to iterate
 	 * @return An iterable over the array
 	 */
+	@SafeVarargs
 	public static <T> Iterable<T> iterable(final T... arr) {
 		return new Iterable<T>() {
 
