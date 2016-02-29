@@ -12,6 +12,13 @@ import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 
+//TODO: who's worked on this file? Add yourselves as authors  -Ed
+
+/**
+ * Implementation for the Engine, using StandardSong and BasicLayer.
+ * @author Edmund Smith
+ * @author ...
+ */
 public class EngineImpl implements Engine {
 
 	private StandardSong song;
@@ -26,6 +33,7 @@ public class EngineImpl implements Engine {
 		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public void setVoice(MutableLayer l, Voice voice) {
 		l.setVoice(voice);
@@ -62,13 +70,8 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void toggleLit(int layer, int xLoc, int yLoc) {
-		if(song.getLayerArray()[layer].getRow(yLoc).isLit(xLoc)) {
-			setUnLit(layer, xLoc, yLoc);
-		} else {
-			setLit(layer, xLoc, yLoc);
-		}
+		song.getLayerArray()[layer].getRow(yLoc).applyXor(1<<xLoc);
 	}
-
 	@Override
 	public float getTempo() {
 		return song.getTempo();
