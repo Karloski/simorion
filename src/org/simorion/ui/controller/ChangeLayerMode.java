@@ -2,7 +2,6 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -11,6 +10,9 @@ import org.simorion.ui.view.View;
  * @author George Young
  */
 public class ChangeLayerMode extends DeviceMode {
+	
+	// FIXME: Replace with model.getCurrentLayerId()
+	int layer = -1;
  
     public ChangeLayerMode(ModeMaster m) {
 		super(m);
@@ -19,23 +21,34 @@ public class ChangeLayerMode extends DeviceMode {
 	private ChangeLayerView instance = new ChangeLayerView();
      
     /**
-     * Implementation of the View interface for the ChangeLayerView
+     * Implementation of the View interface for the ChangeLayerView.
      * @author Karl Brown
      *
      */
     private class ChangeLayerView extends DefaultView {
-
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isLit(int x, int y) {    		
+    		return isRowLit(x);
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isRowLit(int x) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (layer == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return x - (layer % 16) == 0;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public String getLCDMessage() {
+    		return model.getLCDDisplay();
+    	}
          
     }
      
@@ -45,14 +58,17 @@ public class ChangeLayerMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(layer != -1 && layer <= 16) {
+			model.setTopmostLayer(layer);
+		}
+		changeMode(ModeMaster.PERFORMANCE_MODE);
+		layer = -1;
 	}
 
 	@Override
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		layer = y;
+		model.setLCDDisplay(Integer.toString(y));
 	}
      
 }

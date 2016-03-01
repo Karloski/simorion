@@ -76,20 +76,8 @@ public class ButtonFactory {
 	public static class CircularButton extends JButton {
 					 
 		public CircularButton() {
-			
 			setBackground(Color.white);
 			setContentAreaFilled(false);
-		}
-			 
-		protected void paintComponent(Graphics g) {
-			if (getModel().isArmed()) {
-				g.setColor(Color.orange);
-			} else {
-			    g.setColor(getBackground());
-			}
-			g.fillOval(0, 0, 29, 29);
-			 
-			super.paintComponent(g);
 		}
 			 
 		protected void paintBorder(Graphics g) {
@@ -111,7 +99,7 @@ public class ButtonFactory {
 			setText(s);
 		}
 			 
-		protected void paintComponent(Graphics g) {
+/*		protected void paintComponent(Graphics g) {
 			if (getModel().isArmed()) {
 				g.setColor(Color.orange);
 			} else {
@@ -120,7 +108,7 @@ public class ButtonFactory {
 			g.fillOval(0, 0, 49, 49);
 			 
 			super.paintComponent(g);
-		}
+		}*/
 			 
 		protected void paintBorder(Graphics g) {
 			g.setColor(Color.black);
@@ -154,26 +142,29 @@ public class ButtonFactory {
 			x = xLoc;
 			y = yLoc;
 			addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent me) {
-					// Code here for what to do when the button is pressed
-					
-					// Code for changing button colour
-					//if(getBackground() == Color.white) {
-					//	setBackground(Color.orange);
-					//}
-					//else {
-					//	setBackground(Color.white);
-					//}
-					
-					//
-					ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
-					DeviceMode mode = ModeMaster.getInstance().getMode(); 
-					mode.onMatrixButtonPress(me, xLoc, yLoc);
-					if(mode.needsUpdate()) {
-						GUI.getInstance().invalidate();
+				public void mouseClicked(MouseEvent me) {					
+					if (ModeMaster.getInstance().getMode() != ModeMaster.ON_OFF_MODE) {
+						ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
+						GUI.getInstance().update();
 					}
 				}
 			});
+		}
+		
+		/**
+		 * PaintComponent override, making the button flash orange, should only be present on the MIDI Buttons.
+		 */
+		protected void paintComponent(Graphics g) {
+			/*if (getModel().isArmed()) {
+				g.setColor(Color.orange);
+			} else {
+			    g.setColor(getBackground());
+			}*/
+			
+			g.setColor(getBackground());
+			g.fillOval(0, 0, 29, 29);
+			 
+			super.paintComponent(g);
 		}
 	}
 	

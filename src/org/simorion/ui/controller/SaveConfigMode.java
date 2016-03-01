@@ -19,18 +19,6 @@ public class SaveConfigMode extends DeviceMode {
      *
      */
     private class SaveConfigView extends DefaultView {
-
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
 		
     }
      
