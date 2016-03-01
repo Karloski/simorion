@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.ImmutableRow;
@@ -29,9 +28,7 @@ import org.simorion.common.SongBuilder;
 
 public class SongFormat_1 implements SongFormat {
 
-	/**
-	 * Serialised a song into a byte array with the format _1
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public byte[] serialise(ImmutableSong song) throws UnsupportedEncodingException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -52,9 +49,15 @@ public class SongFormat_1 implements SongFormat {
 
 	/** {@inheritDoc} */
 	@Override
-	public void deserialise(SongBuilder builder, byte[] data) {
+	public void deserialise(SongBuilder builder, byte[] data) throws UnsupportedSongFormatException, InsufficientSongDataException {
+		if(data.length < 1) {
+			throw new InsufficientSongDataException("Data is empty");
+		}
 		if(data[0] != getFormatID()) {
-			throw new RuntimeException("Wrong song format used");
+			throw new UnsupportedSongFormatException("Found format id "+data[0]+", when expecting "+getFormatID());
+		}
+		if(data.length < 4) {
+			throw new InsufficientSongDataException("Not enough data, length = "+data.length);
 		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		bais.read(); //Bypass the version byte at data[0]

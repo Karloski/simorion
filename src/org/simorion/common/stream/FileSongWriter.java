@@ -1,9 +1,9 @@
 package org.simorion.common.stream;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-//import java.nio.file.Files;
-import java.nio.file.Files;
 
 import org.simorion.common.ImmutableSong;
 
@@ -25,8 +25,15 @@ public class FileSongWriter implements SongWriter {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void write(final SongFormat format, final ImmutableSong s) throws IOException {
-		Files.write(file.toPath(), format.serialise(s));
+	public void write(final SongFormat format, final ImmutableSong s) throws StreamFailureException {
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			fos.write(format.serialise(s));
+		} catch (FileNotFoundException fnf) {
+			throw new StreamFailureException(fnf.getMessage());
+		} catch (IOException io) {
+			throw new StreamFailureException(io.getMessage());
+		}
 	}
 
 }
