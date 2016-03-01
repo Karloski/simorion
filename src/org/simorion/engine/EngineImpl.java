@@ -8,9 +8,12 @@ import org.simorion.common.Song;
 import org.simorion.common.SongBuilder;
 import org.simorion.common.StandardSong;
 import org.simorion.common.Voice;
+import org.simorion.common.stream.InsufficientSongDataException;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
+import org.simorion.common.stream.StreamFailureException;
+import org.simorion.common.stream.UnsupportedSongFormatException;
 
 //TODO: who's worked on this file? Add yourselves as authors  -Ed
 
@@ -112,7 +115,8 @@ public class EngineImpl implements Engine {
 	public void sendToStream(SongWriter stream, SongFormat f) {
 		try {
 			stream.write(f, song);
-		} catch (IOException e) {
+		} catch (StreamFailureException e) {
+			lcdText = e.getLocalizedMessage();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -123,8 +127,17 @@ public class EngineImpl implements Engine {
 		SongBuilder sb = new SongBuilder();
 		try {
 			stream.readTo(f, sb);
-		} catch (IOException e) {
+		} catch (UnsupportedSongFormatException e) {
+			lcdText = e.getLocalizedMessage();
+			e.printStackTrace();
 			//TODO
+		} catch (InsufficientSongDataException e) {
+			lcdText = e.getLocalizedMessage();
+			e.printStackTrace();
+			//TODO
+		} catch (StreamFailureException e) {
+			lcdText = e.getLocalizedMessage();
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
