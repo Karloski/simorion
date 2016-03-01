@@ -1,8 +1,14 @@
 package org.simorion.ui.controller;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import org.simorion.engine.MIDIVoices;
 import org.simorion.ui.view.DefaultView;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
@@ -12,7 +18,7 @@ import org.simorion.ui.view.View;
  */
 public class ChangeVoiceMode extends DeviceMode {
  
-	private int voice;
+	private int voice = -1;
 	
     public ChangeVoiceMode(ModeMaster m) {
 		super(m);
@@ -28,17 +34,39 @@ public class ChangeVoiceMode extends DeviceMode {
      */
     private class ChangeVoiceView extends DefaultView {
 
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isLit(int x, int y) {    		
+    		return isRowLit(x) || isColumnLit(y);
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isRowLit(int x) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (voice == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return (voice - 1) / 16 == x;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public boolean isColumnLit(int y) {
+    		
+    		// If voice is -1, then no button has been selected.
+    		if (voice == -1) return false;
+    		
+    		// Voice will be a number between 0-255 (i.e., the button pressed).
+    		return y - ((voice - 1) % 16) == 0;
+    	}
+    	
+    	/** {@inheritDoc} */
+    	@Override
+    	public String getLCDMessage() {
+    		return model.getLCDDisplay();
+    	}
          
     }
      
@@ -57,9 +85,8 @@ public class ChangeVoiceMode extends DeviceMode {
 	}
 
 	@Override
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		voice = 16*buttonRow + buttonColumn + 1;
-		model.setLit(model.getCurrentLayerId(), buttonColumn, buttonRow);
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		voice = y * 16 + x + 1;		
 		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());						// @author Edmund, Petar
 	}
 	

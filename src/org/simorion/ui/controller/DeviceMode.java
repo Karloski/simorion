@@ -8,6 +8,7 @@ import java.util.List;
 import org.simorion.common.ImmutableRow;
 import org.simorion.common.util.Util;
 import org.simorion.ui.model.MutableModel;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
 
 /**
@@ -35,6 +36,11 @@ public abstract class DeviceMode implements Controller {
 
 	public void changeMode(DeviceMode newMode) {
 		modeMaster.changeMode(newMode);
+	}
+	
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		GUI.getInstance().update();
 	}
 	
 	@Override

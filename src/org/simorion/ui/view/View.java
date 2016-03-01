@@ -1,15 +1,10 @@
 package org.simorion.ui.view;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 
-import org.simorion.common.ImmutableRow;
-import org.simorion.common.util.Util;
 import org.simorion.common.util.Util.Pair;
+import org.simorion.ui.view.ButtonFactory.MidiButton;
 
 /**
  * View interface which defines methods for a view for the Simori-On.
@@ -88,19 +83,6 @@ public interface View {
 	 * @return True if lit, false otherwise.
 	 */
 	public boolean isLit(int x, int y);
-	
-	/**
-	 * Retrieves and returns a collection of iterable booleans representing all the currently lit matrix buttons.
-	 * @return A collection of iterable booleans representing the currently lit buttons.
-	 */
-	public Collection<Iterable<Boolean>> getLitButtons();
-	
-	/**
-	 * Performs the lighting operation for a button pressed at {@code x}, {@code y} for this view.
-	 * @param x The x coordinate of the matrix button.
-	 * @param y The y coordinate of the matrix button.
-	 */
-	public void setLit(int x, int y);
 
 	/**
 	 * Determines if the row of buttons {@code row} is on are lit. 
@@ -121,11 +103,6 @@ public interface View {
 	 * @return The textual output of the LCD.
 	 */
 	public String getLCDMessage();
-	
-	/**
-	 * Sets the LCD output for this view.
-	 */
-	public void setLCDMessage();
 
 	/**
 	 * Retrieves and returns the MIDI ID of the currently applied instrument.

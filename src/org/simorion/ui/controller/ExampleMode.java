@@ -22,18 +22,6 @@ public class ExampleMode extends DeviceMode {
 	 *
 	 */
 	private class ExampleView extends DefaultView {
-
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}		
 		
 	}
 	

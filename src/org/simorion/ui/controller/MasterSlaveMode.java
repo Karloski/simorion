@@ -25,19 +25,7 @@ public class MasterSlaveMode extends DeviceMode {
      *
      */
     private class MasterSlaveView extends DefaultView {
-
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
-         
+    	// No implementation.         
     }
      
     public View getView() {
@@ -46,14 +34,12 @@ public class MasterSlaveMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		// No implementation.		
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// TODO Auto-generated method stub
-		
+		// No implementation.
 	}
      
 }

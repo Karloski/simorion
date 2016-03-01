@@ -19,20 +19,8 @@ public class OnOffMode extends DeviceMode {
      * @author Karl Brown
      *
      */
-    private class OnOffView extends DefaultView {
-
-		@Override
-		public void setLit(int x, int y) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void setLCDMessage() {
-			// TODO Auto-generated method stub
-			
-		}
-        
+    private class OnOffView extends DefaultView {    	
+    	// No methods. The view, it does nothing!        
     }
      
     public View getView() {
@@ -46,13 +34,12 @@ public class OnOffMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		System.out.println("OK button pressed");
+		// No methods. The view, it does nothing!
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
-		// Set button to lit (or unlit) in the model.
-		// Model then updates the view.
+		// No methods. The view, it does nothing!
 	}
      
 }

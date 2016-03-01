@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -17,6 +18,9 @@ import org.simorion.common.MutableLayer;
 import org.simorion.common.util.Util;
 import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
+import org.simorion.ui.view.ButtonFactory.ModeButton;
+import org.simorion.ui.view.ButtonFactory.OKButton;
+import org.simorion.ui.view.ButtonFactory.ONButton;
 
 /**
  * The default view provides default view behaviour for the Simori-ON.
@@ -25,7 +29,15 @@ import org.simorion.ui.view.ButtonFactory.MidiButton;
  */
 public abstract class DefaultView implements View {
 	
-	protected MutableLayer layer;	
+	JPanel outerPanel;
+	JPanel buttonPanel;
+	
+	ONButton buttonOn;
+	OKButton buttonOK;
+	JTextField dispLCD;
+	
+	MidiButton[] midiButtons;
+	List<AbstractButton> modeButtons;
 
 	/** {@inheritDoc} */
 	@Override
@@ -51,7 +63,7 @@ public abstract class DefaultView implements View {
 	public JComponent getOuterPanel() {
 		
 		// Create and define the outer JPanel.
-		JPanel outerPanel = new JPanel();
+		outerPanel = new JPanel();
 		
 		outerPanel.setBounds(1, 1, 598, 600);
 		outerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -67,7 +79,7 @@ public abstract class DefaultView implements View {
 	public JComponent getButtonPanel() {
 		
 		// Create and define the inner JPanel.
-		JPanel buttonPanel = new JPanel();
+		buttonPanel = new JPanel();
 		
 		buttonPanel.setBounds(58, 58, 484, 484);
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -83,14 +95,14 @@ public abstract class DefaultView implements View {
 	public AbstractButton getOnButton() {
 		
 		// Use the ButtonFactory to create the ON/OFF button.
-		AbstractButton btnON = ButtonFactory.createButton("ON", ButtonFactory.Button.ONOFF);
+		buttonOn = (ONButton) ButtonFactory.createButton("ON", ButtonFactory.Button.ONOFF);
 		
 		// Define it.
-		btnON.setBounds(275, 5, 50, 50);
-		btnON.setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonOn.setBounds(275, 5, 50, 50);
+		buttonOn.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		// Return it.
-		return btnON;
+		return buttonOn;
 		
 	}
 	
@@ -99,14 +111,14 @@ public abstract class DefaultView implements View {
 	public AbstractButton getOKButton() {
 		
 		// Use the ButtonFactory to create the OK button.
-		AbstractButton btnOK = ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
+		buttonOK = (OKButton) ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
 		
 		// Define it.
-		btnOK.setBounds(432, 545, 50, 50);
-		btnOK.setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonOK.setBounds(432, 545, 50, 50);
+		buttonOK.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		// Return it.
-		return btnOK;
+		return buttonOK;
 	}
 	
 	/** {@inheritDoc} */
@@ -114,49 +126,49 @@ public abstract class DefaultView implements View {
 	public Iterable<AbstractButton> getModeButtons() {			
 		
 		// A list of buttons to return as an iterable.
-		List<AbstractButton> buttons = new ArrayList<AbstractButton>();
+		modeButtons = new ArrayList<AbstractButton>();
 		
 		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
 		b.setBounds(5, 84, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
 		b.setBounds(5, 174, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
 		b.setBounds(5, 264, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
 		b.setBounds(5, 354, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
 		b.setBounds(545, 84, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
 		b.setBounds(545, 174, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
 		b.setBounds(545, 264, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
 		b.setBounds(545, 354, 50, 50);
 		b.setBorder(BorderFactory.createLineBorder(Color.black));
-		buttons.add(b);
+		modeButtons.add(b);
 		
-		return buttons;
+		return modeButtons;
 		
 	}
 	
@@ -164,44 +176,31 @@ public abstract class DefaultView implements View {
 	@Override
 	public AbstractButton[] getMidiButtons() {
 		
-		MidiButton[] buttons = new MidiButton[256];
+		midiButtons = new MidiButton[256];
 		
 		// FIXME: Matrix size takes from model, however there is as of yet no model implementations.
 		//int noButtons = matrixSize().left * matrixSize().right;
 		int noButtons = 256; // 16 * 16
 		
-		int xLocationOfButton = 0;
-		int yLocationOfButton = 0;
 		// j is a variable which is incremented when the end of the grid is reached (every 16 buttons)
-		int j = 0;
+		int j = -1;
 		
 		for (int k = 0; k < noButtons; k++) {
 			
-			MidiButton b = ButtonFactory.createButton(k % 16, j);
-			
 			// Create new MidiButton with it's location parameters
-			if ((k + 1) % 16 == 0){
+			if (k % 16 == 0){
 				// Increment j every 16 buttons
 				j++;
 			}	
 			
-			b.setBounds(2 + (30 * xLocationOfButton), 452 - (30 * yLocationOfButton), 30, 30);
+			MidiButton b = ButtonFactory.createButton(k % 16, j);
 			
-			// Setting bounds of the button depending on it's co-ords
-			if((k + 1) % 16 == 0) {
-				// When reaching 16 buttons - go back to left hand side of grid and increment y
-				xLocationOfButton = 0;
-				yLocationOfButton++;
-			}
-			else {
-				// If not at the end of the grid - just increment x
-				xLocationOfButton++;
-			}
+			b.setBounds(2 + (30 * (k % 16) - 1), 452 - (30 * j), 30, 30);
 			
-			buttons[k] = b;
+			midiButtons[k] = b;
 		}
 		
-		return buttons;
+		return midiButtons;
 	}
 	
 	/** {@inheritDoc} */
@@ -209,7 +208,7 @@ public abstract class DefaultView implements View {
 	public JComponent getLCDScreen() {
 		
 		// Create and define the LCD screen.
-		JTextField dispLCD = new JTextField();
+		dispLCD = new JTextField();
 		
 		dispLCD.setBounds(120, 545, 240, 50);
 		dispLCD.setEditable(false);
@@ -229,10 +228,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public boolean isLit(int x, int y) {
-		if(layer.getVoice().getMidiVoice() == -1) return false;
-		return (16*y+x+1) == layer.getVoice().getMidiVoice() ||
-				layer.getVoice().getMidiVoice() / 16 == y ||
-				x - (layer.getVoice().getMidiVoice() % 16) == 0;
+		return false;
 	}
 
 	/**
@@ -242,16 +238,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public boolean isRowLit(int x) {
-		// Each row should contain the same number of buttons.
-		int columns = layer.getRow(x).cellCount();
-		
-		// Keeping the row constant, check the state of each button.
-		for (int i = 0; i < columns; i++) {
-			if (!isLit(x, i)) return false;
-		}
-		
-		// Not all the buttons on this row are lit.
-		return true;
+		return false;
 	}
 
 	/**
@@ -261,33 +248,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public boolean isColumnLit(int y) {			
-		// Each row should contain the same number of buttons.
-		int rows = Util.count(layer.getRows());
-		
-		// Keeping the row constant, check the state of each button.
-		for (int i = 0; i < rows; i++) {
-			if (!isLit(i, y)) return false;
-		}
-		
-		// Not all the buttons on this row are lit.
-		return true;
-	}
-	
-	/**
-	 * Retrieves and returns a collection of iterable booleans representing all the currently lit matrix buttons.
-	 * @return A collection of iterable booleans representing the currently lit buttons.
-	 */
-	@Override
-	public Collection<Iterable<Boolean>> getLitButtons() {
-		
-		List<Iterable<Boolean>> lit = new ArrayList<Iterable<Boolean>>();
-		
-		for (ImmutableRow r : layer.getRows()) {				
-			lit.add(Util.bitstring(r.getLit()));
-		}
-		
-		return lit;
-		
+		return false;
 	}
 
 	/**
@@ -296,7 +257,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public String getLCDMessage() {
-		return layer.getLCDMessage();
+		return "";
 	}
 
 	/**
@@ -305,7 +266,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public int getVoiceId() {
-		return layer.getVoice().getMidiVoice();
+		return 0;
 	}
 
 	/**
@@ -314,7 +275,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public String getVoiceName() {
-		return layer.getVoice().getName();
+		return null;
 	}
 
 	/**
@@ -323,7 +284,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public int getCurrentLayerId() {
-		return layer.getLayerNumber();
+		return 0;
 	}
 
 	/**
@@ -332,7 +293,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public int getLoopPoint() {
-		return layer.getLoopPoint();
+		return 0;
 	}
 
 	/**
@@ -341,7 +302,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public int getVelocity() {
-		return layer.getVelocity();
+		return 0;
 	}
 	
 	/**
@@ -351,7 +312,7 @@ public abstract class DefaultView implements View {
 	 */
 	@Override
 	public byte getNote(int y) {
-		return layer.getRow(y).getNote();
+		return 0;
 	} 
 
 }
