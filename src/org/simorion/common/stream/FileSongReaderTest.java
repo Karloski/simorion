@@ -14,6 +14,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.simorion.common.SongBuilder;
 
+/**
+ * Tests FileSongReader and SongFormat with known inputs and outputs
+ * @author Edmund Smith
+ *
+ */
 public class FileSongReaderTest {
 
 	private File testFile;
@@ -49,9 +54,6 @@ public class FileSongReaderTest {
 		fsr.readTo(format, song);
 	}
 	
-	/*
-	 * TODO: consult over the best exception class to use
-	 */
 	@Test(expected = UnsupportedSongFormatException.class)
 	public void errorOnInvalidFormat() throws Exception {
 		
@@ -60,8 +62,6 @@ public class FileSongReaderTest {
 		fos.close();
 		
 		fsr.readTo(format, song);
-		
-		fail("TODO: throw exception");
 	}
 
 	@Test
