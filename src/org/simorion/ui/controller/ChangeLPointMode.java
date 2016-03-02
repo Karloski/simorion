@@ -10,7 +10,7 @@ import org.simorion.ui.view.View;
  */
 public class ChangeLPointMode extends DeviceMode {
  
-	private byte point;
+	private int button;
 	
     public ChangeLPointMode(ModeMaster m) {
 		super(m);
@@ -30,7 +30,7 @@ public class ChangeLPointMode extends DeviceMode {
     	public boolean isLit(int x, int y) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (point == -1) return false;
+    		if (button == -1) return false;
     		
     		// Point will be a number between 0-255 (i.e., the button pressed).
     		// Convert the x and y into a single int which represents its position on the matrix.
@@ -43,10 +43,10 @@ public class ChangeLPointMode extends DeviceMode {
     	public boolean isColumnLit(int y) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (point == -1) return false;
+    		if (button == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return y - (point % 16) == 0;
+    		return y - (button % 16) == 0;
     	}
     	
     	/** {@inheritDoc} */
@@ -63,17 +63,23 @@ public class ChangeLPointMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(point != -1) {
-			model.setLoopPoint(model.getCurrentLayer(), point);
+		if(button != -1) {
+			model.setLoopPoint(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		point = -1;
+		button = -1;
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		point = (byte) y;
-		model.setLCDDisplay(Byte.toString(point));
+		button = y;
+		model.setLCDDisplay(Integer.toString(button <= 127 ? button : 127));
+	}
+	
+	@Override
+	void onChangedTo() {
+		button = model.getCurrentLayer().getLoopPoint();
+		model.setLCDDisplay("Change Loop Point Mode");
 	}
      
 }

@@ -41,5 +41,10 @@ public class OnOffMode extends DeviceMode {
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
 		// No methods. The view, it does nothing!
 	}
+	
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
+		// No methods. The view, it does nothing!
+	}
      
 }

@@ -38,7 +38,7 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public boolean isLit(int x, int y) {
-    		return model.getCurrentLayer().getRow(y).isLit(x);
+    		return model.getCurrentLayer().getRow(x).isLit(y);
     	}
 
     	/**
@@ -200,5 +200,16 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		model.getCurrentLayer().getRow(x).toggleLit(y);
+	}
+	
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
+		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
+		else model.getCurrentLayer().getRow(x).setUnlit(y);
+	}
+	
+	@Override
+	void onChangedTo() {
+		model.setLCDDisplay("Performance Mode");
 	}
 }

@@ -30,7 +30,7 @@ public class ChangeLayerMode extends DeviceMode {
     	/** {@inheritDoc} */
     	@Override
     	public boolean isLit(int x, int y) {    		
-    		return isRowLit(x);
+    		return isRowLit(y);
     	}
     	
     	/** {@inheritDoc} */
@@ -69,6 +69,12 @@ public class ChangeLayerMode extends DeviceMode {
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		layer = y;
 		model.setLCDDisplay(Integer.toString(y));
+	}
+	
+	@Override
+	void onChangedTo() {
+		layer = model.getCurrentLayerId();
+		model.setLCDDisplay("Change Layer Mode");
 	}
      
 }

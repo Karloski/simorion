@@ -102,5 +102,10 @@ public class ModeMaster implements Controller {
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
 		deviceMode.onMatrixButtonPress(e, buttonColumn, buttonRow);
 	}
+
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
+		deviceMode.onMatrixButtonPress(e, x, y, lit);
+	}
 	
 }
