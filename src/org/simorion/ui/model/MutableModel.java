@@ -19,24 +19,73 @@ public interface MutableModel extends ImmutableModel {
 	 */
 	public void receiveFromStream(SongReader stream, SongFormat format);
 
+	/**
+	 * Sets the voice for a given mutable layer
+	 * @param l The layer to set the voice of
+	 * @param voice The new voice to give the layer
+	 */
 	public void setVoice(MutableLayer l, Voice voice);
 	
+	/**
+	 * Sets the velocity for a given layer to the corresponding MIDI byte
+	 * @param l The layer whose velocity is to be set
+	 * @param velocity The MIDI byte representing velocity
+	 */
 	public void setVelocity(MutableLayer l, byte velocity);
 	
+	/**
+	 * Sets the loop point for the given layer. 0 means full length loops
+	 * @param l The layer being set
+	 * @param loopPoint The loop point to set to
+	 */
 	public void setLoopPoint(MutableLayer l, byte loopPoint);
 	
+	/**
+	 * Set the tempo for the song in beats per second
+	 * @param beatsPerSecond
+	 */
 	public void setTempo(float beatsPerSecond);
 	
+	/**
+	 * Move a layer to the top of the pile, making it the displayed/interactive
+	 * layer
+	 * @param layerID The layer index, starting from 0
+	 */
 	public void setTopmostLayer(int layerID);
 	
+	/**
+	 * Light a cell in a given layer
+	 * @param layer
+	 * @param xLoc
+	 * @param yLoc
+	 */
 	public void setLit(int layer, int xLoc, int yLoc);
 	
+	/**
+	 * Unlight a cell in a given layer
+	 * @param layer
+	 * @param xLoc
+	 * @param yLoc
+	 */
 	public void setUnLit(int layer, int xLoc, int yLoc);
 	
+	/**
+	 * Toggle the state of a cell in a given layer
+	 * @param layer
+	 * @param xLoc
+	 * @param yLoc
+	 */
 	public void toggleLit(int layer, int xLoc, int yLoc);
 	
+	/**
+	 * Get a mutable reference to the topmost layer
+	 */
 	public MutableLayer getCurrentLayer();
 	
+	/**
+	 * Update the text displayed to the LCD screen
+	 * @param text The new LCD text
+	 */
 	public void setLCDDisplay(String text);
 	
 }

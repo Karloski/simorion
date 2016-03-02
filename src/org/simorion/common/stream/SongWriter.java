@@ -18,6 +18,6 @@ public interface SongWriter {
 	 * @param s The song to serialse
 	 * @throws IOException In case of IO failure, e.g. FileNotFound
 	 */
-	public void write(final SongFormat format, final ImmutableSong s) throws IOException;
+	public void write(final SongFormat format, final ImmutableSong s) throws StreamFailureException;
 	//TODO: specific exception classes
 }

@@ -35,6 +35,9 @@ public class StandardSong implements Song {
 		
 		for(int i = 0; i < layers.length; i++) {
 			Collection<MutableRow> rows = new ArrayList<MutableRow>(sb.getRows());
+			for(int r = 0; r < sb.getRows(); r++) {
+				rows.add(new BasicRow());
+			}
 			AddLayer al = sb.layers.get(i);
 			for(Util.Pair<MutableRow, AddRow> pair : 
 				Util.zip(rows, al.getRows())) {
