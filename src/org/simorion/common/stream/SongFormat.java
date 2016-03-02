@@ -30,11 +30,20 @@ public interface SongFormat {
 	 * to load it into a Song instance.
 	 * @param builder The songbuilder being primed, effectively borrowed
 	 * @param data The byte array being deserialsed into the builder
+	 * @throws UnsupportedSongFormatException when the leading byte is different to formatID 
+	 * @throws InsufficientSongDataException 
 	 */
-	void deserialise(final SongBuilder builder, final byte[] data);
-	
+	void deserialise(final SongBuilder builder, final byte[] data) throws UnsupportedSongFormatException, InsufficientSongDataException;
 
+	/**
+	 * Get a human-friendly format name
+	 * @return The format name
+	 */
 	public String getFormatName();
 	
+	/**
+	 * Get the format ID, used for the leading byte in serialisation
+	 * @return format ID
+	 */
 	public byte getFormatID();
 }

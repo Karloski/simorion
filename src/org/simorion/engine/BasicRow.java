@@ -82,6 +82,14 @@ public class BasicRow implements MutableRow {
 		lights &= and;
 		lights |= or;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void applyXor(int xor) {
+		lights ^= xor;
+	}
 
 	@Override
 	public int cellCount() {

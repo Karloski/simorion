@@ -32,4 +32,10 @@ public interface MutableRow extends ImmutableRow {
 	 * @param mask
 	 */
 	public void applyMask(int and, int or);
+	
+	/**
+	 * Applies an xor with the given mask to the lights
+	 * @param xor
+	 */
+	public void applyXor(int xor);
 }

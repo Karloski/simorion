@@ -1,7 +1,5 @@
 package org.simorion.common.stream;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.net.Socket;
 
 import org.simorion.common.ImmutableSong;
@@ -25,15 +23,23 @@ public class NetworkSongReaderWriter implements SongWriter, SongReader {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void write(SongFormat format, ImmutableSong s) throws IOException {
-		socket.getOutputStream().write(format.serialise(s));
+	public void write(SongFormat format, ImmutableSong s) throws StreamFailureException {
+		try {
+			socket.getOutputStream().write(format.serialise(s));
+		} catch (Exception e) {
+			throw new StreamFailureException(e.getMessage());
+		}
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public void readTo(SongFormat format, SongBuilder song) throws IOException {
-		byte[] buf = new byte[2048];
-		socket.getInputStream().read(buf);
-		format.deserialise(song, buf);
+	public void readTo(SongFormat format, SongBuilder song) throws UnsupportedSongFormatException, InsufficientSongDataException, StreamFailureException {
+		try {
+			byte[] buf = new byte[2048];
+			socket.getInputStream().read(buf);
+			format.deserialise(song, buf);
+		} catch (Exception e) {
+			throw new StreamFailureException(e.getMessage());
+		}
 	}
 }

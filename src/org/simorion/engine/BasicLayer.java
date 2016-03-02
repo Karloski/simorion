@@ -124,7 +124,7 @@ public class BasicLayer implements MutableLayer {
 					Util.iterable(rows), Util.iterable(bl.rows))) {
 				if(!pair.left.equals(pair.right)) return false;
 			}
-			return (voice == bl.voice &&
+			return (voice.getMidiVoice() == bl.voice.getMidiVoice() &&
 					velocity == bl.velocity &&
 					layerNumber == bl.layerNumber &&
 					loopPoint == bl.loopPoint);
@@ -136,13 +136,13 @@ public class BasicLayer implements MutableLayer {
 		StringBuilder sb = new StringBuilder();
 		sb.append("BasicLayer {[");
 		for(MutableRow row : rows) {
-			sb.append(row.toString());
+			sb.append(row.getLit());
 			sb.append(",");
 		}
 		sb
 			.append("], velocity = ").append(velocity)
 			.append(", loopPoint = ").append(loopPoint)
-			.append(", voice = ").append(voice.toString())
+			.append(", voice = ").append(voice.getName())
 			.append("}");
 		return sb.toString();
 	}
