@@ -3,6 +3,7 @@ package org.simorion.ui.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -74,6 +75,8 @@ public class ButtonFactory {
 	 * Class to make a button circular (no text)
 	 */
 	public static class CircularButton extends JButton {
+		
+		public static final int radius = 15;
 					 
 		public CircularButton() {
 			setBackground(Color.white);
@@ -82,7 +85,7 @@ public class ButtonFactory {
 			 
 		protected void paintBorder(Graphics g) {
 			g.setColor(Color.black);
-			g.drawOval(0, 0, 29, 29);
+			g.drawOval(0, 0, radius*2-1, radius*2-1);
 		}
 			 
 	}
@@ -99,17 +102,6 @@ public class ButtonFactory {
 			setText(s);
 		}
 			 
-/*		protected void paintComponent(Graphics g) {
-			if (getModel().isArmed()) {
-				g.setColor(Color.orange);
-			} else {
-			    g.setColor(getBackground());
-			}
-			g.fillOval(0, 0, 49, 49);
-			 
-			super.paintComponent(g);
-		}*/
-			 
 		protected void paintBorder(Graphics g) {
 			g.setColor(Color.black);
 			g.drawOval(0, 0, 49, 49);
@@ -122,7 +114,7 @@ public class ButtonFactory {
 	 * All the buttons in the grid
 	 */
 	public static class MidiButton extends CircularButton { // Doesn't extend CircularTextButton 
-		// Variables to return where in the grid the button is
+		// Variables to return where in the grid the button is.
 		private int x;
 		private int y;
 		
@@ -136,15 +128,45 @@ public class ButtonFactory {
 		 */
 		public int getYLoc() {return y; }
 		
+		static int buttonPressed = 0;
+		static long timePressed;
+		static long timeEntered;
+		static boolean isLit = false;
+		static byte rapidPaint = 0; // 0 = Unknown, 1 = false, 2 = true.
+		
 		MidiButton(final int xLoc, final int yLoc) {
 			// When instantiating each button in the grid they are all given 
 			// their x and y co-ordinates
 			x = xLoc;
 			y = yLoc;
-			addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent me) {					
+			
+			addMouseListener(new MouseAdapter(){				
+				public void mousePressed(MouseEvent me) {
 					if (ModeMaster.getInstance().getMode() != ModeMaster.ON_OFF_MODE) {
-						ModeMaster.getInstance().getMode().onMatrixButtonPress(me, xLoc, yLoc);
+						ModeMaster.getInstance().getMode().onMatrixButtonPress(me, x, y);
+						GUI.getInstance().update();
+					}
+					
+					buttonPressed = me.getButton();
+					timePressed = System.currentTimeMillis();
+					isLit = ModeMaster.getInstance().getView().isLit(x, y);
+				}
+				
+				public void mouseReleased(MouseEvent me) {
+					buttonPressed = 0;
+					rapidPaint = 0;
+					isLit = false;
+				}
+				
+				public void mouseEntered(MouseEvent me) {
+					if (buttonPressed > 0 && rapidPaint == 0) {
+						if (System.currentTimeMillis() - timePressed > 60 * 3) rapidPaint = 1;
+						else rapidPaint = 2;
+					}
+					if (ModeMaster.getInstance().getMode() != ModeMaster.ON_OFF_MODE && 
+							buttonPressed > 0 && 
+							rapidPaint == 1) {
+						ModeMaster.getInstance().getMode().onMatrixButtonPress(me, x, y, isLit);
 						GUI.getInstance().update();
 					}
 				}
@@ -154,15 +176,9 @@ public class ButtonFactory {
 		/**
 		 * PaintComponent override, making the button flash orange, should only be present on the MIDI Buttons.
 		 */
-		protected void paintComponent(Graphics g) {
-			/*if (getModel().isArmed()) {
-				g.setColor(Color.orange);
-			} else {
-			    g.setColor(getBackground());
-			}*/
-			
+		protected void paintComponent(Graphics g) {			
 			g.setColor(getBackground());
-			g.fillOval(0, 0, 29, 29);
+			g.fillOval(0, 0, radius*2-1, radius*2-1);
 			 
 			super.paintComponent(g);
 		}
@@ -180,7 +196,7 @@ public class ButtonFactory {
 		ModeButton(final String s, Mode mode) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent me){
+				public void mousePressed(MouseEvent me){
 					// Code here for what to do when the mode button is pressed
 					switch(s.charAt(0)) {
 					case 'L':
@@ -206,7 +222,7 @@ public class ButtonFactory {
 		OKButton(String s) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent me){
+				public void mousePressed(MouseEvent me){
 					ModeMaster.getInstance().getMode().onOKButtonPress(me);
 				}
 			});
@@ -220,7 +236,7 @@ public class ButtonFactory {
 		ONButton(String s) {
 			super(s);
 			addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent me){
+				public void mousePressed(MouseEvent me){
 					// What to do when the ON button is pressed
 					ModeMaster.getInstance().getMode().onOnOffButtonPress(me);
 				}
