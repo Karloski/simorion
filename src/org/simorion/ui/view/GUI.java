@@ -138,21 +138,16 @@ public class GUI extends JFrame {
 		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
 		for (int r = 0; r < 16; r++) {			
 			for (int c = 0; c < 16; c++) {
-				midiButtons[r * 16 + c].setBounds(newMidiButtons[r * 16 + c].getBounds());
-				if (view.isLit(r, c)) {
-					midiButtons[r * 16 + c].setBackground(Color.ORANGE);
-				}
-				else {
-					midiButtons[r * 16 + c].setBackground(null);
-				}
+				midiButtons[c * 16 + r].setBounds(newMidiButtons[c * 16 + r].getBounds());
 			}			
 		}
 		
-		dispLCD.setText(view.getLCDMessage());
+		// Then update the view.
+		update();
 	}
 	
 	/**
-	 * Should be called when the current mode is altered.
+	 * Updates the GUI with information from the current view.
 	 */
 	public void update() {
 		
@@ -161,10 +156,10 @@ public class GUI extends JFrame {
 		for (int r = 0; r < 16; r++) {			
 			for (int c = 0; c < 16; c++) {
 				if (view.isLit(r, c)) {
-					midiButtons[r * 16 + c].setBackground(Color.ORANGE);
+					midiButtons[c * 16 + r].setBackground(Color.ORANGE);
 				}
 				else {
-					midiButtons[r * 16 + c].setBackground(null);
+					midiButtons[c * 16 + r].setBackground(Color.WHITE);
 				}
 			}			
 		}
