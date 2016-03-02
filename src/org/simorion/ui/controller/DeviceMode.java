@@ -44,6 +44,11 @@ public abstract class DeviceMode implements Controller {
 	}
 	
 	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
+		GUI.getInstance().update();
+	}
+	
+	@Override
 	public void onLButtonPress(MouseEvent e, int buttonNum) {
 		System.out.println("L button "+buttonNum+" pressed");
 		//TODO: Change mode logic
