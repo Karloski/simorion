@@ -164,7 +164,7 @@ public class GUI extends JFrame {
 					midiButtons[r * 16 + c].setBackground(Color.ORANGE);
 				}
 				else {
-					midiButtons[r * 16 + c].setBackground(null);
+					midiButtons[r * 16 + c].setBackground(Color.WHITE);
 				}
 			}			
 		}
