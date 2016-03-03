@@ -28,12 +28,16 @@ public class EngineImpl implements Engine {
 	private Voice[] voices;
 	private int topmostLayer;
 	protected String lcdText;
+	protected MasterSlaveServer masterSlaveServer;
 	
 	public EngineImpl() {
 		song = new StandardSong();
 		voices = new Voice[16];
 		//Default voice
 		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
+		
+		masterSlaveServer = new MasterSlaveServer(this);
+		masterSlaveServer.start();
 	}
 	
 	/** {@inheritDoc} */

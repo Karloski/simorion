@@ -1,6 +1,7 @@
 
 package org.simorion.common.util;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 
 
@@ -186,6 +187,39 @@ public final class Util {
 					@Override
 					public T next() {
 						return arr[offset++];
+					}
+
+					@Override
+					public void remove() {
+						throw new RuntimeException("UnexpectedOperation");
+					}
+					
+				};
+			}
+			
+		};
+	}
+	
+	/**
+	 * Wraps an Enumeration&lt;T&gt; into an Iterable&lt;T&gt;
+	 * @param iter The enumeration to wrap
+	 * @return The enumeration in an interable
+	 */
+	public static <T> Iterable<T> iterable(final Enumeration<T> iter) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+
+					@Override
+					public boolean hasNext() {
+						return iter.hasMoreElements();
+					}
+
+					@Override
+					public T next() {
+						return iter.nextElement();
 					}
 
 					@Override

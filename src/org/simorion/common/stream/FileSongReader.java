@@ -43,5 +43,17 @@ public class FileSongReader implements SongReader {
 			throw new StreamFailureException(io.getMessage());
 		}
 	}
+	
+	@Override
+	public SongFormat predictFormat() throws StreamFailureException, UnsupportedSongFormatException {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			int initialByte = fis.read();
+			fis.close();
+			return SongFormats.getFormatFor(initialByte);
+		} catch (IOException e) {
+			throw new StreamFailureException("Error reading format type");
+		}
+	}
 
 }
