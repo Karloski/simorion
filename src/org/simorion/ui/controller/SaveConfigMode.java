@@ -6,7 +6,7 @@ import org.simorion.ui.view.View;
  
 public class SaveConfigMode extends DeviceMode {
 	
-	String filename;
+	String filename = "";
 	int button;
  
     public SaveConfigMode(ModeMaster m) {
@@ -72,13 +72,13 @@ public class SaveConfigMode extends DeviceMode {
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		//filename += getLetter(x, y);
+		filename += getLetter(x, y);
 		button = y * 16 + x;
 		model.setLCDDisplay(filename);
 	}
      
 	@Override
 	void onChangedTo() {
-		model.setLCDDisplay("Save Configuration Mode");
+		model.setLCDDisplay(filename);
 	}
 }

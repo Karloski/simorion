@@ -48,20 +48,20 @@ public class ModeMaster implements Controller {
 		return instance;
 	}
 	
-	public static final DeviceMode PERFORMANCE_MODE;
-	public static final DeviceMode ON_OFF_MODE;
-	public static final DeviceMode EXAMPLE;
+	public static DeviceMode PERFORMANCE_MODE;
+	public static DeviceMode ON_OFF_MODE;
+	public static DeviceMode EXAMPLE;
 
-	public static final DeviceMode CHANGE_LAYER_MODE;
-	public static final DeviceMode SAVE_CONFIG_MODE;
-	public static final DeviceMode LOAD_CONFIG_MODE;
-	public static final DeviceMode MASTER_SLAVE_MODE;
-	public static final DeviceMode CHANGE_LOOP_POINT_MODE;
-	public static final DeviceMode CHANGE_LOOP_SPEED_MODE;
-	public static final DeviceMode CHANGE_VELOCITY_MODE;
-	public static final DeviceMode CHANGE_VOICE_MODE;
+	public static DeviceMode CHANGE_LAYER_MODE;
+	public static DeviceMode SAVE_CONFIG_MODE;
+	public static DeviceMode LOAD_CONFIG_MODE;
+	public static DeviceMode MASTER_SLAVE_MODE;
+	public static DeviceMode CHANGE_LOOP_POINT_MODE;
+	public static DeviceMode CHANGE_LOOP_SPEED_MODE;
+	public static DeviceMode CHANGE_VELOCITY_MODE;
+	public static DeviceMode CHANGE_VOICE_MODE;
 	
-	static {
+	public static void init() {
 		instance = new ModeMaster();
 		instance.register(new EngineImpl());
 		ON_OFF_MODE = new OnOffMode(instance);
@@ -75,6 +75,7 @@ public class ModeMaster implements Controller {
 		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
 		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
+		GUI.newInstance();
 		instance.changeMode(ON_OFF_MODE);
 	}
 

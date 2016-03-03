@@ -47,7 +47,7 @@ public class GUI extends JFrame {
 	
 		// Get the current view.
 		// For the constructor, this will be the ONOFF view.
-		View view = ModeMaster.getInstance().getView();
+		View view = new DefaultView();
 		
 		// Draw the Simori-ON based on the current view.
 		setTitle(view.getTitle()); // Set the title.
@@ -92,33 +92,27 @@ public class GUI extends JFrame {
 		
 		// Retrieve and apply the new outer panel data.
 		JPanel newPanel = (JPanel) view.getOuterPanel();
-		outerPanel.setBounds(newPanel.getBounds());
 		outerPanel.setBorder(newPanel.getBorder());
-		outerPanel.setLayout(newPanel.getLayout());
 		outerPanel.setBackground(newPanel.getBackground());
 		
 		// Retrieve and apply the new button panel data.
 		JPanel buttonPanel = (JPanel) view.getButtonPanel();
-		buttonPanel.setBounds(buttonPanel.getBounds());
 		buttonPanel.setBorder(buttonPanel.getBorder());
-		buttonPanel.setLayout(buttonPanel.getLayout());
 		buttonPanel.setBackground(buttonPanel.getBackground());
 		
 		// Retrieve and apply the new ON button data.
 		AbstractButton newONButton = view.getOnButton();
-		buttonOn.setBounds(newONButton.getBounds());
 		buttonOn.setBorder(newONButton.getBorder());
 		
 		// Retrieve and apply the new OK button data.
 		AbstractButton newOKButton = view.getOKButton();
-		buttonOK.setBounds(newOKButton.getBounds());
 		buttonOK.setBorder(newOKButton.getBorder());
 		
 		// Retrieve and apply the new LCD button.
 		JTextField newLCD = (JTextField) view.getLCDScreen();
-		dispLCD.setBounds(newLCD.getBounds());
 		dispLCD.setEditable(newLCD.isEditable());
 		dispLCD.setBackground(newLCD.getBackground());
+		dispLCD.setForeground(newLCD.getForeground());
 		dispLCD.setBorder(newLCD.getBorder());
 		dispLCD.setFont(newLCD.getFont());
 		
@@ -127,18 +121,9 @@ public class GUI extends JFrame {
 		for (ModeButton button : modeButtons) {			
 			for (AbstractButton b : newModeButtons) {				
 				if (button.getMode() == ((ModeButton) b).getMode()) {
-					button.setBounds(b.getBounds());
 					button.setBorder(b.getBorder());
 					break;					
 				}				
-			}			
-		}
-		
-		// Retrieve and apply the new midi button data.
-		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
-		for (int r = 0; r < 16; r++) {			
-			for (int c = 0; c < 16; c++) {
-				midiButtons[c * 16 + r].setBounds(newMidiButtons[c * 16 + r].getBounds());
 			}			
 		}
 		
@@ -153,13 +138,14 @@ public class GUI extends JFrame {
 		
 		View view = ModeMaster.getInstance().getView();
 		
+		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
 		for (int r = 0; r < 16; r++) {			
 			for (int c = 0; c < 16; c++) {
 				if (view.isLit(r, c)) {
-					midiButtons[c * 16 + r].setBackground(Color.ORANGE);
+					midiButtons[c * 16 + r].setBackground(MidiButton.LIT_COLOUR);
 				}
 				else {
-					midiButtons[c * 16 + r].setBackground(Color.WHITE);
+					midiButtons[c * 16 + r].setBackground(newMidiButtons[c * 16 + r].getBackground());
 				}
 			}			
 		}
@@ -169,6 +155,7 @@ public class GUI extends JFrame {
 	}
 
 	public static void main(String[] argv) {
+		ModeMaster.init();
 		GUI frame = getInstance();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
@@ -178,8 +165,12 @@ public class GUI extends JFrame {
 	
 	private static GUI instance;
 	
-	public static GUI getInstance() {
-		
+	public static GUI newInstance() {
+		instance = new GUI();
+		return instance;
+	}
+	
+	public static GUI getInstance() {		
 		if (instance == null) instance = new GUI();
 		
 		return instance;

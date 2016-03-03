@@ -69,16 +69,12 @@ public abstract class DeviceMode implements Controller {
 	
 	void onChangedTo() {}
 	
+	protected char getLetter(int x, int y) {
+		return (char) ((y * 16 + x) + 65);
+	}
+	
 	@Override
 	public void register(MutableModel m) {
 		model = m;
-	}
-	
-	public boolean needsUpdate() {
-		if(isDirty) {
-			isDirty = false;
-			return true;
-		}
-		return false;
 	}
 }

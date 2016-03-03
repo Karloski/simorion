@@ -27,17 +27,17 @@ import org.simorion.ui.view.ButtonFactory.ONButton;
  * @author Karl Brown, Petar Krstic
  *
  */
-public abstract class DefaultView implements View {
+public class DefaultView implements View {
 	
-	JPanel outerPanel;
-	JPanel buttonPanel;
+	protected JPanel outerPanel;
+	protected JPanel buttonPanel;
 	
-	ONButton buttonOn;
-	OKButton buttonOK;
-	JTextField dispLCD;
+	protected ONButton buttonOn;
+	protected OKButton buttonOK;
+	protected JTextField dispLCD;
 	
-	MidiButton[] midiButtons;
-	List<AbstractButton> modeButtons;
+	protected MidiButton[] midiButtons;
+	protected List<AbstractButton> modeButtons;
 
 	/** {@inheritDoc} */
 	@Override
@@ -48,12 +48,12 @@ public abstract class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Integer> getSize() {
-		return new Pair<Integer, Integer>(607, 632);
+		return new Pair<Integer, Integer>(605, 630);
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public Pair<Integer, Integer> getMatrixSize() {    		
+	public Pair<Integer, Integer> getMatrixSize() {
 		// Return a new pair representing the size of this view's button matrix.
 		return new Pair<Integer, Integer>(16, 16);
 	}
@@ -65,7 +65,7 @@ public abstract class DefaultView implements View {
 		// Create and define the outer JPanel.
 		outerPanel = new JPanel();
 		
-		outerPanel.setBounds(1, 1, 598, 600);
+		outerPanel.setBounds(1, 1, 600, 625);
 		outerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		outerPanel.setLayout(null);
 		outerPanel.setBackground(Color.white);
@@ -196,6 +196,7 @@ public abstract class DefaultView implements View {
 			MidiButton b = ButtonFactory.createButton(k % 16, j);
 			
 			b.setBounds(2 + (30 * (k % 16) - 1), 452 - (30 * j), 30, 30);
+			b.setBackground(Color.white);
 			
 			midiButtons[k] = b;
 		}

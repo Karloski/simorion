@@ -79,7 +79,6 @@ public class ButtonFactory {
 		public static final int radius = 15;
 					 
 		public CircularButton() {
-			setBackground(Color.white);
 			setContentAreaFilled(false);
 		}
 			 
@@ -96,7 +95,6 @@ public class ButtonFactory {
 	public static class CircularTextButton extends JButton {
 		// Mode buttons and the ON/OK contain text whereas MidiButtons do not
 		CircularTextButton(String s) {
-			setBackground(Color.white);
 			setContentAreaFilled(false);
 			setFont(new Font("Cambria", Font.PLAIN, 21));
 			setText(s);
@@ -118,6 +116,8 @@ public class ButtonFactory {
 		private int x;
 		private int y;
 		
+		public static Color LIT_COLOUR = Color.ORANGE;
+		
 		/**
 		 * @return x - the x location in the grid of the button
 		 */
@@ -130,7 +130,6 @@ public class ButtonFactory {
 		
 		static int buttonPressed = 0;
 		static long timePressed;
-		static long timeEntered;
 		static boolean isLit = false;
 		static byte rapidPaint = 0; // 0 = Unknown, 1 = false, 2 = true.
 		
@@ -155,6 +154,7 @@ public class ButtonFactory {
 				public void mouseReleased(MouseEvent me) {
 					buttonPressed = 0;
 					rapidPaint = 0;
+					timePressed = 0;
 					isLit = false;
 				}
 				
