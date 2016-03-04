@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import org.simorion.common.MutableLayer;
 import org.simorion.common.MutableRow;
+import org.simorion.common.Song;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
@@ -76,29 +77,25 @@ public class DummyModel implements MutableModel {
 
 		@Override
 		public String getLCDMessage() {
-			// TODO Auto-generated method stub
-			return null;
+			return "";
 		}
 
 
 		@Override
 		public void setLoopPoint(byte loopPoint) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 
 
 		@Override
 		public void setVelocity(byte velocity) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 
 
 		@Override
 		public void setVoice(Voice v) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 	}
 	
@@ -157,7 +154,7 @@ public class DummyModel implements MutableModel {
 
 		@Override
 		public int getLit() {
-			// TODO Auto-generated method stub
+			//Do nothing
 			return 0;
 		}
 		
@@ -252,19 +249,28 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public void setTopmostLayer(int layerID) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
 	public void setLCDDisplay(String text) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
 	public String getLCDDisplay() {
 		return "mock";
+	}
+
+	@Override
+	public int getInstanceID() {
+		//Do nothing
+		return 0;
+	}
+	
+	@Override
+	public Song getSong() {
+		return null;
 	}
 	
 }

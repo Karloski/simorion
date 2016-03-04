@@ -17,10 +17,23 @@ public interface SongReader {
 	 * Read data into a borrowed SongBuilder instance, per the given format
 	 * @param format The serialisation format used
 	 * @param song The borrowed songbuilder used to load the song
-	 * @throws IOException In case of any IO failure, e.g. FileNotFound
+	 * @throws StreamFailureException if any error occurs during streaming
 	 * @throws UnsupportedSongFormatException when leading byte is different to formatID
 	 */
 	public void readTo(final SongFormat format, final SongBuilder song)
 			throws StreamFailureException, UnsupportedSongFormatException, InsufficientSongDataException;
-	//TODO: Specific exception classes
+	
+	/**
+	 * Gets the song format indicated by the initial byte in the stream. Blocks
+	 * until a byte is provided. May cache the response. 
+	 * @return The SongFormat corresponding to the first byte in the stream 
+	 * @throws StreamFailureException In case of any IO failure
+	 * @throws UnsupportedSongFormatException If the format byte is not recognised
+	 */
+	public SongFormat predictFormat() throws StreamFailureException, UnsupportedSongFormatException;
+	
+	/**
+	 * Reset any caching that has been performed. Best to call this before using.
+	 */
+	public void reset(); 
 }
