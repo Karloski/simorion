@@ -48,7 +48,7 @@ public class ChangeVoiceMode extends DeviceMode {
     		if (voice == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return (voice - 1) / 16 == x;
+    		return x - ((voice - 1) % 16) == 0;
     	}
     	
     	/** {@inheritDoc} */
@@ -59,7 +59,7 @@ public class ChangeVoiceMode extends DeviceMode {
     		if (voice == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return y - ((voice - 1) % 16) == 0;
+    		return (voice - 1) / 16 == y;
     	}
     	
     	/** {@inheritDoc} */
@@ -93,7 +93,7 @@ public class ChangeVoiceMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		voice = model.getCurrentLayer().getVoice().getMidiVoice();
-		model.setLCDDisplay(model.getCurrentLayer().getVoice().getName()); 				// @author Edmund, Petar
+		model.setLCDDisplay("Change Voice Mode"); 				// @author Edmund, Petar
 	}
      
 }

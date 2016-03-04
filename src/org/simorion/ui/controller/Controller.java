@@ -34,7 +34,9 @@ public interface Controller {
 	
 	public void onOnOffButtonPress(MouseEvent e);
 	
-	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow);
+	public void onMatrixButtonPress(MouseEvent e, int x, int y);
+
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit);
 	
 	
 }
