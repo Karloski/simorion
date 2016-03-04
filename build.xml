@@ -7,7 +7,7 @@
     <property environment="env"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.7"/>
+    <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
     <path id="simorion.classpath">
         <pathelement location="SimoriON/bin"/>
@@ -15,7 +15,7 @@
     <target name="init">
         <mkdir dir="SimoriON/bin"/>
         <copy includeemptydirs="false" todir="SimoriON/bin">
-            <fileset dir="SimoriON/src">
+            <fileset dir="src">
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -37,7 +37,6 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="SimoriON/bin" includeantruntime="false"
         	source="${source}" target="${target}" excludes="**/*Test.java">
-            <src path="SimoriON/src"/>
             <src path="src"/>
             <classpath refid="simorion.classpath"/>
         </javac>
