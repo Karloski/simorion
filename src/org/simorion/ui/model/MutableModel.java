@@ -1,6 +1,7 @@
 package org.simorion.ui.model;
 
 import org.simorion.common.MutableLayer;
+import org.simorion.common.Song;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
@@ -88,4 +89,8 @@ public interface MutableModel extends ImmutableModel {
 	 */
 	public void setLCDDisplay(String text);
 	
+	/**
+	 * Gets the current song as a Song object
+	 */
+	public Song getSong();
 }
