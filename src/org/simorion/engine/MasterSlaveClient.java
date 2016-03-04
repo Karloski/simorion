@@ -1,12 +1,9 @@
 package org.simorion.engine;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Arrays;
+import java.util.Random;
 
 import org.simorion.common.ImmutableSong;
 import org.simorion.common.stream.NetworkSongReaderWriter;
@@ -15,17 +12,32 @@ import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.util.Util;
 
-
+/**
+ * Thread that finds other SimoriONs on the local area network in the range
+ * 192.168.0.0/24 and sends them the current song loaded.
+ * 
+ * Does not yet have any error reporting on exception, TODO
+ * 
+ * @author Edmund Smith
+ */
 public class MasterSlaveClient extends Thread {
 
-	final ImmutableSong song;
-	final int instanceID;
+	private final ImmutableSong song;
+	private final int instanceID;
 	
+	/**
+	 * Constructs and initialises the fields ready for the run method
+	 * @param song
+	 * @param instanceID
+	 */
 	public MasterSlaveClient(final ImmutableSong song, final int instanceID) {
 		this.song = song;
 		this.instanceID = instanceID;
 	}
 	
+	/**
+	 * Calls sendMasterToSlave on the fields song and instanceID
+	 */
 	public void run() {
 		try {
 			sendMasterToSlave(song, instanceID);
@@ -34,10 +46,21 @@ public class MasterSlaveClient extends Thread {
 		}
 	}
 	
+	/**
+	 * Connects to a LAN SimoriON and sends it the current song using the
+	 * preferred song format.
+	 * @param song The song to send
+	 * @param instanceID The instanceID of this engine, to avoid sending the
+	 * song to itself
+	 * @throws StreamFailureException
+	 */
 	public static void sendMasterToSlave(final ImmutableSong song, final int instanceID) throws StreamFailureException {
 		try {
+			//Start searching from a random offset to avoid having one device
+			//always being chosen
+			int start = new Random().nextInt(256);
 			for (int i = 0; i < 256; i++) {
-				String address = "192.168.0." + i;
+				String address = "192.168.0." + ((start+i) % 256);
 				if (InetAddress.getByName(address).isReachable(50)) {
 					Socket slave = null;
 					try {

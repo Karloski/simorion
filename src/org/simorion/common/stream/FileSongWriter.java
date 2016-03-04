@@ -29,6 +29,7 @@ public class FileSongWriter implements SongWriter {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(format.serialise(s));
+			fos.close();
 		} catch (FileNotFoundException fnf) {
 			throw new StreamFailureException(fnf.getMessage());
 		} catch (IOException io) {
