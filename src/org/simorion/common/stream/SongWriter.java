@@ -1,7 +1,5 @@
 package org.simorion.common.stream;
 
-import java.io.IOException;
-
 import org.simorion.common.ImmutableSong;
 
 /**
@@ -16,8 +14,8 @@ public interface SongWriter {
 	 * Writes the Song to the writer's destination, as per the given format 
 	 * @param format The serialisation format to use
 	 * @param s The song to serialse
-	 * @throws IOException In case of IO failure, e.g. FileNotFound
+	 * @throws StreamFailureException In case of IO failure, e.g. FileNotFound
 	 */
 	public void write(final SongFormat format, final ImmutableSong s) throws StreamFailureException;
-	//TODO: specific exception classes
+	
 }

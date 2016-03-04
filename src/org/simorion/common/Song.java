@@ -9,7 +9,6 @@ import java.util.Collection;
  * @author Edmund Smith
  */
 public interface Song extends ImmutableSong {
-//TODO: Add more methods as Song is fleshed out
 	
 	/**
 	 * Loads a song into this object from a prepared builder object

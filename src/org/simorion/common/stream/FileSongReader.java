@@ -30,13 +30,13 @@ public class FileSongReader implements SongReader {
 		byte[] data = new byte[(int)file.length()];
 		try {
 			FileInputStream fis = new FileInputStream(file);
-			if(fis.read(data) < file.length()) {
-				fis.close();
-				throw new StreamFailureException("Failed to read the whole file"); //TODO: Can this happen?
-			} else {
-				fis.close();
-				format.deserialise(song, data);
-			}
+			int bytesRead = 0;
+			
+			while((bytesRead += fis.read(data, bytesRead, data.length - bytesRead)) != data.length) {}
+			
+			fis.close();
+			format.deserialise(song, data);
+			
 		} catch(FileNotFoundException fnf) {
 			throw new StreamFailureException(fnf.getMessage());
 		} catch (IOException io) {

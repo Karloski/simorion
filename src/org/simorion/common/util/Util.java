@@ -101,6 +101,7 @@ public final class Util {
 	 * @param it The iterable to find the size of
 	 * @return The number of elements in it
 	 */
+	@SuppressWarnings("unused")
 	public static <T> int count(final Iterable<T> it) {
 		int count = 0;
 		for(T t : it) count++;

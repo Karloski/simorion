@@ -25,7 +25,7 @@ public class UtilTest {
 	public void testZipZeroLengths() {
 		Iterable<Integer> input1 = Arrays.asList();
 		Iterable<Integer> input2 = Arrays.asList();
-		for(Util.Pair<Integer, Integer> pair : zip(input1, input2)) {
+		for(@SuppressWarnings("unused") Util.Pair<Integer, Integer> pair : zip(input1, input2)) {
 			fail("Should not iterate");
 		}
 		assertEquals(Arrays.asList(), input1);
