@@ -3,13 +3,12 @@ package org.simorion.ui.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.MouseInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 
-import org.simorion.ui.controller.DeviceMode;
 import org.simorion.ui.controller.ModeMaster;
 
 /**
@@ -33,8 +32,16 @@ public class ButtonFactory {
 	 * @param y The y coordinate.
 	 * @return A new instance of a MIDI button with cooridnate x, y.
 	 */
-	public static MidiButton createButton(int x, int y) {		
-		return new MidiButton(x, y);
+	public static MidiButton createButton(int x, int y) {
+		
+		MidiButton b = new MidiButton(x, y);
+		
+		b.setBounds(2 + (30 * (x % 16) - 1), 452 - (30 * y), 30, 30);
+		b.setBackground(Color.white);
+		b.setBorder(DefaultView.UNLIT_BORDER);
+		
+		return b;
+		
 	}
 	
 	/**
@@ -44,7 +51,41 @@ public class ButtonFactory {
 	 * @return A new instance of a MODE button for mode {@code mode}.
 	 */
 	public static ModeButton createButton(String text, Mode mode) {
-		return new ModeButton(text, mode);
+		
+		ModeButton b = new ModeButton(text, mode);
+		
+		switch (mode) {
+		case L1:
+			b.setBounds(5, 84, 50, 50);
+			break;
+		case L2:
+			b.setBounds(5, 174, 50, 50);
+			break;
+		case L3:
+			b.setBounds(5, 264, 50, 50);
+			break;
+		case L4:
+			b.setBounds(5, 354, 50, 50);
+			break;
+		case R1:
+			b.setBounds(545, 84, 50, 50);
+			break;
+		case R2:
+			b.setBounds(545, 174, 50, 50);
+			break;
+		case R3:
+			b.setBounds(545, 264, 50, 50);
+			break;
+		case R4:
+			b.setBounds(545, 354, 50, 50);
+			break;
+		default:
+			break;
+		}
+		
+		b.setBorder(DefaultView.UNLIT_BORDER);
+		
+		return b;
 	}
 	
 	/**
@@ -83,7 +124,7 @@ public class ButtonFactory {
 		}
 			 
 		protected void paintBorder(Graphics g) {
-			g.setColor(Color.black);
+			g.setColor(((LineBorder) getBorder()).getLineColor());
 			g.drawOval(0, 0, radius*2-1, radius*2-1);
 		}
 			 
@@ -101,7 +142,7 @@ public class ButtonFactory {
 		}
 			 
 		protected void paintBorder(Graphics g) {
-			g.setColor(Color.black);
+			g.setColor(((LineBorder) getBorder()).getLineColor());
 			g.drawOval(0, 0, 49, 49);
 		}
 	}
@@ -131,7 +172,7 @@ public class ButtonFactory {
 		static int buttonPressed = 0;
 		static long timePressed;
 		static boolean isLit = false;
-		static byte rapidPaint = 0; // 0 = Unknown, 1 = false, 2 = true.
+		static byte rapidPaint = 0; // 0 = Unknown, 1 = true, 2 = false.
 		
 		MidiButton(final int xLoc, final int yLoc) {
 			// When instantiating each button in the grid they are all given 
