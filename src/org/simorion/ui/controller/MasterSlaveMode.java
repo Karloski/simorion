@@ -1,6 +1,8 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
+import org.simorion.common.stream.StreamFailureException;
+import org.simorion.engine.MasterSlaveClient;
 import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
@@ -26,6 +28,12 @@ public class MasterSlaveMode extends DeviceMode {
      */
     private class MasterSlaveView extends DefaultView {
     	// No implementation.         
+    }
+    
+    void onChangedTo() {
+    	
+    	new MasterSlaveClient(model.getSong(), model.getInstanceID()).start();
+    	changeMode(ModeMaster.PERFORMANCE_MODE);
     }
      
     public View getView() {

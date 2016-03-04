@@ -44,6 +44,7 @@ public class FileSongReader implements SongReader {
 		}
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public SongFormat predictFormat() throws StreamFailureException, UnsupportedSongFormatException {
 		try {
@@ -55,5 +56,9 @@ public class FileSongReader implements SongReader {
 			throw new StreamFailureException("Error reading format type");
 		}
 	}
+	
+	/** Does nothing, as there is no caching in FileSongReader */
+	@Override
+	public void reset() {}
 
 }

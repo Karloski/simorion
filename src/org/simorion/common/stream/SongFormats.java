@@ -15,7 +15,10 @@ public class SongFormats {
 	static SongFormat getFormatFor(int initialByte) throws UnsupportedSongFormatException {
 		if(initialByte > 0 && initialByte < SongFormats.formats.length)
 			return SongFormats.formats[initialByte];
-		else throw new UnsupportedSongFormatException("Error reading song with format "+initialByte);
+		else {
+			
+			throw new UnsupportedSongFormatException("Error reading song with format "+initialByte);
+		}
 	}
 	
 }

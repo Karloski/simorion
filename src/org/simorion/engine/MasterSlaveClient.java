@@ -13,58 +13,57 @@ import org.simorion.common.stream.NetworkSongReaderWriter;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
+import org.simorion.common.util.Util;
 
 
 public class MasterSlaveClient extends Thread {
 
 	final ImmutableSong song;
+	final int instanceID;
 	
-	public MasterSlaveClient(final ImmutableSong song) {
+	public MasterSlaveClient(final ImmutableSong song, final int instanceID) {
 		this.song = song;
+		this.instanceID = instanceID;
 	}
 	
-	public static void sendMasterToSlave(final ImmutableSong song) {
+	public void run() {
 		try {
-			for(int i = 0; i < 256; i++) {
-				String address = "192.168.0."+i;
-				if(InetAddress.getByName(address).isReachable(50)) {
-					System.out.println("Found "+address+" on the network");
-					try {
-						sendSongTo(InetAddress.getByName(address), song);
-						return;
-					} catch(SocketException e) { System.out.println("Connection refused on "+address);
-					//e.printStackTrace();
-					} catch(Exception e) { e.printStackTrace(); }
-				}
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			sendMasterToSlave(song, instanceID);
+		} catch (StreamFailureException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private static void sendSongTo(InetAddress serverAddr, final ImmutableSong song) throws IOException, StreamFailureException {
-		Socket conn = new Socket(serverAddr, MasterSlaveServer.PORT);
-		SongWriter sw = new NetworkSongReaderWriter(conn);
-		sw.write(SongFormats.PREFERRED_FORMAT, song);
-		conn.close();
-	}
-	
-	private static final byte[] probeBuffer = new byte[]{(byte) 0xff};
-	private static void sendSongToUDP(InetAddress serverAddr) throws IOException {
-		DatagramSocket ds = null;
+	public static void sendMasterToSlave(final ImmutableSong song, final int instanceID) throws StreamFailureException {
 		try {
-		ds = new DatagramSocket(MasterSlaveServer.PORT-1, serverAddr);
-		System.out.println("Sending "+Arrays.toString(probeBuffer)+" to "+serverAddr.getHostAddress());
-		ds.send(new DatagramPacket(probeBuffer, 1, serverAddr, MasterSlaveServer.PORT));
-		System.out.println("Sent to "+serverAddr.getHostName());
+			for (int i = 0; i < 256; i++) {
+				String address = "192.168.0." + i;
+				if (InetAddress.getByName(address).isReachable(50)) {
+					Socket slave = null;
+					try {
+						slave = new Socket(InetAddress.getByName(address), MasterSlaveServer.PORT);
+						byte[] buf = new byte[4];
+						slave.getInputStream().read(buf);
+						int otherInstanceID = Util.toInt(buf);
+						if(instanceID == otherInstanceID) {
+							continue;
+						} else {
+							SongWriter sw = new NetworkSongReaderWriter(slave);
+							sw.write(SongFormats.PREFERRED_FORMAT, song);
+							return;
+						}
+					} catch (Exception e) {
+						continue;
+					} finally {
+						if(slave != null) slave.close();
+					}
+				}
+			}
 		} catch (IOException e) {
-			throw e;
-		} finally {
-			if(ds != null) ds.close();
+			e.printStackTrace();
+			throw new StreamFailureException("Connection failed");
 		}
+		throw new StreamFailureException("No other SimoriON found");
 	}
-	
-	public void run() { sendMasterToSlave(song); }
-	
+		
 }

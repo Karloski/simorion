@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import org.simorion.common.MutableLayer;
 import org.simorion.common.MutableRow;
+import org.simorion.common.Song;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
@@ -265,6 +266,17 @@ public class DummyModel implements MutableModel {
 	@Override
 	public String getLCDDisplay() {
 		return "mock";
+	}
+
+	@Override
+	public int getInstanceID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public Song getSong() {
+		return null;
 	}
 	
 }
