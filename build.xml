@@ -5,15 +5,22 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. --><project basedir="." default="build" name="simorion">
     <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
     <path id="simorion.classpath">
-        <pathelement location="bin"/>
+        <pathelement location="SimoriON/bin"/>
     </path>
     <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
+        <mkdir dir="SimoriON/bin"/>
+        <copy includeemptydirs="false" todir="SimoriON/bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="SimoriON/bin">
             <fileset dir="src">
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
@@ -21,17 +28,23 @@
         </copy>
     </target>
     <target name="clean">
-        <delete dir="bin"/>
+        <delete dir="SimoriON/bin"/>
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="SimoriON/bin" includeantruntime="false"
+        	source="${source}" target="${target}" excludes="**/*Test.java">
             <src path="src"/>
             <classpath refid="simorion.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="GUI">
+        <java classname="org.simorion.ui.view.GUI" failonerror="true" fork="yes">
+            <classpath refid="simorion.classpath"/>
+        </java>
+    </target>
 </project>

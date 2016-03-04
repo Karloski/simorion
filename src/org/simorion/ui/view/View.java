@@ -4,6 +4,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 
 import org.simorion.common.util.Util.Pair;
+import org.simorion.ui.view.ButtonFactory.MidiButton;
 
 /**
  * View interface which defines methods for a view for the Simori-On.
@@ -67,11 +68,76 @@ public interface View {
 	 * An iterable list of all the MIDI buttons for this view.
 	 * @return An iterable list of all the MIDI buttons for this view.
 	 */
-	Iterable<AbstractButton> getMidiButtons();
+	AbstractButton[] getMidiButtons();
 	
 	/**
 	 * This view's implementation of the LCD Screen.
 	 * @return This view's implementation of the LCD Screen.
 	 */
 	JComponent getLCDScreen();
+	
+	/**
+	 * Retrieves and returns whether or not the button at coordinate {@code x}, {@code y} is lit.
+	 * @param x The x coordinate of the button.
+	 * @param y The y coordinate of the button.
+	 * @return True if lit, false otherwise.
+	 */
+	public boolean isLit(int x, int y);
+
+	/**
+	 * Determines if the row of buttons {@code row} is on are lit. 
+	 * @param y The row to check.
+	 * @return True if all buttons are lit, false otherwise.
+	 */
+	public boolean isRowLit(int x);
+
+	/**
+	 * Determines if the column of buttons {@code column} is on are lit. 
+	 * @param x The column to check.
+	 * @return True if all buttons are lit, false otherwise.
+	 */
+	public boolean isColumnLit(int y);
+
+	/**
+	 * Retrieves and returns the current textual output of the LCD.
+	 * @return The textual output of the LCD.
+	 */
+	public String getLCDMessage();
+
+	/**
+	 * Retrieves and returns the MIDI ID of the currently applied instrument.
+	 * @return The MIDI ID of the currently applied instrument for this view.
+	 */
+	public int getVoiceId();
+
+	/**
+	 * Retrieves and returns the name of the currently applied instrument.
+	 * @return The name of the currently applied instrument for this view
+	 */
+	public String getVoiceName();
+
+	/**
+	 * Retrieves and returns the ID of the currently applied layer.
+	 * @return The ID of the currently applied layer for this view.
+	 */
+	public int getCurrentLayerId();
+
+	/**
+	 * Retrieves and returns the current loop point.
+	 * @return The current loop point for this view.
+	 */
+	public int getLoopPoint();
+
+	/**
+	 * Retrieves and returns the current velocity for notes played.
+	 * @return The current velocity for notes played on this view.
+	 */
+	public int getVelocity();
+	
+	/**
+	 * Retrieves and returns the current note for row {@code y}.
+	 * @param y The row to check.
+	 * @return The current note for row {@code y}
+	 */
+	public byte getNote(int y);
 }

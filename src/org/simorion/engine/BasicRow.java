@@ -18,12 +18,12 @@ public class BasicRow implements MutableRow {
 	 */
 	byte note;
 	
-	BasicRow() {
+	public BasicRow() {
 		lights = 0;
 	}
 
 	public boolean isLit(int cell) {
-		return (lights & (1 << cell)) == 1;
+		return (lights & (1 << cell)) != 0;
 	}
 
 	/**
@@ -82,10 +82,31 @@ public class BasicRow implements MutableRow {
 		lights &= and;
 		lights |= or;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void applyXor(int xor) {
+		lights ^= xor;
+	}
 
 	@Override
 	public int cellCount() {
 		return 16;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof BasicRow) {
+			BasicRow br = (BasicRow) o;
+			return br.lights == lights && br.note == note;
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Row { "+Integer.toBinaryString(lights) + ", note = " + note + "}";
 	}
 	
 }

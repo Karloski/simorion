@@ -144,6 +144,11 @@ public class DummyModel implements MutableModel {
 		public void applyMask(int and, int or) {
 			//Do nothing
 		}
+		
+		@Override
+		public void applyXor(int xor) {
+			//Do nothing
+		}
 
 		@Override
 		public int cellCount() {
@@ -235,7 +240,6 @@ public class DummyModel implements MutableModel {
 	public void toggleLit(int layer, int xLoc, int yLoc) {
 		layers[layer].getRow(yLoc).toggleLit(xLoc);
 	}
-
 	@Override
 	public void sendToStream(SongWriter stream, SongFormat format) {
 		//Ignore
@@ -250,6 +254,17 @@ public class DummyModel implements MutableModel {
 	public void setTopmostLayer(int layerID) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setLCDDisplay(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getLCDDisplay() {
+		return "mock";
 	}
 	
 }

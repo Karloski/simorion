@@ -1,8 +1,9 @@
 package org.simorion.common.stream;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 
 import org.simorion.common.SongBuilder;
 
@@ -25,9 +26,22 @@ public class FileSongReader implements SongReader {
 	
 	/** {@inheritDoc} */
 	@Override
-	public void readTo(SongFormat format, SongBuilder song) throws IOException {
-		byte[] data = Files.readAllBytes(file.toPath());
-		format.deserialise(song, data);
+	public void readTo(SongFormat format, SongBuilder song) throws UnsupportedSongFormatException, InsufficientSongDataException, StreamFailureException {
+		byte[] data = new byte[(int)file.length()];
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			if(fis.read(data) < file.length()) {
+				fis.close();
+				throw new StreamFailureException("Failed to read the whole file"); //TODO: Can this happen?
+			} else {
+				fis.close();
+				format.deserialise(song, data);
+			}
+		} catch(FileNotFoundException fnf) {
+			throw new StreamFailureException(fnf.getMessage());
+		} catch (IOException io) {
+			throw new StreamFailureException(io.getMessage());
+		}
 	}
 
 }

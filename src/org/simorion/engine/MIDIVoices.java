@@ -8,8 +8,14 @@ import org.simorion.common.Voice;
 
 /**
  * One stop shop for associating MIDI voice bytes with a Voice object
+ * 
+ * When calling getVoice() you can retrieve the voice number and the instrument name
+ * Matrix buttons from 0,0 - 15,7 are assigned to the midi instruments (128)
+ * Buttons from 0,8 - 15, 11 are assigned to the percussion instruments
  *
+ * @author Petar Krstic
  */
+ 
 public class MIDIVoices {
 	
 	// Drum sounds range from 35-81
@@ -26,21 +32,47 @@ public class MIDIVoices {
 										  "Claves", "High Wood Block", "Low Wood Block", "Mute Cuica",
 										  "Open Cuica", "Mute Triangle", "Open Triangle" };
 		
+<<<<<<< HEAD
 		
+=======
+	
+	/**
+	 * @return synthesizer 
+	 * This sets up the synthesizer from which the soundbank can be loaded
+	 * From here you can get the names of instruments given their voice number 
+	 */
+>>>>>>> refs/remotes/origin/master
 	public static Synthesizer getSynthesizer() {
 		Synthesizer synthesizer = null;
 		try {
 			synthesizer = MidiSystem.getSynthesizer();
+<<<<<<< HEAD
 			synthesizer.open();
+=======
+>>>>>>> refs/remotes/origin/master
 		} catch(Exception ex) {
 			System.out.println(ex); System.exit(1);
 		}
 		return synthesizer;
 	}
 	
+<<<<<<< HEAD
 	public static final Voice getVoice(int i) {
 		System.out.println(getSynthesizer().getDefaultSoundbank().getInstruments()[3].getName());
 		if (i < 128) {
+=======
+	/**
+	 * @param int i - a voice number depending on which matrix button was pressed
+	 * @return Voice - contains it's name and voice number
+	 * 
+	 * This code distinguishes which instrument should be returned when a matrix button is pressed
+	 */
+	public static final Voice getVoice(final int i) {
+		// Passed in is (16*y + x + 1) therefore if i is less than 129 it is a midi instrument
+		// If i is between 129-175 then it is a percussion instrument
+		// 176-256 is not assigned an instrument
+		if (i <= 128) {
+>>>>>>> refs/remotes/origin/master
 			return new Voice(){
 
 				@Override
@@ -50,26 +82,60 @@ public class MIDIVoices {
 
 				@Override
 				public String getName() {
+<<<<<<< HEAD
 					return getSynthesizer().getDefaultSoundbank().getInstruments()[i].getName();
+=======
+					return getSynthesizer().getDefaultSoundbank().getInstruments()[i-1].getName().trim();
+>>>>>>> refs/remotes/origin/master
 				}
 				
 			};
 		}
+<<<<<<< HEAD
 		else if(i < 174) {
 			return new Voice(){
 				@Override
 				public int getMidiVoice() {
 					return i-93;
+=======
+		else if(i < 176) {
+			return new Voice(){
+				@Override
+				public int getMidiVoice() {
+					return i;
+>>>>>>> refs/remotes/origin/master
 				}
 
 				@Override
 				public String getName() {
+<<<<<<< HEAD
 					return allDrumSounds[i-128];
 				}
 			};
 		}
 		
 		return null;
+=======
+					return allDrumSounds[i-129];
+				}
+			};
+		}
+		else {
+			// Matrix buttons which do not have voices assigned to them 
+			return new Voice(){
+				@Override
+				public int getMidiVoice() {
+					return -1;
+				}
+
+				@Override
+				public String getName() {
+					return "No Instrument";
+					// The LCD display will be set to this so the user can see the error
+				}
+			};
+		}
+>>>>>>> refs/remotes/origin/master
 	}
 	
 }

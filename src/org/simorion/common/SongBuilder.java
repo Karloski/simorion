@@ -84,6 +84,7 @@ public class SongBuilder {
 	public static class AddLayer {
 		
 		private final SongBuilder parent;
+		private byte bpm;
 		
 		private List<AddRow> rows;
 		
@@ -153,6 +154,14 @@ public class SongBuilder {
 		
 		public SongBuilder done() {
 			return parent; 
+		}
+
+		public void setBPM(byte b) {
+			bpm = b;
+		}
+		
+		public byte getBPM() {
+			return bpm;
 		}
 	}
 	

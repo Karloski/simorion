@@ -18,7 +18,9 @@ public interface SongReader {
 	 * @param format The serialisation format used
 	 * @param song The borrowed songbuilder used to load the song
 	 * @throws IOException In case of any IO failure, e.g. FileNotFound
+	 * @throws UnsupportedSongFormatException when leading byte is different to formatID
 	 */
-	public void readTo(final SongFormat format, final SongBuilder song) throws IOException;
+	public void readTo(final SongFormat format, final SongBuilder song)
+			throws StreamFailureException, UnsupportedSongFormatException, InsufficientSongDataException;
 	//TODO: Specific exception classes
 }

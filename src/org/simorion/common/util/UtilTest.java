@@ -1,9 +1,7 @@
 package org.simorion.common.util;
 
 import static org.junit.Assert.*;
-import static org.simorion.common.util.Util.bitstring;
-import static org.simorion.common.util.Util.count;
-import static org.simorion.common.util.Util.zip;
+import static org.simorion.common.util.Util.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -63,7 +61,7 @@ public class UtilTest {
 		assertEquals(32, count(bitstring(0)));
 		assertEquals(64, count(bitstring(0L)));
 		
-		int example = 0b01010001110101001011010011001011;
+		int example = 0x51D4B4CB;//0b01010001110101001011010011001011;
 		Iterator<Boolean> it = bitstring(example).iterator();
 		
 		assertTrue(it.next());
@@ -77,6 +75,21 @@ public class UtilTest {
 		assertFalse(it.next());
 		assertFalse(it.next());
 		//etc.
+	}
+	
+	@Test
+	public void testArrayIterable() {
+		Integer[] ints = {0,1,2,3,4,5};
+		int cmp = 0;
+		for(Integer i : Util.iterable(ints)) {
+			assertEquals(cmp++, (int)i);
+		}
+		
+		Integer[] ints2 = {5,4,3,2,1,0};
+		for(Pair<Integer, Integer> pair : zip(iterable(ints), iterable(ints2))) {
+			assertEquals(5, pair.left + pair.right);
+		}
+		
 	}
 
 }

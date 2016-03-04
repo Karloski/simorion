@@ -2,14 +2,16 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.ImmutableModel;
+import org.simorion.engine.EngineImpl;
+import org.simorion.ui.model.MutableModel;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
 
 public class ModeMaster implements Controller {
 	
 	private static ModeMaster instance;
 	
-	private ImmutableModel model;
+	private MutableModel model;
 	
 	private DeviceMode deviceMode;
 	
@@ -23,12 +25,16 @@ public class ModeMaster implements Controller {
 	}
 
 	@Override
-	public void register(ImmutableModel model) {
+	public void register(MutableModel model) {
 		this.model = model;
 	}
 
 	public void changeMode(DeviceMode newMode) {
 		deviceMode = newMode;
+		deviceMode.register(model);
+		deviceMode.onChangedTo();
+		GUI.getInstance().redraw();
+		System.out.println("Mode changed to "+newMode.getClass().getName());
 	}
 	
 	public static ModeMaster getInstance() {
@@ -42,21 +48,22 @@ public class ModeMaster implements Controller {
 		return instance;
 	}
 	
-	public static final DeviceMode PERFORMANCE_MODE;
-	public static final DeviceMode ON_OFF_MODE;
-	public static final DeviceMode EXAMPLE;
+	public static DeviceMode PERFORMANCE_MODE;
+	public static DeviceMode ON_OFF_MODE;
+	public static DeviceMode EXAMPLE;
 
-	public static final DeviceMode CHANGE_LAYER_MODE;
-	public static final DeviceMode SAVE_CONFIG_MODE;
-	public static final DeviceMode LOAD_CONFIG_MODE;
-	public static final DeviceMode MASTER_SLAVE_MODE;
-	public static final DeviceMode CHANGE_LOOP_POINT_MODE;
-	public static final DeviceMode CHANGE_LOOP_SPEED_MODE;
-	public static final DeviceMode CHANGE_VELOCITY_MODE;
-	public static final DeviceMode CHANGE_VOICE_MODE;
+	public static DeviceMode CHANGE_LAYER_MODE;
+	public static DeviceMode SAVE_CONFIG_MODE;
+	public static DeviceMode LOAD_CONFIG_MODE;
+	public static DeviceMode MASTER_SLAVE_MODE;
+	public static DeviceMode CHANGE_LOOP_POINT_MODE;
+	public static DeviceMode CHANGE_LOOP_SPEED_MODE;
+	public static DeviceMode CHANGE_VELOCITY_MODE;
+	public static DeviceMode CHANGE_VOICE_MODE;
 	
-	static {
+	public static void init() {
 		instance = new ModeMaster();
+		instance.register(new EngineImpl());
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
 		PERFORMANCE_MODE = new PerformanceMode(instance); //TODO
@@ -68,6 +75,7 @@ public class ModeMaster implements Controller {
 		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
 		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
+		GUI.newInstance();
 		instance.changeMode(ON_OFF_MODE);
 	}
 
@@ -94,6 +102,11 @@ public class ModeMaster implements Controller {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
 		deviceMode.onMatrixButtonPress(e, buttonColumn, buttonRow);
+	}
+
+	@Override
+	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
+		deviceMode.onMatrixButtonPress(e, x, y, lit);
 	}
 	
 }

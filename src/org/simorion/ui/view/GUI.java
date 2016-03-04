@@ -1,46 +1,58 @@
 package org.simorion.ui.view;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.simorion.ui.controller.ModeMaster;
+import org.simorion.ui.view.ButtonFactory.MidiButton;
+import org.simorion.ui.view.ButtonFactory.ModeButton;
+import org.simorion.ui.view.ButtonFactory.OKButton;
+import org.simorion.ui.view.ButtonFactory.ONButton;
 
 /**
  * GUI for the SimoriOn
  * all buttons are created and added - all containing action listeners
  * 
- * @author Petar Krstic
+ * @author Karl Brown, Petar Krstic
  * @version 2.0
  */
-
 public class GUI extends JFrame { 
 	// All the grid buttons are MidiButtons(extended JButton)
 	// Initialise the array to hold them all
-	AbstractButton[] allMidiButtons = new AbstractButton[256];
+	private JPanel outerPanel = new JPanel();
+	private JPanel buttonPanel = new JPanel();
 	
-	private JPanel 		outerPanel	= new JPanel();
-	private JPanel 		buttonPanel = new JPanel();
+	private ONButton buttonOn;
+	private OKButton buttonOK;
+	private JTextField dispLCD;
 	
-	/*
+	MidiButton[] midiButtons = new MidiButton[256];
+	List<ModeButton> modeButtons = new ArrayList<ModeButton>();
+	
+	/**
 	 * Where all the buttons are added to the UI 
 	 * There is no set layout and all the buttons have their bounds set
 	 * Also where the array of MidiButtons is made
+	 * @author Karl Brown, Petar Krstic
 	 */
 	public GUI() {
+<<<<<<< HEAD
 		draw();
 	}
+=======
+>>>>>>> refs/remotes/origin/master
 	
-	/**
-	 * Should be called when a mode is changed.
-	 */
-	public void draw() {
-		
-		// Invalidate the view for re-drawing.
-		invalidate();
-		
 		// Get the current view.
-		View view = ModeMaster.getInstance().getView();
+		// For the constructor, this will be the ONOFF view.
+		View view = new DefaultView();
 		
 		// Draw the Simori-ON based on the current view.
 		setTitle(view.getTitle()); // Set the title.
@@ -50,36 +62,122 @@ public class GUI extends JFrame {
 		buttonPanel = (JPanel) outerPanel.add(view.getButtonPanel()); // Add the inner panel.
 		
 		// Add the ON and OK buttons.
-		outerPanel.add(view.getOnButton());
-		outerPanel.add(view.getOKButton());
+		buttonOn = (ONButton) outerPanel.add(view.getOnButton());
+		buttonOK = (OKButton) outerPanel.add(view.getOKButton());
 		
 		// Add the LCD Screen.
-		outerPanel.add(view.getLCDScreen());
+		dispLCD = (JTextField) outerPanel.add(view.getLCDScreen());
 		
 		// Add each MODE button.
 		for (AbstractButton button : view.getModeButtons()) {
 			outerPanel.add(button);
+			modeButtons.add((ModeButton) button);
 		}
 		
 		// Add each MIDI (matrix) button.
-		for (AbstractButton button : view.getMidiButtons()) {
+		midiButtons = (MidiButton[]) view.getMidiButtons();
+		
+		for (AbstractButton button : midiButtons) {
 			buttonPanel.add(button);
 		}
 		
 	}
 	
 	/**
-	 * Should be called when the current mode is altered.
+	 * Redraws the current GUI. Should be called when the mode is changed.
+	 * @author Karl Brown
+	 */	
+	public void redraw() {
+		
+		// Get the current view.
+		View view = ModeMaster.getInstance().getView();
+		
+		setTitle(view.getTitle()); // Set the title.
+		setSize(view.getSize().left, view.getSize().right); // Set the size in pixels.
+		
+		// Retrieve and apply the new outer panel data.
+		JPanel newPanel = (JPanel) view.getOuterPanel();
+		outerPanel.setBorder(newPanel.getBorder());
+		outerPanel.setBackground(newPanel.getBackground());
+		
+		// Retrieve and apply the new button panel data.
+		JPanel buttonPanel = (JPanel) view.getButtonPanel();
+		buttonPanel.setBorder(buttonPanel.getBorder());
+		buttonPanel.setBackground(buttonPanel.getBackground());
+		
+		// Retrieve and apply the new ON button data.
+		AbstractButton newONButton = view.getOnButton();
+		buttonOn.setBorder(newONButton.getBorder());
+		
+		// Retrieve and apply the new OK button data.
+		AbstractButton newOKButton = view.getOKButton();
+		buttonOK.setBorder(newOKButton.getBorder());
+		
+		// Retrieve and apply the new LCD button.
+		JTextField newLCD = (JTextField) view.getLCDScreen();
+		dispLCD.setEditable(newLCD.isEditable());
+		dispLCD.setBackground(newLCD.getBackground());
+		dispLCD.setForeground(newLCD.getForeground());
+		dispLCD.setBorder(newLCD.getBorder());
+		dispLCD.setFont(newLCD.getFont());
+		
+		// Retrieve and apply the new mode button data.
+		List<AbstractButton> newModeButtons = (List<AbstractButton>) view.getModeButtons();
+		for (ModeButton button : modeButtons) {			
+			for (AbstractButton b : newModeButtons) {				
+				if (button.getMode() == ((ModeButton) b).getMode()) {
+					button.setBorder(b.getBorder());
+					break;					
+				}				
+			}			
+		}
+		
+		// Then update the view.
+		update();
+	}
+	
+	/**
+	 * Updates the GUI with information from the current view.
 	 */
 	public void update() {
+		
+		View view = ModeMaster.getInstance().getView();
+		
+		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
+		for (int r = 0; r < 16; r++) {			
+			for (int c = 0; c < 16; c++) {
+				if (view.isLit(r, c)) {
+					midiButtons[c * 16 + r].setBackground(MidiButton.LIT_COLOUR);
+				}
+				else {
+					midiButtons[c * 16 + r].setBackground(newMidiButtons[c * 16 + r].getBackground());
+				}
+			}			
+		}
+		
+		dispLCD.setText(view.getLCDMessage());
 		
 	}
 
 	public static void main(String[] argv) {
-		JFrame frame = new GUI();
+		ModeMaster.init();
+		GUI frame = getInstance();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private static GUI instance;
+	
+	public static GUI newInstance() {
+		instance = new GUI();
+		return instance;
+	}
+	
+	public static GUI getInstance() {		
+		if (instance == null) instance = new GUI();
+		
+		return instance;
 	}
 }
