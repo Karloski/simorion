@@ -77,29 +77,25 @@ public class DummyModel implements MutableModel {
 
 		@Override
 		public String getLCDMessage() {
-			// TODO Auto-generated method stub
-			return null;
+			return "";
 		}
 
 
 		@Override
 		public void setLoopPoint(byte loopPoint) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 
 
 		@Override
 		public void setVelocity(byte velocity) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 
 
 		@Override
 		public void setVoice(Voice v) {
-			// TODO Auto-generated method stub
-			
+			//Do nothing
 		}
 	}
 	
@@ -158,7 +154,7 @@ public class DummyModel implements MutableModel {
 
 		@Override
 		public int getLit() {
-			// TODO Auto-generated method stub
+			//Do nothing
 			return 0;
 		}
 		
@@ -253,14 +249,12 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public void setTopmostLayer(int layerID) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
 	public void setLCDDisplay(String text) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
@@ -270,7 +264,7 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public int getInstanceID() {
-		// TODO Auto-generated method stub
+		//Do nothing
 		return 0;
 	}
 	

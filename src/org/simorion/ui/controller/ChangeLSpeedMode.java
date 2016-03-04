@@ -11,7 +11,7 @@ import org.simorion.ui.view.View;
  */
 public class ChangeLSpeedMode extends DeviceMode {
 	
-	float speed;
+	int button;
  
     public ChangeLSpeedMode(ModeMaster m) {
 		super(m);
@@ -38,10 +38,10 @@ public class ChangeLSpeedMode extends DeviceMode {
     	public boolean isRowLit(int x) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (speed == -1) return false;
+    		if (button == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return speed / 16 == x;
+    		return x - (button % 16) == 0;
     	}
     	
     	/** {@inheritDoc} */
@@ -49,10 +49,10 @@ public class ChangeLSpeedMode extends DeviceMode {
     	public boolean isColumnLit(int y) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (speed == -1) return false;
+    		if (button == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return y - (speed % 16) == 0;
+    		return button / 16 == y;
     	}
     	
     	/** {@inheritDoc} */
@@ -70,22 +70,23 @@ public class ChangeLSpeedMode extends DeviceMode {
     /** @author Karl Brown} */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(speed != -1) {
-			model.setTempo(speed);
+		if(button != -1) {
+			model.setTempo(button <= 160 ? button : 160);
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		speed = -1;
+		button = -1;
 	}
 
 	/** @author Karl Brown} */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		float tmp = y * 16 + x;
-		
-		if (tmp <= 160) {
-			speed = tmp;
-			model.setLCDDisplay(Float.toString(speed));
-		}
+		button = y * 16 + x;
+		model.setLCDDisplay(Integer.toString(button <= 160 ? button : 160));
 	}
-     
+    
+	@Override
+	void onChangedTo() {
+		button = (int) model.getTempo();
+		model.setLCDDisplay("Change Loop Speed Mode");
+	}
 }

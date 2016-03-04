@@ -16,7 +16,6 @@ public class MasterSlaveMode extends DeviceMode {
  
     public MasterSlaveMode(ModeMaster m) {
 		super(m);
-		// TODO Auto-generated constructor stub
 	}
 
 	private MasterSlaveView instance = new MasterSlaveView();

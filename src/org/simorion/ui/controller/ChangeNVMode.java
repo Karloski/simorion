@@ -6,7 +6,7 @@ import org.simorion.ui.view.View;
  
 public class ChangeNVMode extends DeviceMode {
 	
-	byte velocity = -1;
+	int button = -1;
  
     public ChangeNVMode(ModeMaster m) {
 		super(m);
@@ -32,10 +32,10 @@ public class ChangeNVMode extends DeviceMode {
     	public boolean isRowLit(int x) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (velocity == -1) return false;
+    		if (button == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return velocity / 16 == x;
+    		return x - (button % 16) == 0;
     	}
     	
     	/** {@inheritDoc} */
@@ -43,10 +43,10 @@ public class ChangeNVMode extends DeviceMode {
     	public boolean isColumnLit(int y) {
     		
     		// If voice is -1, then no button has been selected.
-    		if (velocity == -1) return false;
+    		if (button == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return y - (velocity % 16) == 0;
+    		return button / 16 == y;
     	}
     	
     	/** {@inheritDoc} */
@@ -62,22 +62,25 @@ public class ChangeNVMode extends DeviceMode {
     }
 
 	@Override
-	public void onOKButtonPress(MouseEvent e) {
-		if(velocity != -1) {
-			model.setVelocity(model.getCurrentLayer(), velocity);
-		}
+	public void onOKButtonPress(MouseEvent e) {		
+		if (button != -1) {
+			model.setVelocity(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
+		}		
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		velocity = -1;
+		button = -1;
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		byte tmp = (byte) (y * 16 + x);
-		
-		if (Math.abs(tmp) == tmp) {
-			velocity = tmp;
-			model.setLCDDisplay(Byte.toString(velocity));
-		}
+		button = (y * 16 + x);
+		byte display = (byte) (button <= 127 ? button : 127);		
+		model.setLCDDisplay(Byte.toString(display));
+	}
+	
+	@Override
+	void onChangedTo() {
+		button = model.getCurrentLayer().getVelocity();
+		model.setLCDDisplay("Change Velocity Mode");
 	}
      
 }

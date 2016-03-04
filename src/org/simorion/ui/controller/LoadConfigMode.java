@@ -13,6 +13,7 @@ import org.simorion.ui.view.View;
 public class LoadConfigMode extends DeviceMode {
  
 	int load;
+	String filename;
 	
     public LoadConfigMode(ModeMaster m) {
 		super(m);
@@ -42,7 +43,7 @@ public class LoadConfigMode extends DeviceMode {
     		if (load == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return (load - 1) / 16 == x;
+    		return x - (load % 16) == 0;
     	}
     	
     	/** {@inheritDoc} */
@@ -53,7 +54,7 @@ public class LoadConfigMode extends DeviceMode {
     		if (load == -1) return false;
     		
     		// Voice will be a number between 0-255 (i.e., the button pressed).
-    		return y - ((load - 1) % 16) == 0;
+    		return load / 16 == y;
     	}
     	
     	/** {@inheritDoc} */
@@ -70,13 +71,20 @@ public class LoadConfigMode extends DeviceMode {
 
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		// Load shit.		
+		// Load shit.
+		changeMode(ModeMaster.PERFORMANCE_MODE);
+		load = -1;
 	}
 
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		load = y * 16 + x + 1;
-		// model.setLCDDisplay(FileNames.getFileName(x, y));
+		model.setLCDDisplay(filename);
+	}
+	
+	@Override
+	void onChangedTo() {
+		model.setLCDDisplay("Load Configuration Mode");
 	}
      
 }
