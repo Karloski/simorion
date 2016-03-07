@@ -12,8 +12,8 @@ import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
- * 
- * @author George Young, Edmund Smith, Petar Krstic
+ * Device Mode implementation for the Change Voice Mode.
+ * @author Karl Brown
  *
  */
 public class ChangeVoiceMode extends DeviceMode {
@@ -70,10 +70,16 @@ public class ChangeVoiceMode extends DeviceMode {
          
     }
      
+	/**
+	 * {@inheritDoc}
+	 */
     public View getView() {
         return instance;
     }
     
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		if(voice != -1) {
@@ -81,19 +87,33 @@ public class ChangeVoiceMode extends DeviceMode {
 				MIDIVoices.getVoice(voice));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		voice = -1;																		// @author Edmund, Petar
+		voice = -1;																		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		voice = y * 16 + x + 1;		
-		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());						// @author Edmund, Petar
+		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());						
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
 		voice = model.getCurrentLayer().getVoice().getMidiVoice();
-		model.setLCDDisplay("Change Voice Mode"); 				// @author Edmund, Petar
+		model.setLCDDisplay("Change Voice Mode"); 				
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		voice = -1;
 	}
      
 }

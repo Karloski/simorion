@@ -2,16 +2,12 @@ package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractButton;
 
 import org.simorion.common.SongBuilder;
 import org.simorion.common.stream.FileSongReader;
-import org.simorion.common.stream.InsufficientSongDataException;
 import org.simorion.common.stream.SongFormats;
-import org.simorion.common.stream.StreamFailureException;
-import org.simorion.common.stream.UnsupportedSongFormatException;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
@@ -19,14 +15,14 @@ import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
- * 
+ * Device Mode implementation for the Load Config Mode.
  * @author Karl Brown
  *
  */
 public class LoadConfigMode extends DeviceMode {
  
 	String filename = "";
-	int button;
+	int button = -1;
 	boolean shift = false;
 	
     public LoadConfigMode(ModeMaster m) {
@@ -170,9 +166,10 @@ public class LoadConfigMode extends DeviceMode {
 			// Loads the song from the SongBuilder into the song.
 			model.getSong().loadFrom(song);
 			
-			// Change back to performance mode and reset the button position for this mode.
+			// Change back to performance mode and reset the view.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
-			button = -1;			
+			reset();			
+			
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
 		}
@@ -225,8 +222,18 @@ public class LoadConfigMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		filename = "|";
+		reset();
 		model.setLCDDisplay("Load Config Mode");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		filename = "|";
+		shift = false;
+		button = -1;
 	}
      
 }

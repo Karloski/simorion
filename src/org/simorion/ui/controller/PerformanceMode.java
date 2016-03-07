@@ -12,6 +12,11 @@ import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
+/**
+ * Device Mode implementation for the Performance Mode.
+ * @author Karl Brown
+ *
+ */
 public class PerformanceMode extends DeviceMode {
  
     public PerformanceMode(ModeMaster m) {
@@ -146,6 +151,9 @@ public class PerformanceMode extends DeviceMode {
 
     }
      
+	/**
+	 * In Performance Mode, changes the current mode to the mode represented by the button.
+	 */
     @Override
     public void onLButtonPress(MouseEvent e, int ButtonNum){
           
@@ -165,6 +173,9 @@ public class PerformanceMode extends DeviceMode {
         }
     }
      
+	/**
+	 * In Performance Mode, changes the current mode to the mode represented by the button.
+	 */
     @Override
     public void onRButtonPress(MouseEvent e, int ButtonNum){
           
@@ -184,21 +195,32 @@ public class PerformanceMode extends DeviceMode {
         }
     }
 
-    // Does this even do anything in performance mode?
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		model.getCurrentLayer().getRow(x).toggleLit(y);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
 		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
 		else model.getCurrentLayer().getRow(x).setUnlit(y);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
 		model.setLCDDisplay("Performance Mode");

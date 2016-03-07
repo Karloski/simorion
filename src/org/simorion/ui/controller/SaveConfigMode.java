@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 
-import org.simorion.common.Song;
 import org.simorion.common.stream.FileSongWriter;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.StreamFailureException;
@@ -148,6 +147,10 @@ public class SaveConfigMode extends DeviceMode {
         return instance;
     }
 
+    /**
+     * Save the song configuration with the specified filename.
+     * Will display any errors to the LCD screen.
+     */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		
@@ -200,10 +203,23 @@ public class SaveConfigMode extends DeviceMode {
 		model.setLCDDisplay(filename);
 		GUI.getInstance().update();
 	}
-     
+    
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
-		filename = "|";
+		reset();
 		model.setLCDDisplay("Save Config Mode");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		filename = "|";
+		shift = false;
+		button = -1;
 	}
 }

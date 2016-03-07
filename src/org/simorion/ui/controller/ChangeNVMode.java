@@ -4,6 +4,11 @@ import java.awt.event.MouseEvent;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
+/**
+ * Device Mode implementation for the Change Velocity Mode.
+ * @author Karl Brown
+ *
+ */
 public class ChangeNVMode extends DeviceMode {
 	
 	int button = -1;
@@ -57,19 +62,28 @@ public class ChangeNVMode extends DeviceMode {
 
     }
      
+	/**
+	 * {@inheritDoc}
+	 */
     public View getView() {
         return instance;
     }
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {		
 		if (button != -1) {
 			model.setVelocity(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
 		}		
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		button = -1;
+		reset();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = (y * 16 + x);
@@ -77,10 +91,21 @@ public class ChangeNVMode extends DeviceMode {
 		model.setLCDDisplay(Byte.toString(display));
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
 		button = model.getCurrentLayer().getVelocity();
 		model.setLCDDisplay("Change Velocity Mode");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		button = -1;
 	}
      
 }
