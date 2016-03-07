@@ -198,7 +198,7 @@ public class DefaultView implements View {
 		dispLCD.setEditable(false);
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(UNLIT_BORDER);
-		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
+		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 18));
 		
 		return dispLCD;
 		

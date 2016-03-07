@@ -145,16 +145,6 @@ public class PerformanceMode extends DeviceMode {
     	}
 
     }
-          
-    @Override
-    public void onOnOffButtonPress(MouseEvent e) {
-    	
-    	// FIXME: State of the program should be completely cleared when turned off.
-    	// model.PerformOffOperation();
-    	// Clears all matrix buttons for all layers etc.
-    	
-        changeMode(ModeMaster.ON_OFF_MODE);
-    }
      
     @Override
     public void onLButtonPress(MouseEvent e, int ButtonNum){
