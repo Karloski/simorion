@@ -127,6 +127,7 @@ public class GUI extends JFrame {
 			for (AbstractButton b : newModeButtons) {				
 				if (button.getMode() == ((ModeButton) b).getMode()) {
 					button.setBorder(b.getBorder());
+					button.setText(b.getText());
 					break;					
 				}				
 			}			
@@ -148,10 +149,13 @@ public class GUI extends JFrame {
 			for (int c = 0; c < 16; c++) {
 				if (view.isLit(r, c)) {
 					midiButtons[c * 16 + r].setBackground(MidiButton.LIT_COLOUR);
+					midiButtons[c * 16 + r].setBorder(DefaultView.LIT_BORDER);
 				}
 				else {
 					midiButtons[c * 16 + r].setBackground(newMidiButtons[c * 16 + r].getBackground());
+					midiButtons[c * 16 + r].setBorder(newMidiButtons[c * 16 + r].getBorder());
 				}
+				midiButtons[c * 16 + r].setText(newMidiButtons[c * 16 + r].getText());
 			}			
 		}
 		

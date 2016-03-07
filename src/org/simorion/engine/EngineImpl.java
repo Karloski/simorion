@@ -1,6 +1,6 @@
 package org.simorion.engine;
 
-import java.io.IOException;
+import java.util.Random;
 
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
@@ -14,6 +14,7 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
+import org.simorion.ui.view.GUI;
 
 //TODO: who's worked on this file? Add yourselves as authors  -Ed
 
@@ -24,16 +25,23 @@ import org.simorion.common.stream.UnsupportedSongFormatException;
  */
 public class EngineImpl implements Engine {
 
+	private final int instanceID;
 	private StandardSong song;
 	private Voice[] voices;
 	private int topmostLayer;
 	protected String lcdText;
+	protected MasterSlaveServer masterSlaveServer;
 	
 	public EngineImpl() {
+		instanceID = new Random().nextInt();
 		song = new StandardSong();
 		voices = new Voice[16];
 		//Default voice
 		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
+		
+		masterSlaveServer = new MasterSlaveServer(this);
+		masterSlaveServer.start();
+		
 	}
 	
 	/** {@inheritDoc} */
@@ -127,6 +135,9 @@ public class EngineImpl implements Engine {
 		SongBuilder sb = new SongBuilder();
 		try {
 			stream.readTo(f, sb);
+			song.loadFrom(sb);
+			lcdText = "Loaded song from network";
+			GUI.getInstance().update();
 		} catch (UnsupportedSongFormatException e) {
 			lcdText = e.getLocalizedMessage();
 			e.printStackTrace();
@@ -144,12 +155,20 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void setLCDDisplay(String text) {
-		lcdText = text;
+		if(!text.equals(lcdText)) {
+			lcdText = text;
+			GUI.getInstance().update();
+		}
 	}
 
 	@Override
 	public String getLCDDisplay() {
 		return lcdText;
+	}
+
+	@Override
+	public int getInstanceID() {
+		return instanceID;
 	}
 	
 }

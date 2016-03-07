@@ -1,6 +1,7 @@
 package org.simorion.ui.model;
 
 import org.simorion.common.ImmutableLayer;
+import org.simorion.common.ImmutableSong;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongWriter;
 
@@ -47,5 +48,9 @@ public interface ImmutableModel {
 	public int getTick();
 	
 	public String getLCDDisplay();
+	
+	public int getInstanceID();
+	
+	public ImmutableSong getSong();
 	
 }

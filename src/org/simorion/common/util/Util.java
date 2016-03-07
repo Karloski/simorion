@@ -1,8 +1,8 @@
 
 package org.simorion.common.util;
 
+import java.util.Enumeration;
 import java.util.Iterator;
-
 
 /**
  * 
@@ -101,6 +101,7 @@ public final class Util {
 	 * @param it The iterable to find the size of
 	 * @return The number of elements in it
 	 */
+	@SuppressWarnings("unused")
 	public static <T> int count(final Iterable<T> it) {
 		int count = 0;
 		for(T t : it) count++;
@@ -196,4 +197,67 @@ public final class Util {
 			
 		};
 	}
+	
+	/**
+	 * Wraps an Enumeration&lt;T&gt; into an Iterable&lt;T&gt;
+	 * @param iter The enumeration to wrap
+	 * @return The enumeration in an interable
+	 */
+	public static <T> Iterable<T> iterable(final Enumeration<T> iter) {
+		return new Iterable<T>() {
+
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+
+					@Override
+					public boolean hasNext() {
+						return iter.hasMoreElements();
+					}
+
+					@Override
+					public T next() {
+						return iter.nextElement();
+					}
+
+					@Override
+					public void remove() {
+						throw new RuntimeException("UnexpectedOperation");
+					}
+					
+				};
+			}
+			
+		};
+	}
+	
+	/**
+	 * Turns in int into a big-endian byte array representing the int.
+	 * @param i The int to convert
+	 * @return The int as a byte[4]
+	 */
+	public static byte[] toBytes(int i) {
+		return new byte[] { 
+			(byte)((i&0xff000000) >> 24),
+			(byte)((i&0x00ff0000) >> 16),
+			(byte)((i&0x0000ff00) >>  8),
+			(byte)((i&0x000000ff) >>  0)
+		};
+	}
+	
+	/**
+	 * COnverts a big-endian byte array into an int
+	 * @param b The byte array
+	 * @return The int the byte array represents
+	 */
+	public static int toInt(byte[] b) {
+		switch(b.length) {
+			case 0: return 0;
+			case 1: return b[0];
+			case 2: return b[0]<<8|b[1];
+			case 3: return b[0]<<16|b[1]<<8|b[2];
+			default: return b[0]<<24|b[1]<<16|b[2]<<8|b[3];
+		}
+	}
+
 }
