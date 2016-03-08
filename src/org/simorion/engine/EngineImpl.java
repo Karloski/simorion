@@ -26,7 +26,7 @@ import org.simorion.ui.view.GUI;
  */
 public class EngineImpl implements Engine {
 
-	private final int instanceID;
+	private int instanceID;
 	private StandardSong song;
 	private Voice[] voices;
 	private int topmostLayer;
@@ -172,6 +172,18 @@ public class EngineImpl implements Engine {
 	@Override
 	public int getInstanceID() {
 		return instanceID;
+	}
+
+	@Override
+	public void reset() {
+		instanceID = new Random().nextInt();
+		song = new StandardSong();
+		voices = new Voice[16];
+		
+		//Default voices
+		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
+		topmostLayer = 0;
+		lcdText = "";
 	}
 	
 }

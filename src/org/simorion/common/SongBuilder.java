@@ -12,7 +12,7 @@ import java.util.List;
 public class SongBuilder {
 
 	public List<AddLayer> layers;
-	private byte rows, cells, layerCount;
+	private byte rows, cells, layerCount, bpm;
 	
 	public SongBuilder() {
 		layers = new ArrayList<AddLayer>();
@@ -59,6 +59,14 @@ public class SongBuilder {
 		this.layerCount = layerCount;
 		return this;
 	}
+	
+	public void setBPM(byte i) {
+		bpm = i;
+	}
+	
+	public byte getBPM() {
+		return bpm;
+	}
 
 	public static class AddRow {
 		
@@ -84,7 +92,7 @@ public class SongBuilder {
 	public static class AddLayer {
 		
 		private final SongBuilder parent;
-		private byte bpm;
+		private int bpm;
 		
 		private List<AddRow> rows;
 		
@@ -156,13 +164,6 @@ public class SongBuilder {
 			return parent; 
 		}
 
-		public void setBPM(byte b) {
-			bpm = b;
-		}
-		
-		public byte getBPM() {
-			return bpm;
-		}
 	}
 	
 	

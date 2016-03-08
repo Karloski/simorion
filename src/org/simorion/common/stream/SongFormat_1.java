@@ -24,6 +24,7 @@ import org.simorion.common.SongBuilder;
  * 		Layer loop point (1 byte), 0 for no loop
  * 
  * 	EOF?
+ * @author Edmund Smith
  */
 
 public class SongFormat_1 implements SongFormat {
@@ -33,12 +34,12 @@ public class SongFormat_1 implements SongFormat {
 	public byte[] serialise(ImmutableSong song) throws UnsupportedEncodingException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		baos.write("\u0001\u0010\u0010\u0010".getBytes("UTF-8"));
+		baos.write(song.getBPM());
 		for(ImmutableLayer l : song.getLayers()) {
 			baos.write(l.getLayerNumber());
 			baos.write(l.getVoice().getMidiVoice());
 			baos.write(l.getVelocity());
 			baos.write(l.getLoopPoint());
-			baos.write(song.getBPM());;
 			for(ImmutableRow r : l.getRows()) {
 				baos.write((r.getLit()&0xff00) >> 8);
 				baos.write(r.getLit()&0xff);
@@ -56,7 +57,7 @@ public class SongFormat_1 implements SongFormat {
 		if(data[0] != getFormatID()) {
 			throw new UnsupportedSongFormatException("Found format id "+data[0]+", when expecting "+getFormatID());
 		}
-		if(data.length < 4) {
+		if(data.length < 5) {
 			throw new InsufficientSongDataException("Not enough data, length = "+data.length);
 		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
@@ -64,18 +65,19 @@ public class SongFormat_1 implements SongFormat {
 		byte layers = (byte)bais.read();
 		byte rows = (byte)bais.read();
 		byte cells = (byte)bais.read();
+		byte bpm = (byte) bais.read();
 		builder
 			.setLayerCount(layers)
 			.setRows(rows)
-			.setCells(cells);
+			.setCells(cells)
+			.setBPM(bpm);
 		for(int layer = 0; layer < layers; layer++) {
 			SongBuilder.AddLayer addedLayer = builder.addLayer();
 			addedLayer
 				.setNumber(bais.read())
 				.setMIDIVoice(bais.read())
 				.setVelocity(bais.read())
-				.setLoopPoint(bais.read())
-				.setBPM((byte)bais.read());
+				.setLoopPoint(bais.read());
 			Iterable<SongBuilder.AddRow> addedRows = 
 					addedLayer.addRows(rows);
 			for(SongBuilder.AddRow row : addedRows) {
