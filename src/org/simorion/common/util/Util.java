@@ -246,7 +246,7 @@ public final class Util {
 	}
 	
 	/**
-	 * COnverts a big-endian byte array into an int
+	 * Converts a big-endian byte array into an int
 	 * @param b The byte array
 	 * @return The int the byte array represents
 	 */
@@ -260,4 +260,26 @@ public final class Util {
 		}
 	}
 
+	/**
+	 * Simple wrapper to Slice
+	 * @param <T>
+	 * @param ts
+	 * @param start
+	 * @return
+	 */
+	public static <T> Iterable<T> slice(T[] ts, int start) {
+		return new Slice<T>(ts, start);
+	}
+	
+	/**
+	 * Simple wrapper to Slice
+	 * @param <T>
+	 * @param ts
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static <T> Iterable<T> slice(T[] ts, int start, int end) {
+		return new Slice<T>(ts, start, end);
+	}
 }

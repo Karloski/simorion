@@ -6,6 +6,7 @@ import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
 import org.simorion.common.Song;
 import org.simorion.common.SongBuilder;
+import org.simorion.common.SoundSystem;
 import org.simorion.common.StandardSong;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.InsufficientSongDataException;
@@ -25,12 +26,14 @@ import org.simorion.ui.view.GUI;
  */
 public class EngineImpl implements Engine {
 
-	private final int instanceID;
+	private int instanceID;
 	private StandardSong song;
 	private Voice[] voices;
 	private int topmostLayer;
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
+	SoundSystem soundSystem = SoundSystem.getInstance();
+	
 	
 	public EngineImpl() {
 		instanceID = new Random().nextInt();
@@ -48,25 +51,25 @@ public class EngineImpl implements Engine {
 	@Override
 	public void setVoice(MutableLayer l, Voice voice) {
 		l.setVoice(voice);
-		//TODO: soundSystem.setVoice(l, voice) or similar
+		soundSystem.setVoices(l.getLayerNumber(), voice.getMidiVoice());
 	}
 
 	@Override
 	public void setVelocity(MutableLayer l, byte velocity) {
 		l.setVelocity(velocity);
-		//TODO: soundSystem.setVelocity(l, voice)
+		soundSystem.setVoices(l.getLayerNumber(), velocity);
 	}
 
 	@Override
 	public void setLoopPoint(MutableLayer l, byte loopPoint) {
 		l.setLoopPoint(loopPoint);
-		//TODO: update sound system
+		soundSystem.setLoopPoint(loopPoint);
 	}
 
 	@Override
 	public void setTempo(float beatsPerSecond) {
 		song.setTempo(beatsPerSecond);
-		//TODO: update sound system
+		soundSystem.setLoopSpeed(beatsPerSecond);
 	}
 
 	@Override
@@ -169,6 +172,18 @@ public class EngineImpl implements Engine {
 	@Override
 	public int getInstanceID() {
 		return instanceID;
+	}
+
+	@Override
+	public void reset() {
+		instanceID = new Random().nextInt();
+		song = new StandardSong();
+		voices = new Voice[16];
+		
+		//Default voices
+		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
+		topmostLayer = 0;
+		lcdText = "";
 	}
 	
 }

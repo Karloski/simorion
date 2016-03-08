@@ -60,7 +60,7 @@ public class MasterSlaveClient extends Thread {
 			//always being chosen
 			int start = new Random().nextInt(256);
 			for (int i = 0; i < 256; i++) {
-				String address = "192.168.0." + ((start+i) % 256);
+				String address = "144.173.36." + ((start+i) % 256);
 				if (InetAddress.getByName(address).isReachable(50)) {
 					Socket slave = null;
 					try {

@@ -38,7 +38,7 @@ public class UtilTest {
 		Iterable<Integer> input2 = Arrays.asList(5,6,7,8,9,10);
 		for(Util.Pair<Integer, Integer> pair : zip(input1, input2)) {
 			assertEquals((int)pair.left+5, (int)pair.right);
-			assertNotEquals(10, (int)pair.right);
+			assertFalse(10 == (int)pair.right);
 		}
 		assertEquals(Arrays.asList(0,1,2,3,4), input1);
 		assertEquals(Arrays.asList(5,6,7,8,9,10), input2);
@@ -50,7 +50,7 @@ public class UtilTest {
 		Iterable<Integer> input2 = Arrays.asList(5,6,7,8,9,10);
 		for(Util.Pair<Integer, Integer> pair : zip(input2, input1)) {
 			assertEquals((int)pair.left, (int)pair.right+5);
-			assertNotEquals(10, (int)pair.left);
+			assertFalse(10 == (int)pair.left);
 		}
 		assertEquals(Arrays.asList(0,1,2,3,4), input1);
 		assertEquals(Arrays.asList(5,6,7,8,9,10), input2);
