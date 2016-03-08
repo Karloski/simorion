@@ -10,7 +10,7 @@ import org.simorion.ui.view.View;
  */
 public class ChangeLPointMode extends DeviceMode {
  
-	private int button;
+	private int button = -1;
 	
     public ChangeLPointMode(ModeMaster m) {
 		super(m);

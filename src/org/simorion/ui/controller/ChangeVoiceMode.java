@@ -87,7 +87,7 @@ public class ChangeVoiceMode extends DeviceMode {
 				MIDIVoices.getVoice(voice));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		voice = -1;																		
+		reset();															
 	}
 
 	/**

@@ -10,7 +10,7 @@ import org.simorion.ui.view.View;
  */
 public class ChangeLSpeedMode extends DeviceMode {
 	
-	int button;
+	int button = -1;
  
     public ChangeLSpeedMode(ModeMaster m) {
 		super(m);
@@ -95,7 +95,7 @@ public class ChangeLSpeedMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		button = (int) model.getTempo();
+		button = (int)model.getTempo();
 		model.setLCDDisplay("Change Loop Speed Mode");
 	}
 	

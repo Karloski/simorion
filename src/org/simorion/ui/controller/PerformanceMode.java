@@ -10,6 +10,7 @@ import org.simorion.common.util.Util;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
+import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
@@ -91,7 +92,7 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public String getLCDMessage() {
-    		return model.getCurrentLayer().getLCDMessage();
+    		return model.getLCDDisplay();
     	}
 
     	/**
@@ -223,6 +224,6 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		model.setLCDDisplay("Performance Mode");
+		model.setLCDDisplay("Performance Mode: Layer " + model.getCurrentLayerId());
 	}
 }

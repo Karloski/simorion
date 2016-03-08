@@ -40,7 +40,7 @@ public class LoadConfigMode extends DeviceMode {
 
     	/** {@inheritDoc} */
     	@Override
-    	public Iterable<AbstractButton> getModeButtons() {			
+    	public Iterable<AbstractButton> getModeButtons() {
     		
     		// A list of buttons to return as an iterable.
     		modeButtons = new ArrayList<AbstractButton>();
