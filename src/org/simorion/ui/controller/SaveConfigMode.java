@@ -171,7 +171,6 @@ public class SaveConfigMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = y * 16 + x;
-		System.out.println(button);
 		
 		if (isCharacter(button))
 			filename = filename.substring(0, filename.length()-1) + getCharacter(x, y, shift) + "|";

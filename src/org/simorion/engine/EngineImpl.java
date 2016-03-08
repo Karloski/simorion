@@ -139,18 +139,17 @@ public class EngineImpl implements Engine {
 		try {
 			stream.readTo(f, sb);
 			song.loadFrom(sb);
-			lcdText = "Loaded song from network";
-			GUI.getInstance().update();
+			setLCDDisplay("Loaded song from network");
 		} catch (UnsupportedSongFormatException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
 			//TODO
 		} catch (InsufficientSongDataException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
 			//TODO
 		} catch (StreamFailureException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

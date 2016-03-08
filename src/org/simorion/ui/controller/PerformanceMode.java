@@ -227,6 +227,6 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		model.setLCDDisplay("Performance Mode: Layer " + model.getCurrentLayerId());
+		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}
 }

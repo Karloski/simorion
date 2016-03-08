@@ -90,7 +90,7 @@ public abstract class DeviceMode implements Controller {
 	 * Resets the state of this view.
 	 */
 	void reset() {
-		// model.reset();
+		model.reset();
 	}
 	
 	/**

@@ -9,7 +9,7 @@ import org.simorion.ui.view.View;
  
 /**
  * 
- * @author George Young
+ * @author Karl Brown
  *
  */
 public class MasterSlaveMode extends DeviceMode {
@@ -29,8 +29,7 @@ public class MasterSlaveMode extends DeviceMode {
     	// No implementation.         
     }
     
-    void onChangedTo() {
-    	
+    void onChangedTo() {    	
     	new MasterSlaveClient(model.getSong(), model.getInstanceID()).start();
     	changeMode(ModeMaster.PERFORMANCE_MODE);
     }
