@@ -24,11 +24,15 @@ public class StandardSong implements Song {
 		for(int i = 0; i < 16; i++) {
 			Collection<MutableRow> rows = new ArrayList<MutableRow>();
 			for(int j = 0; j < 16; j++) {
-				rows.add(new BasicRow());
+				BasicRow row = new BasicRow();
+				row.setNote((byte)(j*4+36));
+				rows.add(row);
 			}
-			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)0, 0, 0);
+			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)100, 0, 0);
 		}
 		tempo = 1;
+		bpm = 60;
+		tempo = 1f;
 	}
 	
 	public void loadFrom(final SongBuilder sb) {
@@ -71,7 +75,7 @@ public class StandardSong implements Song {
 
 	@Override
 	public float getTempo() {
-		return bpm / 60F;
+		return (0xff & bpm) / 60F;
 	}
 
 	@Override

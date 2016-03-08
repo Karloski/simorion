@@ -87,7 +87,7 @@ public class ChangeLSpeedMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		//Avoid the signed-ness issue
-		button = (int) 0 | model.getBPM();
+		button = 0xff & model.getBPM();
 		model.setLCDDisplay("Change Loop Speed Mode");
 	}
 }
