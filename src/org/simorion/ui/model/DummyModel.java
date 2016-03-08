@@ -74,13 +74,6 @@ public class DummyModel implements MutableModel {
 			return Arrays.asList(rows);
 		}
 
-
-		@Override
-		public String getLCDMessage() {
-			return "";
-		}
-
-
 		@Override
 		public void setLoopPoint(byte loopPoint) {
 			//Do nothing
@@ -272,5 +265,7 @@ public class DummyModel implements MutableModel {
 	public Song getSong() {
 		return null;
 	}
-	
+
+	@Override
+	public void reset() {}
 }

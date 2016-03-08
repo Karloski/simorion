@@ -86,7 +86,7 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public String getLCDMessage() {
-    		return model.getCurrentLayer().getLCDMessage();
+    		return model.getLCDDisplay();
     	}
 
     	/**

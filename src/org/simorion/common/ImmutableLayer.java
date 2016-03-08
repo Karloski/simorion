@@ -54,10 +54,4 @@ public interface ImmutableLayer {
 	 */
 	public Iterable<? extends ImmutableRow> getRows();
 	
-	/**
-	 * Get the currently displaying LCD message.
-	 * @return The currently displaying LCD message
-	 */
-	public String getLCDMessage();
-
 }

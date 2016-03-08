@@ -93,4 +93,9 @@ public interface MutableModel extends ImmutableModel {
 	 * Gets the current song as a Song object
 	 */
 	public Song getSong();
+	
+	/**
+	 * Reverts the model back to an empty state, as if it had been re-constructed.
+	 */
+	public void reset();
 }

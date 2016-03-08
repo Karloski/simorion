@@ -67,11 +67,12 @@ public class FileSongReaderTest {
 	@Test
 	public void readsEmptySong()
 			throws IOException, UnsupportedSongFormatException, InsufficientSongDataException, StreamFailureException {
-		Files.write(testFile.toPath(), "\u0001\u0000\u0000\u0000".getBytes("UTF-8"));
+		Files.write(testFile.toPath(), "\u0001\u0000\u0000\u0000\u0000".getBytes("UTF-8"));
 		fsr.readTo(format, song);
-		assertEquals(song.getLayerCount(), 0);
-		assertEquals(song.getRows(), 0);
-		assertEquals(song.getCells(), 0);
+		assertEquals(0, song.getLayerCount());
+		assertEquals(0, song.getRows());
+		assertEquals(0, song.getCells());
+		assertEquals(0, song.getBPM());
 	}
 	
 }

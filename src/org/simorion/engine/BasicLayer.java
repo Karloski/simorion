@@ -29,12 +29,7 @@ public class BasicLayer implements MutableLayer {
 	 * Maximum cell index before looping
 	 */
 	int loopPoint;
-	
-	/**
-	 * Current output of the LCD.
-	 */
-	String lcdMessage;
-	
+		
 	public BasicLayer(Collection<MutableRow> rows, Voice voice, byte velocity, int layerNumber, int loopPoint) {
 		this.rows = rows.toArray(new MutableRow[0]); //Allocates its own array
 		//see http://shipilev.net/blog/2016/arrays-wisdom-ancients/ for details
@@ -94,11 +89,6 @@ public class BasicLayer implements MutableLayer {
 	@Override
 	public Iterable<? extends MutableRow> getRows() {
 		return Arrays.asList(rows);
-	}
-
-	@Override
-	public String getLCDMessage() {
-		return lcdMessage;
 	}
 
 	@Override

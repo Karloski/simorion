@@ -17,6 +17,7 @@ public class StandardSong implements Song {
 
 	private BasicLayer[] layers;
 	private float tempo;
+	private byte bpm;
 	
 	public StandardSong() {
 		layers = new BasicLayer[16];
@@ -51,6 +52,9 @@ public class StandardSong implements Song {
 			
 		}
 		
+		//tempo = sb.layers.get(0).getBPM() / 60f;
+		bpm = sb.getBPM();
+		
 		Arrays.sort(layers, new Comparator<BasicLayer>() {
 			@Override
 			public int compare(BasicLayer o1, BasicLayer o2) {
@@ -67,17 +71,17 @@ public class StandardSong implements Song {
 
 	@Override
 	public float getTempo() {
-		return tempo;
+		return bpm / 60F;
 	}
 
 	@Override
 	public byte getBPM() {
-		return (byte)(tempo * 60);
+		return bpm;
 	}
 
 	@Override
 	public void setBPM(byte bpm) {
-		tempo = bpm/60;
+		this.bpm = bpm;
 	}
 
 	@Override
@@ -86,6 +90,7 @@ public class StandardSong implements Song {
 			throw new IllegalArgumentException("beats per second must be a" +
 					" positive number");
 		tempo = bps;
+		bpm = (byte) (tempo * 60);
 	}
 	
 	public MutableLayer[] getLayerArray() {
@@ -101,7 +106,7 @@ public class StandardSong implements Song {
 					Util.iterable(s.layers))) {
 				if(!pair.left.equals(pair.right)) return false;
 			}
-			if(tempo != s.tempo) return false;
+			if(bpm != s.bpm) return false;
 			return true;
 		} else
 			return false;
