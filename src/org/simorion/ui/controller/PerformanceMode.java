@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 
+import org.simorion.common.SoundSystem;
 import org.simorion.common.util.Util;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
@@ -201,12 +202,14 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		model.getCurrentLayer().getRow(x).toggleLit(y);
+		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
 		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
 		else model.getCurrentLayer().getRow(x).setUnlit(y);
+		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	@Override
