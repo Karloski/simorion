@@ -71,7 +71,7 @@ public class ChangeLSpeedMode extends DeviceMode {
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		if(button != -1) {
-			model.setTempo(button <= 160 ? button : 160);
+			model.setBPM((byte)(button <= 160 ? button : 160));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
 		button = -1;
@@ -86,7 +86,8 @@ public class ChangeLSpeedMode extends DeviceMode {
     
 	@Override
 	void onChangedTo() {
-		button = (int) model.getTempo();
+		//Avoid the signed-ness issue
+		button = (int) 0 | model.getBPM();
 		model.setLCDDisplay("Change Loop Speed Mode");
 	}
 }

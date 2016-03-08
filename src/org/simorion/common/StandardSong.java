@@ -90,7 +90,7 @@ public class StandardSong implements Song {
 			throw new IllegalArgumentException("beats per second must be a" +
 					" positive number");
 		tempo = bps;
-		bpm = (byte) (tempo * 60);
+		bpm = (byte) (tempo * 60F);
 	}
 	
 	public MutableLayer[] getLayerArray() {

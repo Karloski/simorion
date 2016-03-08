@@ -53,4 +53,6 @@ public interface ImmutableModel {
 	
 	public ImmutableSong getSong();
 	
+	public byte getBPM();
+	
 }
