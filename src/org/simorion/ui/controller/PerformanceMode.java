@@ -1,14 +1,15 @@
 package org.simorion.ui.controller;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-import org.simorion.common.ImmutableRow;
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+
 import org.simorion.common.util.Util;
+import org.simorion.ui.view.ButtonFactory;
+import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
-import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 public class PerformanceMode extends DeviceMode {

@@ -3,22 +3,17 @@ package org.simorion.ui.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
-import org.simorion.common.ImmutableRow;
-import org.simorion.common.MutableLayer;
-import org.simorion.common.util.Util;
 import org.simorion.common.util.Util.Pair;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
-import org.simorion.ui.view.ButtonFactory.ModeButton;
 import org.simorion.ui.view.ButtonFactory.OKButton;
 import org.simorion.ui.view.ButtonFactory.ONButton;
 
@@ -38,6 +33,14 @@ public class DefaultView implements View {
 	
 	protected MidiButton[] midiButtons;
 	protected List<AbstractButton> modeButtons;
+	
+	// Borders
+	public static final Border UNLIT_BORDER = BorderFactory.createLineBorder(Color.black);
+	public static final Border LIT_BORDER = BorderFactory.createLineBorder(MidiButton.LIT_COLOUR);
+	
+	// Colours
+	public static final Color INACTIVE = new Color(0xFFCCCCCC);
+	public static final Color HORIZONTAL_RULE = new Color(0xFF666666);
 
 	/** {@inheritDoc} */
 	@Override
@@ -66,7 +69,7 @@ public class DefaultView implements View {
 		outerPanel = new JPanel();
 		
 		outerPanel.setBounds(1, 1, 600, 625);
-		outerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		outerPanel.setBorder(UNLIT_BORDER);
 		outerPanel.setLayout(null);
 		outerPanel.setBackground(Color.white);
 		
@@ -82,7 +85,7 @@ public class DefaultView implements View {
 		buttonPanel = new JPanel();
 		
 		buttonPanel.setBounds(58, 58, 484, 484);
-		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonPanel.setBorder(UNLIT_BORDER);
 		buttonPanel.setLayout(null);
 		buttonPanel.setBackground(Color.white);
 		
@@ -99,7 +102,7 @@ public class DefaultView implements View {
 		
 		// Define it.
 		buttonOn.setBounds(275, 5, 50, 50);
-		buttonOn.setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonOn.setBorder(UNLIT_BORDER);
 		
 		// Return it.
 		return buttonOn;
@@ -115,7 +118,7 @@ public class DefaultView implements View {
 		
 		// Define it.
 		buttonOK.setBounds(432, 545, 50, 50);
-		buttonOK.setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonOK.setBorder(UNLIT_BORDER);
 		
 		// Return it.
 		return buttonOK;
@@ -129,43 +132,27 @@ public class DefaultView implements View {
 		modeButtons = new ArrayList<AbstractButton>();
 		
 		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
-		b.setBounds(5, 84, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
-		b.setBounds(5, 174, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
-		b.setBounds(5, 264, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
-		b.setBounds(5, 354, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
-		b.setBounds(545, 84, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
-		b.setBounds(545, 174, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
-		b.setBounds(545, 264, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
-		b.setBounds(545, 354, 50, 50);
-		b.setBorder(BorderFactory.createLineBorder(Color.black));
 		modeButtons.add(b);
 		
 		return modeButtons;
@@ -193,11 +180,7 @@ public class DefaultView implements View {
 				j++;
 			}	
 			
-			MidiButton b = ButtonFactory.createButton(k % 16, j);
-			
-			b.setBounds(2 + (30 * (k % 16) - 1), 452 - (30 * j), 30, 30);
-			b.setBackground(Color.white);
-			
+			MidiButton b = ButtonFactory.createButton(k % 16, j);			
 			midiButtons[k] = b;
 		}
 		
@@ -214,7 +197,7 @@ public class DefaultView implements View {
 		dispLCD.setBounds(120, 545, 240, 50);
 		dispLCD.setEditable(false);
 		dispLCD.setBackground(Color.WHITE);
-		dispLCD.setBorder(BorderFactory.createLineBorder(Color.black));
+		dispLCD.setBorder(UNLIT_BORDER);
 		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
 		
 		return dispLCD;

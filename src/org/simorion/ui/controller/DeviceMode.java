@@ -50,27 +50,47 @@ public abstract class DeviceMode implements Controller {
 	
 	@Override
 	public void onLButtonPress(MouseEvent e, int buttonNum) {
-		System.out.println("L button "+buttonNum+" pressed");
 		//TODO: Change mode logic
 	}
 
 	@Override
 	public void onRButtonPress(MouseEvent e, int buttonNum) {
-		System.out.println("R button "+buttonNum+" pressed");
 		//TODO: Change mode logic
 	}
 
 
 	@Override
 	public void onOnOffButtonPress(MouseEvent e) {
-		System.out.println("OnOff button pressed");
 		//TODO: Change mode logic
 	}
 	
 	void onChangedTo() {}
 	
-	protected char getLetter(int x, int y) {
-		return (char) ((y * 16 + x) + 65);
+	protected char getCharacter(int x, int y, int shift) {
+		int loc = y * 16 + x;
+		
+		// Returns an alphabetic character.
+		if (isLetter(loc)) {
+			return (char) (loc + 97 + shift);
+		}
+		// Returns a numeric character.
+		else if (isNumber(loc)) {
+			return (char) (loc + 16);
+		}
+		
+		return '\0';
+	}
+	
+	protected boolean isCharacter(int loc) {
+		return isLetter(loc) || isNumber(loc);
+	}
+	
+	protected boolean isLetter(int loc) {
+		return loc >= 0 && loc < 26;
+	}
+	
+	protected boolean isNumber(int loc) {
+		return loc >= 32 && loc < 42;
 	}
 	
 	@Override
