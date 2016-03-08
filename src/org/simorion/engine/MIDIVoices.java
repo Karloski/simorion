@@ -31,7 +31,6 @@ public class MIDIVoices {
 										  "Short Whistle", "Long Whistle", "Short Guiro", "Long Guiro",
 										  "Claves", "High Wood Block", "Low Wood Block", "Mute Cuica",
 										  "Open Cuica", "Mute Triangle", "Open Triangle" };
-		
 	
 	/**
 	 * @return synthesizer 
@@ -70,19 +69,17 @@ public class MIDIVoices {
 				public String getName() {
 					return getSynthesizer().getDefaultSoundbank().getInstruments()[i-1].getName().trim();
 				}
-				
 			};
 		}
-		else if(i < 176) {
+		else if(i < 174) {
 			return new Voice(){
 				@Override
 				public int getMidiVoice() {
 					return i;
 				}
-
 				@Override
 				public String getName() {
-					return allDrumSounds[i-129];
+					return allDrumSounds[i-128];
 				}
 			};
 		}
@@ -102,5 +99,4 @@ public class MIDIVoices {
 			};
 		}
 	}
-	
 }
