@@ -185,5 +185,16 @@ public class EngineImpl implements Engine {
 		topmostLayer = 0;
 		lcdText = "";
 	}
+
+	@Override
+	public void setBPM(byte bpm) {
+		song.setBPM(bpm);
+		//TODO: SoundSystem integration
+	}
+	
+	@Override
+	public byte getBPM() {
+		return song.getBPM();
+	}
 	
 }
