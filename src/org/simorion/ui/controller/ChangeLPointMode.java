@@ -73,6 +73,7 @@ public class ChangeLPointMode extends DeviceMode {
 			model.setLoopPoint(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+		model.setLCDDisplay("Loop point set to " + model.getCurrentLayer().getLoopPoint());
 		reset();
 	}
 

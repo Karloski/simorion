@@ -11,6 +11,7 @@ import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.util.Util;
+import org.simorion.ui.controller.ModeMaster;
 
 /**
  * Thread that finds other SimoriONs on the local area network in the range

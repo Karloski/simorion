@@ -26,6 +26,9 @@ public class FileSongWriter implements SongWriter {
 	/** {@inheritDoc} */
 	@Override
 	public void write(final SongFormat format, final ImmutableSong s) throws StreamFailureException {
+		// Error on empty filenames.
+		if (file.getName().length() == 5 && file.getName().startsWith(".")) throw new StreamFailureException("Filename cannot be blank");
+		
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(format.serialise(s));

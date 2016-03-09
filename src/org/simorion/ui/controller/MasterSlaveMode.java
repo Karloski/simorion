@@ -31,7 +31,6 @@ public class MasterSlaveMode extends DeviceMode {
     
     void onChangedTo() {    	
     	new MasterSlaveClient(model.getSong(), model.getInstanceID()).start();
-    	changeMode(ModeMaster.PERFORMANCE_MODE);
     }
      
     public View getView() {

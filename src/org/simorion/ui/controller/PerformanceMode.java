@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import org.simorion.common.SoundSystem;
 import org.simorion.common.util.Util;
 import org.simorion.ui.view.DefaultView;
-import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
@@ -27,7 +26,7 @@ public class PerformanceMode extends DeviceMode {
      
     /**
      * Implementation of the View interface for the PerformanceView
-     * @author Karl Brown, Petar Krstic
+     * @author Karl Brown
      *
      */
     private class PerformanceView extends DefaultView {
@@ -196,7 +195,7 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		//SoundTest.playSong(model.getSong());
+		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}
 
 	/**
@@ -225,4 +224,31 @@ public class PerformanceMode extends DeviceMode {
 	void onChangedTo() {
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}
+	
+	/*private class ClockHand extends Thread {
+		
+		private boolean[] isLit = new boolean[] { false, false, false, false };
+		
+		@Override
+		public void run() {			
+			while (SoundSystem.getInstance().isPlaying()) {
+				
+				int col = SoundSystem.getInstance().getCurrentColumn();
+				
+				int prev = 0;
+				if (col == 0) prev = 15;
+				else prev = col - 1;
+				
+				for (int i = 0; i < DefaultView.MATRIX_SIZE.right; i += 5) {
+
+					if (isLit[i / 5]) model.getCurrentLayer().getRow(i).setLit(prev);
+					else model.getCurrentLayer().getRow(i).setUnlit(prev);
+					
+					isLit[i / 5] = model.getCurrentLayer().getRow(i).isLit(col);
+					model.getCurrentLayer().getRow(i).setLit(col);
+					
+				}				
+			}
+		}		
+	}*/
 }

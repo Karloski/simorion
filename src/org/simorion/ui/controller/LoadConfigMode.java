@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.AbstractButton;
 
 import org.simorion.common.SongBuilder;
+import org.simorion.common.Voice;
 import org.simorion.common.stream.FileSongReader;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.ui.view.ButtonFactory;
@@ -151,9 +152,12 @@ public class LoadConfigMode extends DeviceMode {
      * If the song does not exist or the data could not be loaded, the error is represented on the screen.
      */
 	@Override
-	public void onOKButtonPress(MouseEvent e) {		
+	public void onOKButtonPress(MouseEvent e) {
+		// Remove the pipe.
+		filename = filename.substring(0, filename.length()-1);
+		
 		// Create a new FileSongReader from the filename.
-		FileSongReader fsr = new FileSongReader(new File(filename.substring(0, filename.length()-1) + ".song"));
+		FileSongReader fsr = new FileSongReader(new File(filename + ".song"));
 		
 		// The song to read to.
 		SongBuilder song = new SongBuilder();
@@ -168,10 +172,12 @@ public class LoadConfigMode extends DeviceMode {
 			
 			// Change back to performance mode and reset the view.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Song " + filename + " loaded.");
 			reset();			
 			
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
+			filename += "|";
 		}
 	}
 
@@ -212,7 +218,7 @@ public class LoadConfigMode extends DeviceMode {
 			filename = "";
 			changeMode(ModeMaster.PERFORMANCE_MODE);
 		}
-		
+
 		model.setLCDDisplay(filename);
 		GUI.getInstance().update();
 	}

@@ -153,15 +153,26 @@ public class SaveConfigMode extends DeviceMode {
      */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
+		// Remove the pipe.
+		filename = filename.substring(0, filename.length()-1);
 		
-		FileSongWriter fsw = new FileSongWriter(new File(filename.substring(0, filename.length()-1) + ".song"));
+		// Create a new song writer for the given filename.
+		FileSongWriter fsw = new FileSongWriter(new File(filename + ".song"));
 		
 		try {
+			// Attempt to serialize the song data.
 			fsw.write(SongFormats.PREFERRED_FORMAT, model.getSong());
+			
+			// If successfully, change back to the performance mode and update the user via the LCD display.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
-			button = -1;
+			model.setLCDDisplay("Song saved as " + filename + ".");
+			
+			// Reset this mode.
+			reset();
 		} catch (StreamFailureException ex) {
+			// On error, display the error and add the pipe back to the string.
 			model.setLCDDisplay(ex.getMessage());
+			filename += "|";
 		}
 	}
 
@@ -170,11 +181,14 @@ public class SaveConfigMode extends DeviceMode {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		// The array index location of this button press.
 		button = y * 16 + x;
 		
+		// If the button represents a character, get the character it represents.
 		if (isCharacter(button))
 			filename = filename.substring(0, filename.length()-1) + getCharacter(x, y, shift) + "|";
 		
+		// Update the display.
 		model.setLCDDisplay(filename);
 		shift = false;
 	}

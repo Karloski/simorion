@@ -1,6 +1,7 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
+import org.simorion.common.SoundSystem;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -74,10 +75,12 @@ public class ChangeLSpeedMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(button != -1) {
+		if (button != -1) {
 			model.setBPM((byte)(button <= 160 ? button : 160));
 		}
+		
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+		model.setLCDDisplay("Loop speed set to " + model.getBPM());
 		reset();
 	}
 
