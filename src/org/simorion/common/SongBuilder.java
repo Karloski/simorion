@@ -73,6 +73,7 @@ public class SongBuilder {
 		private final AddLayer parent;
 		
 		public long mask;
+		public byte note;
 		
 		private AddRow(AddLayer parent) {
 			this.parent = parent;

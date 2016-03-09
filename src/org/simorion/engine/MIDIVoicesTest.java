@@ -14,7 +14,7 @@ public class MIDIVoicesTest {
 	public void testReturningVoice() {
 		assertEquals("Acoustic Grand Piano", MIDIVoices.getVoice(1).getName());
 		assertEquals("No Instrument", MIDIVoices.getVoice(200).getName());
-		assertEquals("Side Stick", MIDIVoices.getVoice(131).getName());
+		assertEquals("Snare Drum 1", MIDIVoices.getVoice(131).getName());
 	}
 
 }
