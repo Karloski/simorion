@@ -47,6 +47,7 @@ public class StandardSong implements Song {
 			for(Util.Pair<MutableRow, AddRow> pair : 
 				Util.zip(rows, al.getRows())) {
 				pair.left.applyMask(0, (int) pair.right.mask);
+				pair.left.setNote(pair.right.note);
 			}
 			
 			layers[i] = new BasicLayer(rows, 
@@ -109,7 +110,7 @@ public class StandardSong implements Song {
 					Util.iterable(layers),
 					Util.iterable(s.layers))) {
 				if(!pair.left.equals(pair.right)) return false;
-			}
+			}			
 			if(bpm != s.bpm) return false;
 			return true;
 		} else

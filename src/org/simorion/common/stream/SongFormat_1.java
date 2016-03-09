@@ -41,6 +41,7 @@ public class SongFormat_1 implements SongFormat {
 			baos.write(l.getVelocity());
 			baos.write(l.getLoopPoint());
 			for(ImmutableRow r : l.getRows()) {
+				baos.write(r.getNote());
 				baos.write((r.getLit()&0xff00) >> 8);
 				baos.write(r.getLit()&0xff);
 			}
@@ -81,6 +82,7 @@ public class SongFormat_1 implements SongFormat {
 			Iterable<SongBuilder.AddRow> addedRows = 
 					addedLayer.addRows(rows);
 			for(SongBuilder.AddRow row : addedRows) {
+				row.note = (byte)bais.read();
 				row.setMask(bais.read() << 8 | bais.read());
 			}	
 		}
