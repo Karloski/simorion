@@ -1,6 +1,7 @@
 package org.simorion.common;
 
 import javax.sound.midi.Sequence;
+import javax.sound.midi.Synthesizer;
 
 public interface SoundSystemInterface {
 	
@@ -13,6 +14,10 @@ public interface SoundSystemInterface {
 	public void setLoopSpeed(float tempo);
 	
 	public void updateSequence(int layer, int xGrid, int yGrid);
+	
+	public void delay(int ms);
+	
+	public Synthesizer getSynthesizer();
 	
 	public void play();
 	
