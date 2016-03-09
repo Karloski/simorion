@@ -2,6 +2,7 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
+import org.simorion.SoundTest;
 import org.simorion.common.SoundSystem;
 import org.simorion.common.util.Util;
 import org.simorion.ui.view.DefaultView;
@@ -192,7 +193,7 @@ public class PerformanceMode extends DeviceMode {
     // Does this even do anything in performance mode?
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		//SoundTest.playSong(model.getSong());
+		SoundTest.playSong(model.getSong());
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class StandardSong implements Song {
 			Collection<MutableRow> rows = new ArrayList<MutableRow>();
 			for(int j = 0; j < 16; j++) {
 				BasicRow row = new BasicRow();
-				row.setNote((byte)(j*4+36));
+				row.setNote((byte)(j+56));
 				rows.add(row);
 			}
 			layers[i] = new BasicLayer(rows, MIDIVoices.getVoice(1), (byte)100, 0, 0);
