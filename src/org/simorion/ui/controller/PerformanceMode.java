@@ -9,6 +9,9 @@ import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
 public class PerformanceMode extends DeviceMode {
+	
+	SoundSystem soundSystem = SoundSystem.getInstance();
+	boolean playing = false;
  
     public PerformanceMode(ModeMaster m) {
 		super(m);
@@ -150,6 +153,8 @@ public class PerformanceMode extends DeviceMode {
     	// Clears all matrix buttons for all layers etc.
     	
         changeMode(ModeMaster.ON_OFF_MODE);
+        soundSystem.stop();
+        
     }
      
     @Override
@@ -212,5 +217,7 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		model.setLCDDisplay("Performance Mode");
+		if(playing == false) {soundSystem.play(); playing = true;}
+		
 	}
 }
