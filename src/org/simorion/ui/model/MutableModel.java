@@ -98,4 +98,10 @@ public interface MutableModel extends ImmutableModel {
 	 * Reverts the model back to an empty state, as if it had been re-constructed.
 	 */
 	public void reset();
+
+	/**
+	 * Sets the beats per minute to this value, treated as unsigned.
+	 * @param b
+	 */
+	public void setBPM(byte bpm);
 }

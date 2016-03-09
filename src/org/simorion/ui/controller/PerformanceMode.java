@@ -1,15 +1,9 @@
 package org.simorion.ui.controller;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
-
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 
 import org.simorion.common.SoundSystem;
 import org.simorion.common.util.Util;
-import org.simorion.ui.view.ButtonFactory;
-import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
@@ -46,7 +40,7 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public boolean isLit(int x, int y) {
-    		return model.getCurrentLayer().getRow(x).isLit(y);
+    		return model.getCurrentLayer().getRow(y).isLit(x);
     	}
 
     	/**
@@ -201,14 +195,16 @@ public class PerformanceMode extends DeviceMode {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onOKButtonPress(MouseEvent e) {}
+	public void onOKButtonPress(MouseEvent e) {
+		//SoundTest.playSong(model.getSong());
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		model.getCurrentLayer().getRow(x).toggleLit(y);
+		model.getCurrentLayer().getRow(y).toggleLit(x);
 		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
@@ -217,8 +213,8 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
-		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
-		else model.getCurrentLayer().getRow(x).setUnlit(y);
+		if (lit) model.getCurrentLayer().getRow(y).setLit(x);
+		else model.getCurrentLayer().getRow(y).setUnlit(x);
 		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
