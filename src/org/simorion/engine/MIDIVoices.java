@@ -71,7 +71,7 @@ public class MIDIVoices {
 				}
 			};
 		}
-		else if(i < 174) {
+		else if(i < 176) {
 			return new Voice(){
 				@Override
 				public int getMidiVoice() {
@@ -79,7 +79,7 @@ public class MIDIVoices {
 				}
 				@Override
 				public String getName() {
-					return allDrumSounds[i-128];
+					return allDrumSounds[i-129];
 				}
 			};
 		}
