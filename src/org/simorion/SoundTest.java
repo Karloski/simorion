@@ -1,10 +1,7 @@
 package org.simorion;
 
-import java.util.Random;
-
 import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
@@ -13,10 +10,7 @@ import javax.sound.midi.Synthesizer;
 
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.ImmutableRow;
-import org.simorion.common.MutableLayer;
-import org.simorion.common.MutableRow;
 import org.simorion.common.Song;
-import org.simorion.common.StandardSong;
 
 /** nasty bastard class
  * 
@@ -110,7 +104,8 @@ public class SoundTest implements Runnable {
 						rcvr.send(msg, tick + layer.getLayerNumber() - synth.getMicrosecondPosition());
 						msg = new ShortMessage();
 						msg.setMessage(ShortMessage.NOTE_OFF, channel, row.getNote(), layer.getVelocity());
-						rcvr.send(msg, tickPlusOne);
+						rcvr.send(msg, tickPlusOne - layer.getLayerNumber());
+						//System.out.println("Note on from "+ (tick + layer.getLayerNumber() - synth.getMicrosecondPosition()) + " to " + (tickPlusOne - layer.getLayerNumber()));
 					}
 				}
 				msg.setMessage(ShortMessage.START);
