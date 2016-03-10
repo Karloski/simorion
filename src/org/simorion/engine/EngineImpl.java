@@ -6,7 +6,6 @@ import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
 import org.simorion.common.Song;
 import org.simorion.common.SongBuilder;
-import org.simorion.common.SoundSystem;
 import org.simorion.common.StandardSong;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.InsufficientSongDataException;
@@ -15,6 +14,7 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
+import org.simorion.sound.SoundSystem;
 import org.simorion.ui.view.GUI;
 
 //TODO: who's worked on this file? Add yourselves as authors  -Ed
@@ -29,7 +29,7 @@ public class EngineImpl implements Engine {
 	private int instanceID;
 	private StandardSong song;
 	private Voice[] voices;
-	private int topmostLayer;
+	private int topmostLayer, tick;
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
 	SoundSystem soundSystem = SoundSystem.getInstance();
@@ -62,7 +62,10 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void setLoopPoint(MutableLayer l, byte loopPoint) {
-		l.setLoopPoint(loopPoint);
+		for (MutableLayer layer : song.getLayers()) {
+			layer.setLoopPoint(loopPoint);
+		}
+		//l.setLoopPoint(loopPoint);
 		soundSystem.setLoopPoint(loopPoint);
 	}
 
@@ -105,11 +108,15 @@ public class EngineImpl implements Engine {
 	public ImmutableLayer getLayer(int i) {
 		return song.getLayerArray()[i];
 	}
+	
+	@Override
+	public void updateTick(int tick) {
+		this.tick = tick;
+	}
 
 	@Override
 	public int getTick() {
-		// TODO Timing stuff
-		return 0;
+		return tick % 720720;
 	}
 	
 	@Override
@@ -183,6 +190,17 @@ public class EngineImpl implements Engine {
 		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
 		topmostLayer = 0;
 		lcdText = "";
+	}
+
+	@Override
+	public void setBPM(byte bpm) {
+		song.setBPM(bpm);
+		//TODO: SoundSystem integration
+	}
+	
+	@Override
+	public byte getBPM() {
+		return song.getBPM();
 	}
 	
 }

@@ -16,7 +16,7 @@ public interface ImmutableModel {
 	
 	/**
 	 * Get the current tempo in beats per second
-	 * @return
+	 * @return the BPS of the song
 	 */
 	public float getTempo();
 	
@@ -47,10 +47,29 @@ public interface ImmutableModel {
 	 */
 	public int getTick();
 	
+	/**
+	 * Gets the model's current display message
+	 * @return
+	 */
 	public String getLCDDisplay();
 	
+	/**
+	 * Gets a unique identifying ID for the instance for use in inter-device
+	 * communication
+	 * @return
+	 */
 	public int getInstanceID();
 	
+	/**
+	 * Reference to the song being played
+	 * @return The currently playing song
+	 */
 	public ImmutableSong getSong();
+	
+	/**
+	 * Get the tempo of the current song being played in BPM
+	 * @return The BPM of the song
+	 */
+	public byte getBPM();
 	
 }

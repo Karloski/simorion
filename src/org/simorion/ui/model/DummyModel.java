@@ -268,4 +268,21 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public void reset() {}
+
+	@Override
+	public byte getBPM() {
+		//Do nothing
+		return 1;
+	}
+
+	@Override
+	public void setBPM(byte bpm) {
+		//Do nothing
+	}
+
+	@Override
+	public void updateTick(int tick) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,15 +1,10 @@
 package org.simorion.ui.controller;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-
-import org.simorion.common.SoundSystem;
 import org.simorion.common.util.Util;
-import org.simorion.ui.view.ButtonFactory;
-import org.simorion.ui.view.ButtonFactory.MidiButton;
+import org.simorion.sound.SoundSystem;
+import org.simorion.sound.SoundTest;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
@@ -20,6 +15,8 @@ import org.simorion.ui.view.View;
  *
  */
 public class PerformanceMode extends DeviceMode {
+	
+	SoundSystem soundSystem = SoundSystem.getInstance();
  
     public PerformanceMode(ModeMaster m) {
 		super(m);
@@ -46,7 +43,9 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public boolean isLit(int x, int y) {
-    		return model.getCurrentLayer().getRow(x).isLit(y);
+    		int loop = model.getCurrentLayer().getLoopPoint();
+    		loop = loop == 0?16:loop;
+    		return model.getCurrentLayer().getRow(y).isLit(x) || (model.getTick() % loop == x && (y == 0 || y == 5 || y == 10 || y == 15));
     	}
 
     	/**
@@ -152,6 +151,17 @@ public class PerformanceMode extends DeviceMode {
     	}
 
     }
+          
+    @Override
+    public void onOnOffButtonPress(MouseEvent e) {
+    	
+    	// FIXME: State of the program should be completely cleared when turned off.
+    	// model.PerformOffOperation();
+    	// Clears all matrix buttons for all layers etc.
+    	
+        changeMode(ModeMaster.ON_OFF_MODE);
+        
+    }
      
 	/**
 	 * In Performance Mode, changes the current mode to the mode represented by the button.
@@ -201,15 +211,17 @@ public class PerformanceMode extends DeviceMode {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onOKButtonPress(MouseEvent e) {}
+	public void onOKButtonPress(MouseEvent e) {
+		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		model.getCurrentLayer().getRow(x).toggleLit(y);
-		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
+		model.getCurrentLayer().getRow(y).toggleLit(x);
+		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**
@@ -217,9 +229,9 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
-		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
-		else model.getCurrentLayer().getRow(x).setUnlit(y);
-		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
+		if (lit) model.getCurrentLayer().getRow(y).setLit(x);
+		else model.getCurrentLayer().getRow(y).setUnlit(x);
+		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**
@@ -228,5 +240,7 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
+		if(i++ == 0)new Thread(new SoundTest(model.getSong(), model)).start();
 	}
+	int i = 0;
 }
