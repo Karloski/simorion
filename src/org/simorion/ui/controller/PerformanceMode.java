@@ -198,7 +198,7 @@ public class PerformanceMode extends DeviceMode {
     // Does this even do anything in performance mode?
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		SoundTest.playSong(model.getSong());
+		//SoundTest.playSong(model.getSong());
 	}
 
 	@Override
@@ -217,7 +217,9 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		model.setLCDDisplay("Performance Mode");
-		if(playing == false) {soundSystem.play(); playing = true;}
-		
+		//if(playing == false) {soundSystem.play(); playing = true;}
+		//soundSystem.play();
+		if(i++ == 0)new Thread(new SoundTest(this.model.getSong())).start();
 	}
+	int i = 0;
 }
