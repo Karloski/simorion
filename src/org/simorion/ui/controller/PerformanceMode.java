@@ -16,7 +16,6 @@ import org.simorion.ui.view.View;
 public class PerformanceMode extends DeviceMode {
 	
 	SoundSystem soundSystem = SoundSystem.getInstance();
-	boolean playing = false;
  
     public PerformanceMode(ModeMaster m) {
 		super(m);
@@ -157,9 +156,7 @@ public class PerformanceMode extends DeviceMode {
     	// model.PerformOffOperation();
     	// Clears all matrix buttons for all layers etc.
     	
-        changeMode(ModeMaster.ON_OFF_MODE);
-        soundSystem.stop();
-        
+        changeMode(ModeMaster.ON_OFF_MODE);        
     }
      
     @Override
@@ -207,20 +204,18 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		model.getCurrentLayer().getRow(x).toggleLit(y);
-		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
+		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
 		if (lit) model.getCurrentLayer().getRow(x).setLit(y);
 		else model.getCurrentLayer().getRow(x).setUnlit(y);
-		SoundSystem.getInstance().updateSequence(model.getCurrentLayerId(), x, y);
+		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	@Override
 	void onChangedTo() {
-		model.setLCDDisplay("Performance Mode");
-		if(playing == false) {soundSystem.play(); playing = true;}
-		
+		model.setLCDDisplay("Performance Mode");		
 	}
 }
