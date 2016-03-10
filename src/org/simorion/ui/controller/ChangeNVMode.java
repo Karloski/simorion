@@ -78,6 +78,7 @@ public class ChangeNVMode extends DeviceMode {
 			model.setVelocity(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
 		}		
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+		model.setLCDDisplay("Velocity set to " + (model.getCurrentLayer().getVelocity() & 0xff));
 		reset();
 	}
 

@@ -154,14 +154,18 @@ public class SaveConfigMode extends DeviceMode {
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		
-		FileSongWriter fsw = new FileSongWriter(new File(filename.substring(0, filename.length()-1) + ".song"));
+		filename = filename.substring(0, filename.length()-1);
+		
+		FileSongWriter fsw = new FileSongWriter(new File(filename + ".song"));
 		
 		try {
 			fsw.write(SongFormats.PREFERRED_FORMAT, model.getSong());
 			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Song '" + filename + "' saved.");
 			button = -1;
 		} catch (StreamFailureException ex) {
 			model.setLCDDisplay(ex.getMessage());
+			filename += "|";
 		}
 	}
 

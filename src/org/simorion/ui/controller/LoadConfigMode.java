@@ -152,8 +152,11 @@ public class LoadConfigMode extends DeviceMode {
      */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {		
+		// Remove the pipe.
+		filename = filename.substring(0, filename.length()-1);
+		
 		// Create a new FileSongReader from the filename.
-		FileSongReader fsr = new FileSongReader(new File(filename.substring(0, filename.length()-1) + ".song"));
+		FileSongReader fsr = new FileSongReader(new File(filename + ".song"));
 		
 		// The song to read to.
 		SongBuilder song = new SongBuilder();
@@ -168,10 +171,12 @@ public class LoadConfigMode extends DeviceMode {
 			
 			// Change back to performance mode and reset the view.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Song '" + filename + "' loaded");
 			reset();			
 			
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
+			filename += "|";
 		}
 	}
 

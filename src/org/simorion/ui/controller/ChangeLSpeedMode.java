@@ -78,6 +78,7 @@ public class ChangeLSpeedMode extends DeviceMode {
 			model.setBPM((byte)(button <= 160 ? button : 160));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+		model.setLCDDisplay("Loop speed set to " + (model.getBPM() & 0xff));
 		reset();
 	}
 

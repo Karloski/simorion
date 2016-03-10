@@ -60,7 +60,6 @@ public interface SoundSystemInterface {
 	
 	/**
 	 * Gets the synthesizer from which all the sounds will play
-	 * 
 	 * @return - A synthesizer 
 	 */
 	public Synthesizer getSynthesizer();

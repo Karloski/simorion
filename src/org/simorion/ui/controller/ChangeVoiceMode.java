@@ -87,6 +87,7 @@ public class ChangeVoiceMode extends DeviceMode {
 				MIDIVoices.getVoice(voice));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+		model.setLCDDisplay("Instrument changed to " + MIDIVoices.getVoice(voice).getName());
 		reset();															
 	}
 

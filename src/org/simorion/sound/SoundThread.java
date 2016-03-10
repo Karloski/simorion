@@ -12,10 +12,7 @@ import org.simorion.common.Song;
 import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.GUI;
 
-/** nasty bastard class
- * 
- * Treat like a kidneynapping victim: this only exists to gut; rip out its
- * insides and use elsewhere, cause this is disposable as fuck.
+/** Temporary Hack Class
  * 
  * It reads the song layer by layer, row by row, until it gets to
  * isLit(nextRowToPlay). This avoids having a mirror of the data to constantly
@@ -31,16 +28,16 @@ import org.simorion.ui.view.GUI;
  * but Accordion stays permanently playing until NOTE_OFF is sent) and possibly
  * fixing any sound/channel overlap errors
  * 
- * @auther Petar Krstic
+ * @author Petar Krstic
  * @author Edmund Smith
  *
  */
-public class SoundTest implements Runnable {
+public class SoundThread implements Runnable {
 	
 	public Song song;
 	public MutableModel model;
 	
-	public SoundTest(Song s, MutableModel m) {
+	public SoundThread(Song s, MutableModel m) {
 		song = s;
 		model = m;
 	}
