@@ -21,8 +21,23 @@ import org.simorion.common.StandardSong;
 /** nasty bastard class
  * 
  * Treat like a kidneynapping victim: this only exists to gut; rip out its
- * insides and use elsewhere, cause this is disposable as fuck
+ * insides and use elsewhere, cause this is disposable as fuck.
  * 
+ * It reads the song layer by layer, row by row, until it gets to
+ * isLit(nextRowToPlay). This avoids having a mirror of the data to constantly
+ * update. The voice changing stuff is taken from SoundSystem and converted to
+ * ShortMessages, which pretty much correspond 1:1 to the method calls anyway.
+ * 
+ * Synchronization is done through using MIDI's internal microsecond clock;
+ * TODO: update engine clock from it
+ * Every ~10ms the thread wakes up, checks if the last column has been played,
+ * and if so, it schedules the next column to play. Each layer has a 1 us delay
+ * to allow for voice changing - I don't know if MIDI messages can race
+ * otherwise. The only 'features' left are note length (e.g. Piano terminates,
+ * but Accordion stays permanently playing until NOTE_OFF is sent) and possibly
+ * fixing any sound/channel overlap errors
+ * 
+ * @auther Petar Krstic
  * @author Edmund Smith
  *
  */
