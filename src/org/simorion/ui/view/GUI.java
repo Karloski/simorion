@@ -1,13 +1,10 @@
 
 package org.simorion.ui.view;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -83,7 +80,7 @@ public class GUI extends JFrame {
 	 * Redraws the current GUI. Should be called when the mode is changed.
 	 * @author Karl Brown
 	 */	
-	public void redraw() {
+	public synchronized void redraw() {
 		
 		// Get the current view.
 		View view = ModeMaster.getInstance().getView();
@@ -136,7 +133,7 @@ public class GUI extends JFrame {
 	/**
 	 * Updates the GUI with information from the current view.
 	 */
-	public void update() {
+	public synchronized void update() {
 		
 		// Get the current view.
 		View view = ModeMaster.getInstance().getView();
@@ -190,7 +187,10 @@ public class GUI extends JFrame {
 	}
 	
 	public static GUI getInstance() {		
-		if (instance == null) instance = new GUI();
+		if (instance == null) synchronized(instance) {
+			if(instance==null)
+				instance = new GUI();
+		}
 		
 		return instance;
 	}

@@ -90,6 +90,12 @@ public interface MutableModel extends ImmutableModel {
 	public void setLCDDisplay(String text);
 	
 	/**
+	 * Update the current tick/column location
+	 * @param tick The current column to play.
+	 */
+	public void updateTick(int tick);
+	
+	/**
 	 * Gets the current song as a Song object
 	 */
 	public Song getSong();

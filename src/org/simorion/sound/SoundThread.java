@@ -1,9 +1,8 @@
-package org.simorion;
+
+package org.simorion.sound;
 
 import javax.sound.midi.Instrument;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
@@ -11,11 +10,10 @@ import javax.sound.midi.Synthesizer;
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.ImmutableRow;
 import org.simorion.common.Song;
+import org.simorion.ui.model.MutableModel;
+import org.simorion.ui.view.GUI;
 
-/** nasty bastard class
- * 
- * Treat like a kidneynapping victim: this only exists to gut; rip out its
- * insides and use elsewhere, cause this is disposable as fuck.
+/** Temporary Hack Class
  * 
  * It reads the song layer by layer, row by row, until it gets to
  * isLit(nextRowToPlay). This avoids having a mirror of the data to constantly
@@ -31,16 +29,18 @@ import org.simorion.common.Song;
  * but Accordion stays permanently playing until NOTE_OFF is sent) and possibly
  * fixing any sound/channel overlap errors
  * 
- * @auther Petar Krstic
+ * @author Petar Krstic
  * @author Edmund Smith
  *
  */
-public class SoundTest implements Runnable {
+public class SoundThread implements Runnable {
 	
 	public Song song;
+	public MutableModel model;
 	
-	public SoundTest(Song s) {
+	public SoundThread(Song s, MutableModel m) {
 		song = s;
+		model = m;
 	}
 
 	private Synthesizer synthesizer;
@@ -70,6 +70,8 @@ public class SoundTest implements Runnable {
 					tickPlusOne = tick + (long)(1000000/song.getTempo());
 				}
 				nTicks++;
+				model.updateTick((int) nTicks);
+				GUI.getInstance().update();
 				Receiver rcvr = synth.getReceiver();
 				// ch0.programChange(song.getLayers().iterator().next().getVoice().getMidiVoice());
 				ShortMessage msg = new ShortMessage();
@@ -105,15 +107,16 @@ public class SoundTest implements Runnable {
 						msg = new ShortMessage();
 						msg.setMessage(ShortMessage.NOTE_OFF, channel, row.getNote(), layer.getVelocity());
 						rcvr.send(msg, tickPlusOne - layer.getLayerNumber());
+
 						//System.out.println("Note on from "+ (tick + layer.getLayerNumber() - synth.getMicrosecondPosition()) + " to " + (tickPlusOne - layer.getLayerNumber()));
 					}
 				}
 				msg.setMessage(ShortMessage.START);
 				rcvr.send(msg, -1);
-			} catch (InvalidMidiDataException | MidiUnavailableException e) {
+			/*} catch (InvalidMidiDataException | MidiUnavailableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (Exception e) {
+			}*/} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

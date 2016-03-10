@@ -279,4 +279,10 @@ public class DummyModel implements MutableModel {
 	public void setBPM(byte bpm) {
 		//Do nothing
 	}
+
+	@Override
+	public void updateTick(int tick) {
+		// TODO Auto-generated method stub
+		
+	}
 }
