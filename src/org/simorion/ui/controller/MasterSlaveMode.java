@@ -1,11 +1,8 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
-import org.simorion.common.stream.StreamFailureException;
 import org.simorion.engine.MasterSlaveClient;
-import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.DefaultView;
-import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
@@ -31,7 +28,7 @@ public class MasterSlaveMode extends DeviceMode {
     	long startTime = 0;
     	@Override
     	public boolean isLit(int x, int y) {
-    		return ((System.currentTimeMillis() - startTime) / 50) % 256 == (x*16+y); 
+    		return ((System.currentTimeMillis() - startTime) / 50) % 256 > (x*16+y); 
     	}
     }
     

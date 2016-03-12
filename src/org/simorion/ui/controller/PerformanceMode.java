@@ -6,7 +6,6 @@ import org.simorion.common.util.Util;
 import org.simorion.sound.SoundSystem;
 import org.simorion.sound.SoundThread;
 import org.simorion.ui.view.DefaultView;
-import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
  
 /**
@@ -240,7 +239,7 @@ public class PerformanceMode extends DeviceMode {
 	@Override
 	void onChangedTo() {
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
-		if(i++ == 0)new Thread(new SoundThread(model.getSong(), model)).start();
+		if(i++ == 0) new Thread(new SoundThread(model.getSong(), model), "Sound Player Ticker").start();
 	}
 	int i = 0;
 }

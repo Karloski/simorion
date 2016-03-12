@@ -41,35 +41,35 @@ public class LoadConfigMode extends DeviceMode {
     	/** {@inheritDoc} */
     	@Override
     	public Iterable<AbstractButton> getModeButtons() {
-    		
-    		// A list of buttons to return as an iterable.
-    		modeButtons = new ArrayList<AbstractButton>();
-    		
-    		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("DEL", ButtonFactory.Mode.R1);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("^", ButtonFactory.Mode.R2);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("_", ButtonFactory.Mode.R3);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("X", ButtonFactory.Mode.R4);
-    		modeButtons.add(b);
-    		
-    		return modeButtons;
+			synchronized (GUI.getInstance().buttonLock) {
+				// A list of buttons to return as an iterable.
+				modeButtons = new ArrayList<AbstractButton>();
+
+				AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("DEL", ButtonFactory.Mode.R1);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("^", ButtonFactory.Mode.R2);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("_", ButtonFactory.Mode.R3);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("X", ButtonFactory.Mode.R4);
+				modeButtons.add(b);
+			}
+			return modeButtons;
     		
     	}
     	

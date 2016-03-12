@@ -71,7 +71,7 @@ public class SoundThread implements Runnable {
 				}
 				nTicks++;
 				model.updateTick((int) nTicks);
-				GUI.getInstance().update();
+				GUI.getInstance().redraw();
 				Receiver rcvr = synth.getReceiver();
 				// ch0.programChange(song.getLayers().iterator().next().getVoice().getMidiVoice());
 				ShortMessage msg = new ShortMessage();
@@ -99,16 +99,16 @@ public class SoundThread implements Runnable {
 						int loop = layer.getLoopPoint();
 						loop = loop == 0 ? 16 : loop;
 						int i = (int)(nTicks % loop);
-						if(!row.isLit(i)) continue;
-						msg = new ShortMessage();
-						msg.setMessage(ShortMessage.NOTE_ON, channel, row.getNote(),
-								layer.getVelocity());
-						rcvr.send(msg, tick + layer.getLayerNumber() - synth.getMicrosecondPosition());
-						msg = new ShortMessage();
-						msg.setMessage(ShortMessage.NOTE_OFF, channel, row.getNote(), layer.getVelocity());
-						rcvr.send(msg, tickPlusOne - layer.getLayerNumber());
-
-						//System.out.println("Note on from "+ (tick + layer.getLayerNumber() - synth.getMicrosecondPosition()) + " to " + (tickPlusOne - layer.getLayerNumber()));
+						if(row.isLit(i)) {
+							msg = new ShortMessage();
+							msg.setMessage(ShortMessage.NOTE_ON, channel, row.getNote(), layer.getVelocity());
+							rcvr.send(msg, tick + layer.getLayerNumber() - synth.getMicrosecondPosition());
+						} else {
+							msg = new ShortMessage();
+							//Equal to a note off since velocity = 0
+							msg.setMessage(ShortMessage.NOTE_ON, channel, row.getNote(), 0);
+							rcvr.send(msg, tick - layer.getLayerNumber());
+						}
 					}
 				}
 				msg.setMessage(ShortMessage.START);
