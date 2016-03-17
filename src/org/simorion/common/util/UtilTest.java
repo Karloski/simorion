@@ -1,12 +1,23 @@
 package org.simorion.common.util;
 
-import static org.junit.Assert.*;
-import static org.simorion.common.util.Util.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.simorion.common.util.Util.bitstring;
+import static org.simorion.common.util.Util.count;
+import static org.simorion.common.util.Util.iterable;
+import static org.simorion.common.util.Util.zip;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.junit.Test;
+import org.simorion.common.util.Util.Pair;
 
 public class UtilTest {
 
@@ -91,5 +102,45 @@ public class UtilTest {
 		}
 		
 	}
-
+	
+	@Test
+	public void testToIntFromBytesIsId() {
+		Random r = new Random();
+		for(int i = 0; i < 100; i++) {
+			int ri = r.nextInt();
+			assertEquals(ri, Util.toInt(Util.toBytes(ri)));
+		}
+	}
+	
+	@Test
+	public void testToIntFromLT4Bytes() {
+		Random r = new Random();
+		for(int i = 0; i < 100; i++) {
+			int size = r.nextInt(4);
+			byte[] bytes = new byte[size];
+			int bval = 0;
+			for(int j = 0; j < size; j++) {
+				int rv = r.nextInt(256);
+				bval += rv << (8*j);
+				bytes[size-j-1] = (byte)rv;
+			}
+			assertEquals(bval, Util.toInt(bytes));
+		}
+	}
+	
+	@Test
+	public void enumerationIterableTest() {
+		/*ArrayList<Integer> al = new ArrayList<Integer>();
+		Random r = new Random();
+		for(int i = 0; i < 100; i++) {
+			al.add(r.nextInt());
+		}
+		Hashtable<Integer, Object> map = new Hashtable<Integer, Object>();
+		for(Integer i : al) {
+			map.put(i, "");
+		}
+		for(Pair<Integer, Integer> pair : Util.zip(al, Util.iterable(map.keys()))) {
+			assertEquals(pair.left, pair.right);
+		}*/
+	}
 }

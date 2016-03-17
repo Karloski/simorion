@@ -5,6 +5,7 @@ import org.simorion.common.Song;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
+import org.simorion.sound.PlayableSound;
 
 /**
  * Class allowing a Model to be written to for the middle-end, primarily
@@ -110,4 +111,11 @@ public interface MutableModel extends ImmutableModel {
 	 * @param b
 	 */
 	public void setBPM(byte bpm);
+	
+	/**
+	 * Tells the sound thread to enqueue a sound to play immediately, via
+	 * a message-passing-like interface
+	 * @param sound The sound to play
+	 */
+	public void enqueueSound(PlayableSound sound);
 }
