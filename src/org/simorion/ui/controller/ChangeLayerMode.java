@@ -6,8 +6,8 @@ import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
 /**
- * ChangeLayerMode ready for full impl
- * @author George Young
+ * Device Mode implementation for the Change Layer Mode.
+ * @author Karl Brown
  */
 public class ChangeLayerMode extends DeviceMode {
 	
@@ -52,29 +52,50 @@ public class ChangeLayerMode extends DeviceMode {
          
     }
      
+	/**
+	 * {@inheritDoc}
+	 */
     public View getView() {
         return instance;
     }
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		if(layer != -1 && layer <= 16) {
 			model.setTopmostLayer(layer);
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		layer = -1;
+		model.setLCDDisplay("Layer changed to " + model.getCurrentLayerId());
+		reset();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		layer = y;
 		model.setLCDDisplay(Integer.toString(y));
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
 		layer = model.getCurrentLayerId();
 		model.setLCDDisplay("Change Layer Mode");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		layer = -1;
 	}
      
 }

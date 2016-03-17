@@ -6,7 +6,6 @@ import org.simorion.common.ImmutableLayer;
 import org.simorion.common.MutableLayer;
 import org.simorion.common.Song;
 import org.simorion.common.SongBuilder;
-import org.simorion.common.SoundSystem;
 import org.simorion.common.StandardSong;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.InsufficientSongDataException;
@@ -15,6 +14,7 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
+import org.simorion.sound.SoundSystem;
 import org.simorion.ui.view.GUI;
 
 //TODO: who's worked on this file? Add yourselves as authors  -Ed
@@ -29,7 +29,7 @@ public class EngineImpl implements Engine {
 	private int instanceID;
 	private StandardSong song;
 	private Voice[] voices;
-	private int topmostLayer;
+	private int topmostLayer, tick;
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
 	SoundSystem soundSystem = SoundSystem.getInstance();
@@ -62,7 +62,10 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void setLoopPoint(MutableLayer l, byte loopPoint) {
-		l.setLoopPoint(loopPoint);
+		for (MutableLayer layer : song.getLayers()) {
+			layer.setLoopPoint(loopPoint);
+		}
+		//l.setLoopPoint(loopPoint);
 		soundSystem.setLoopPoint(loopPoint);
 	}
 
@@ -105,11 +108,15 @@ public class EngineImpl implements Engine {
 	public ImmutableLayer getLayer(int i) {
 		return song.getLayerArray()[i];
 	}
+	
+	@Override
+	public void updateTick(int tick) {
+		this.tick = tick;
+	}
 
 	@Override
 	public int getTick() {
-		// TODO Timing stuff
-		return 0;
+		return tick % 720720;
 	}
 	
 	@Override
@@ -139,18 +146,17 @@ public class EngineImpl implements Engine {
 		try {
 			stream.readTo(f, sb);
 			song.loadFrom(sb);
-			lcdText = "Loaded song from network";
-			GUI.getInstance().update();
+			setLCDDisplay("Loaded song from network");
 		} catch (UnsupportedSongFormatException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
 			//TODO
 		} catch (InsufficientSongDataException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
 			//TODO
 		} catch (StreamFailureException e) {
-			lcdText = e.getLocalizedMessage();
+			setLCDDisplay(e.getLocalizedMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

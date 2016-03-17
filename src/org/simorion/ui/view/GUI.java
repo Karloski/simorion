@@ -1,13 +1,10 @@
 
 package org.simorion.ui.view;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -34,6 +31,8 @@ public class GUI extends JFrame {
 	private ONButton buttonOn;
 	private OKButton buttonOK;
 	private JTextField dispLCD;
+	
+	public Object buttonLock = new Object();
 	
 	MidiButton[] midiButtons = new MidiButton[256];
 	List<ModeButton> modeButtons = new ArrayList<ModeButton>();
@@ -140,7 +139,7 @@ public class GUI extends JFrame {
 		
 		// Get the current view.
 		View view = ModeMaster.getInstance().getView();
-		
+		synchronized(buttonLock) {
 		// Retrieve new button data and iterate over each button on the view.
 		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
 		assert(newMidiButtons.length == midiButtons.length);
@@ -164,7 +163,7 @@ public class GUI extends JFrame {
 		
 		// Update the LCD for this view.
 		dispLCD.setText(view.getLCDMessage());
-		
+		}
 	}
 
 	/**
@@ -189,8 +188,13 @@ public class GUI extends JFrame {
 		return instance;
 	}
 	
+	private static Object instanceLock = new Object();
 	public static GUI getInstance() {		
-		if (instance == null) instance = new GUI();
+		if (instance == null) 
+			synchronized(instanceLock) {
+			if(instance==null)
+				instance = new GUI();
+		}
 		
 		return instance;
 	}

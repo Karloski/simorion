@@ -1,7 +1,6 @@
 package org.simorion.engine;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -25,6 +24,7 @@ public class MasterSlaveServer extends Thread {
 	private final Engine engine;
 	
 	public MasterSlaveServer(final Engine engine) {
+		super("SlaveServer");
 		this.engine = engine;
 	}
 	

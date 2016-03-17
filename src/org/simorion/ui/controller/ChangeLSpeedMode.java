@@ -1,17 +1,16 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
-import org.simorion.ui.model.ImmutableModel;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
 /**
- * ChangeLPointMode ready for full impl
- * @author George Young
+ * Device Mode implementation for the Change Loop Speed Mode.
+ * @author Karl Brown
  */
 public class ChangeLSpeedMode extends DeviceMode {
 	
-	int button;
+	int button = -1;
  
     public ChangeLSpeedMode(ModeMaster m) {
 		super(m);
@@ -63,31 +62,50 @@ public class ChangeLSpeedMode extends DeviceMode {
          
     }
      
+	/**
+	 * {@inheritDoc}
+	 */
     public View getView() {
         return instance;
     }
 
-    /** @author Karl Brown} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		if(button != -1) {
 			model.setBPM((byte)(button <= 160 ? button : 160));
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		button = -1;
+		model.setLCDDisplay("Loop speed set to " + (model.getBPM() & 0xff));
+		reset();
 	}
 
-	/** @author Karl Brown} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = y * 16 + x;
 		model.setLCDDisplay(Integer.toString(button <= 160 ? button : 160));
 	}
     
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	void onChangedTo() {
 		//Avoid the signed-ness issue
 		button = 0xff & model.getBPM();
 		model.setLCDDisplay("Change Loop Speed Mode");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	void reset() {
+		button = -1;
 	}
 }

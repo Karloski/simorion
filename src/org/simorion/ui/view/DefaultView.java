@@ -39,8 +39,14 @@ public class DefaultView implements View {
 	public static final Border LIT_BORDER = BorderFactory.createLineBorder(MidiButton.LIT_COLOUR);
 	
 	// Colours
-	public static final Color INACTIVE = new Color(0xFFCCCCCC);
-	public static final Color HORIZONTAL_RULE = new Color(0xFF666666);
+	public static final Color INACTIVE_COLOUR = new Color(0xFFCCCCCC);
+	public static final Color HORIZONTAL_RULE_COLOUR = new Color(0xFF666666);
+	public static final Color BACKGROUND_COLOUR = Color.white;
+	
+	// Dimensions
+	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 630);
+	public static final Pair<Integer, Integer> MATRIX_SIZE = new Pair<Integer, Integer>(16, 16);
+	public static final int NO_BUTTONS = MATRIX_SIZE.left * MATRIX_SIZE.right;
 
 	/** {@inheritDoc} */
 	@Override
@@ -51,14 +57,14 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Integer> getSize() {
-		return new Pair<Integer, Integer>(605, 630);
+		return SIZE;
 	}
 	
 	/** {@inheritDoc} */
 	@Override
 	public Pair<Integer, Integer> getMatrixSize() {
 		// Return a new pair representing the size of this view's button matrix.
-		return new Pair<Integer, Integer>(16, 16);
+		return MATRIX_SIZE;
 	}
 	
 	/** {@inheritDoc} */
@@ -68,10 +74,10 @@ public class DefaultView implements View {
 		// Create and define the outer JPanel.
 		outerPanel = new JPanel();
 		
-		outerPanel.setBounds(1, 1, 600, 625);
+		outerPanel.setBounds(0, 0, SIZE.left, SIZE.right);
 		outerPanel.setBorder(UNLIT_BORDER);
 		outerPanel.setLayout(null);
-		outerPanel.setBackground(Color.white);
+		outerPanel.setBackground(BACKGROUND_COLOUR);
 		
 		return outerPanel;
 		
@@ -87,7 +93,7 @@ public class DefaultView implements View {
 		buttonPanel.setBounds(58, 58, 484, 484);
 		buttonPanel.setBorder(UNLIT_BORDER);
 		buttonPanel.setLayout(null);
-		buttonPanel.setBackground(Color.white);
+		buttonPanel.setBackground(BACKGROUND_COLOUR);
 		
 		return buttonPanel;
 		
@@ -198,7 +204,7 @@ public class DefaultView implements View {
 		dispLCD.setEditable(false);
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(UNLIT_BORDER);
-		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 21));
+		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 18));
 		
 		return dispLCD;
 		
@@ -234,14 +240,20 @@ public class DefaultView implements View {
 	public boolean isColumnLit(int y) {			
 		return false;
 	}
-
+	
+	String lcdDisplay;
+	
 	/**
 	 * Retrieves and returns the current textual output of the LCD.
 	 * @return The textual output of the LCD.
 	 */
 	@Override
 	public String getLCDMessage() {
-		return "";
+		return lcdDisplay;
+	}
+	
+	public void setLCDMessage(String message) {
+		lcdDisplay = message;
 	}
 
 	/**

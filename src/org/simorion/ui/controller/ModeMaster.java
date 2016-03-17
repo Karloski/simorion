@@ -75,7 +75,7 @@ public class ModeMaster implements Controller {
 		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
 		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
-		GUI.newInstance();
+		//GUI.newInstance();
 		instance.changeMode(ON_OFF_MODE);
 	}
 
