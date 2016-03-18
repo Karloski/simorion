@@ -118,4 +118,14 @@ public interface MutableModel extends ImmutableModel {
 	 * @param sound The sound to play
 	 */
 	public void enqueueSound(PlayableSound sound);
+	
+	/**
+	 * Tells the engine to start playing the song
+	 */
+	public void startPlaying();
+	
+	/**
+	 * Tells the engine to stop playing the song
+	 */
+	public void stopPlaying();
 }

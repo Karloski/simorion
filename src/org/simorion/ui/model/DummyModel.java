@@ -291,4 +291,22 @@ public class DummyModel implements MutableModel {
 	public void enqueueSound(PlayableSound s) {
 		//Do nothing
 	}
+
+	@Override
+	public void startPlaying() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stopPlaying() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isPlaying() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
