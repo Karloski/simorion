@@ -46,8 +46,8 @@ public class ImmutableLayerTest {
 		rows[0].applyXor(rand.nextInt(1 << rows[0].cellCount()));
 		layerNumber = rand.nextInt();
 		loopPoint = rand.nextInt(256);
-		velocity = (byte)rand.nextInt(256);
-		voice = MIDIVoices.getVoice(rand.nextInt(256));
+		velocity = (byte)rand.nextInt(127);
+		voice = MIDIVoices.getVoice(rand.nextInt(176));
 		mut_layer = new BasicLayer(Arrays.asList(rows), voice, velocity, layerNumber, loopPoint);
 		layer = mut_layer;
 	}

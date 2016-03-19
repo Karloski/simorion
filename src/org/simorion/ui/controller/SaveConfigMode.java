@@ -153,10 +153,9 @@ public class SaveConfigMode extends DeviceMode {
      */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
+		// Create a new song writer for the given filename.
 		// Remove the pipe.
 		filename = filename.substring(0, filename.length()-1);
-		
-		// Create a new song writer for the given filename.
 		FileSongWriter fsw = new FileSongWriter(new File(filename + ".song"));
 		
 		try {
@@ -165,9 +164,9 @@ public class SaveConfigMode extends DeviceMode {
 			
 			// If successfully, change back to the performance mode and update the user via the LCD display.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
-			model.setLCDDisplay("Song saved as " + filename + ".");
 			
 			// Reset this mode.
+			model.setLCDDisplay("Song '" + filename + "' saved.");
 			reset();
 		} catch (StreamFailureException ex) {
 			// On error, display the error and add the pipe back to the string.

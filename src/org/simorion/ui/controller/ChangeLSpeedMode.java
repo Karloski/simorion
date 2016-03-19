@@ -75,12 +75,12 @@ public class ChangeLSpeedMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if (button != -1) {
+		if(button != -1) {
 			model.setBPM((byte)(button <= 160 ? button : 160));
 		}
 		
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Loop speed set to " + model.getBPM());
+		model.setLCDDisplay("Loop speed set to " + (model.getBPM() & 0xff));
 		reset();
 	}
 

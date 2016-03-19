@@ -240,14 +240,20 @@ public class DefaultView implements View {
 	public boolean isColumnLit(int y) {			
 		return false;
 	}
-
+	
+	String lcdDisplay;
+	
 	/**
 	 * Retrieves and returns the current textual output of the LCD.
 	 * @return The textual output of the LCD.
 	 */
 	@Override
 	public String getLCDMessage() {
-		return "";
+		return lcdDisplay;
+	}
+	
+	public void setLCDMessage(String message) {
+		lcdDisplay = message;
 	}
 
 	/**

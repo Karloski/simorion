@@ -68,7 +68,7 @@ public class ChangeLayerMode extends DeviceMode {
 			model.setTopmostLayer(layer);
 		}
 		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Layer set to " + model.getCurrentLayerId());
+		model.setLCDDisplay("Layer changed to " + model.getCurrentLayerId());
 		reset();
 	}
 

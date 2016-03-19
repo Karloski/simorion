@@ -60,6 +60,7 @@ public class ModeMaster implements Controller {
 	public static DeviceMode CHANGE_LOOP_SPEED_MODE;
 	public static DeviceMode CHANGE_VELOCITY_MODE;
 	public static DeviceMode CHANGE_VOICE_MODE;
+	public static DeviceMode SHOP_BOY_MODE;
 	
 	public static void init() {
 		instance = new ModeMaster();
@@ -75,7 +76,8 @@ public class ModeMaster implements Controller {
 		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
 		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
-		GUI.newInstance();
+		SHOP_BOY_MODE = new ShopMode(instance);
+		
 		instance.changeMode(ON_OFF_MODE);
 	}
 

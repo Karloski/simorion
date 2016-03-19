@@ -11,7 +11,6 @@ import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.util.Util;
-import org.simorion.ui.controller.ModeMaster;
 
 /**
  * Thread that finds other SimoriONs on the local area network in the range
@@ -25,15 +24,17 @@ public class MasterSlaveClient extends Thread {
 
 	private final ImmutableSong song;
 	private final int instanceID;
+	private final Runnable onSent;
 	
 	/**
 	 * Constructs and initialises the fields ready for the run method
 	 * @param song
 	 * @param instanceID
 	 */
-	public MasterSlaveClient(final ImmutableSong song, final int instanceID) {
+	public MasterSlaveClient(final ImmutableSong song, final int instanceID, final Runnable onSent) {
 		this.song = song;
 		this.instanceID = instanceID;
+		this.onSent = onSent;
 	}
 	
 	/**
@@ -41,7 +42,7 @@ public class MasterSlaveClient extends Thread {
 	 */
 	public void run() {
 		try {
-			sendMasterToSlave(song, instanceID);
+			sendMasterToSlave(song, instanceID, onSent);
 		} catch (StreamFailureException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +56,7 @@ public class MasterSlaveClient extends Thread {
 	 * song to itself
 	 * @throws StreamFailureException
 	 */
-	public static void sendMasterToSlave(final ImmutableSong song, final int instanceID) throws StreamFailureException {
+	public static void sendMasterToSlave(final ImmutableSong song, final int instanceID, final Runnable onSent) throws StreamFailureException {
 		try {
 			//Start searching from a random offset to avoid having one device
 			//always being chosen
@@ -74,6 +75,7 @@ public class MasterSlaveClient extends Thread {
 						} else {
 							SongWriter sw = new NetworkSongReaderWriter(slave);
 							sw.write(SongFormats.PREFERRED_FORMAT, song);
+							onSent.run();
 							return;
 						}
 					} catch (Exception e) {
@@ -85,8 +87,10 @@ public class MasterSlaveClient extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			onSent.run();
 			throw new StreamFailureException("Connection failed");
 		}
+		onSent.run();
 		throw new StreamFailureException("No other SimoriON found");
 	}
 		

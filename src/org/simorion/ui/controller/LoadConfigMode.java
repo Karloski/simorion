@@ -9,6 +9,7 @@ import org.simorion.common.SongBuilder;
 import org.simorion.common.Voice;
 import org.simorion.common.stream.FileSongReader;
 import org.simorion.common.stream.SongFormats;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
@@ -42,35 +43,35 @@ public class LoadConfigMode extends DeviceMode {
     	/** {@inheritDoc} */
     	@Override
     	public Iterable<AbstractButton> getModeButtons() {
-    		
-    		// A list of buttons to return as an iterable.
-    		modeButtons = new ArrayList<AbstractButton>();
-    		
-    		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("DEL", ButtonFactory.Mode.R1);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("^", ButtonFactory.Mode.R2);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("_", ButtonFactory.Mode.R3);
-    		modeButtons.add(b);
-    		
-    		b = ButtonFactory.createButton("X", ButtonFactory.Mode.R4);
-    		modeButtons.add(b);
-    		
-    		return modeButtons;
+			synchronized (GUI.getInstance().buttonLock) {
+				// A list of buttons to return as an iterable.
+				modeButtons = new ArrayList<AbstractButton>();
+
+				AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("DEL", ButtonFactory.Mode.R1);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("^", ButtonFactory.Mode.R2);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("_", ButtonFactory.Mode.R3);
+				modeButtons.add(b);
+
+				b = ButtonFactory.createButton("X", ButtonFactory.Mode.R4);
+				modeButtons.add(b);
+			}
+			return modeButtons;
     		
     	}
     	
@@ -152,7 +153,7 @@ public class LoadConfigMode extends DeviceMode {
      * If the song does not exist or the data could not be loaded, the error is represented on the screen.
      */
 	@Override
-	public void onOKButtonPress(MouseEvent e) {
+	public void onOKButtonPress(MouseEvent e) {		
 		// Remove the pipe.
 		filename = filename.substring(0, filename.length()-1);
 		
@@ -170,14 +171,21 @@ public class LoadConfigMode extends DeviceMode {
 			// Loads the song from the SongBuilder into the song.
 			model.getSong().loadFrom(song);
 			
+
+			//TODO: EXAMPLE LOOK AT ME
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			
 			// Change back to performance mode and reset the view.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
-			model.setLCDDisplay("Song " + filename + " loaded.");
+			model.setLCDDisplay("Song '" + filename + "' loaded");
 			reset();			
 			
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
 			filename += "|";
+			
+			//TODO: EXAMPLE LOOK AT ME
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
 		}
 	}
 
