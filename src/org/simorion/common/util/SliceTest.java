@@ -51,7 +51,7 @@ public class SliceTest {
     	Iterable<Integer> slice = Util.slice(arr, i, i+j);
     	for(Integer si : slice) {
     		assertEquals(arr[i++], si);
-    		assertTrue(j-- > 0);
+    		assertTrue(j --> 0);
     	}
     }
     

@@ -11,6 +11,7 @@ import org.simorion.common.Voice;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
+import org.simorion.sound.PlayableSound;
 
 /**
  * Dummy Model for testing MVC loop
@@ -282,7 +283,30 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public void updateTick(int tick) {
+		//Do nothing
+		
+	}
+	
+	@Override
+	public void enqueueSound(PlayableSound s) {
+		//Do nothing
+	}
+
+	@Override
+	public void startPlaying() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void stopPlaying() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isPlaying() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

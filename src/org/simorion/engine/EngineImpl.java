@@ -14,7 +14,9 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
+import org.simorion.sound.PlayableSound;
 import org.simorion.sound.SoundSystem;
+import org.simorion.sound.SoundThread;
 import org.simorion.ui.view.GUI;
 
 //TODO: who's worked on this file? Add yourselves as authors  -Ed
@@ -32,8 +34,11 @@ public class EngineImpl implements Engine {
 	private int topmostLayer, tick;
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
+	protected boolean isPlaying;
+	
 	SoundSystem soundSystem = SoundSystem.getInstance();
 	
+	public SoundThread soundThread;
 	
 	public EngineImpl() {
 		instanceID = new Random().nextInt();
@@ -44,7 +49,9 @@ public class EngineImpl implements Engine {
 		
 		masterSlaveServer = new MasterSlaveServer(this);
 		masterSlaveServer.start();
-		
+		soundThread = new SoundThread(song, this);
+		isPlaying = false;
+		new Thread(soundThread, "Sound Thread").start();
 	}
 	
 	/** {@inheritDoc} */
@@ -190,6 +197,9 @@ public class EngineImpl implements Engine {
 		for(int i = 0; i < voices.length; i++) voices[i] = MIDIVoices.getVoice(1);
 		topmostLayer = 0;
 		lcdText = "";
+		
+		soundThread.updateSong(song);
+		isPlaying = false;
 	}
 
 	@Override
@@ -202,5 +212,26 @@ public class EngineImpl implements Engine {
 	public byte getBPM() {
 		return song.getBPM();
 	}
+	
+	@Override
+	public void enqueueSound(PlayableSound sound) {
+		soundThread.enqueueSound(sound);
+	}
+
+	@Override
+	public void startPlaying() {
+		isPlaying = true;
+	}
+
+	@Override
+	public void stopPlaying() {
+		isPlaying = false;
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return isPlaying;
+	}
+	
 	
 }

@@ -93,7 +93,9 @@ public class SongBuilder {
 	public static class AddLayer {
 		
 		private final SongBuilder parent;
-		private int bpm;
+
+		private int velocity, voice, loopPoint, layerId, bpm;
+		private String lcdMessage;
 		
 		private List<AddRow> rows;
 		
@@ -138,12 +140,12 @@ public class SongBuilder {
 			return rows;
 		}
 		
-		public byte getVelocity() {
-			return (byte)velocity;
+		public int getVelocity() {
+			return velocity;
 		}
 		
-		public byte getMIDIVoice() {
-			return (byte)voice;
+		public int getMIDIVoice() {
+			return voice;
 		}
 		
 		public int getLoopPoint() {
@@ -157,9 +159,6 @@ public class SongBuilder {
 		public String getLCDMessage() {
 			return lcdMessage;
 		}
-		
-		private int velocity, voice, loopPoint, layerId;
-		private String lcdMessage;
 		
 		public SongBuilder done() {
 			return parent; 

@@ -22,15 +22,6 @@ public final class Util {
 	}
 	
 	/**
-	 * Simple conversion function
-	 * @param cs The Character[] to convert
-	 * @return cs as a byte[]
-	 */
-	public static byte[] asByteArray(Character[] cs) {
-		return cs.toString().getBytes();
-	}
-	
-	/**
 	 * Simple 2-Tuple, with public final fields.
 	 * 
 	 * @author Edmund Smith
@@ -253,10 +244,10 @@ public final class Util {
 	public static int toInt(byte[] b) {
 		switch(b.length) {
 			case 0: return 0;
-			case 1: return b[0];
-			case 2: return b[0]<<8|b[1];
-			case 3: return b[0]<<16|b[1]<<8|b[2];
-			default: return b[0]<<24|b[1]<<16|b[2]<<8|b[3];
+			case 1: return (b[0]&0xff);
+			case 2: return (b[0]&0xff)<<8|(b[1]&0xff);
+			case 3: return (b[0]&0xff)<<16|(b[1]&0xff)<<8|(b[2]&0xff);
+			default: return (b[0]&0xff)<<24|(b[1]&0xff)<<16|(b[2]&0xff)<<8|(b[3]&0xff);
 		}
 	}
 

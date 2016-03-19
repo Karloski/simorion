@@ -3,6 +3,7 @@ package org.simorion.sound;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
@@ -43,55 +44,34 @@ public class SoundThread implements Runnable {
 	
 	public Song song;
 	public MutableModel model;
+	private long nTicks = -1;
+	private static SoundThread instance;
+	
+	protected ConcurrentLinkedQueue<PlayableSound> soundsToPlay;
 	
 	public SoundThread(Song s, MutableModel m) {
+		
 		if (instance != null) {
 			throw new RuntimeException("Cannot have two sound instances!");
 		}
+		
+		instance = this;
 		song = s;
 		model = m;
-		instance = this;
+		soundsToPlay = new ConcurrentLinkedQueue<PlayableSound>();
 	}
 	
-	public static void play(int note) {
-		ShortMessage msg = new ShortMessage();
-	    try {
-			msg.setMessage(ShortMessage.NOTE_ON, 1, instance.model.getCurrentLayer().getVoice().getMidiVoice(), 0);
-		    Synthesizer synth = instance.getSynthesizer();
-		    synth.getChannels()[1].noteOn(note, 75);
-			long tick = synth.getMicrosecondPosition() + (long)(1000000/instance.song.getTempo()) - synth.getLatency();
-		    instance.getSynthesizer().getReceiver().send(msg, tick);
-		    System.out.println("Played "+ note);
-	    } catch (InvalidMidiDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private static SoundThread instance;
-	
-	static {
-		try {
-			Synthesizer synth = getSynthesizer();
-			synth.unloadAllInstruments(synth.getDefaultSoundbank());
-			Soundbank sb = MidiSystem.getSoundbank(new File("./FluidR3 GM2-2.SF2"));
-			System.out.println(sb.toString());
-			synth.loadAllInstruments(sb);
-			System.out.println("Soundbank Loaded");
-		} catch (InvalidMidiDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void updateSong(Song s) {
+		song = s;
+		nTicks = -1;
 	}
 	
-	private static Synthesizer synthesizer;
-	private static Synthesizer getSynthesizer() {
+	public void enqueueSound(PlayableSound sound) {
+		soundsToPlay.add(sound);
+	}
+			
+	private Synthesizer synthesizer;
+	private Synthesizer getSynthesizer() {
 		if(synthesizer == null) try {
 			synthesizer = MidiSystem.getSynthesizer();
 			// this returns an error in the console but is necessary to make sound
@@ -106,13 +86,43 @@ public class SoundThread implements Runnable {
 	public void run() {
 		long tick = 0;
 		long tickPlusOne = 0;
-		long nTicks = -1;
 		System.out.println(new File(".").getAbsolutePath());
 		System.out.println("Running song");
+		
+		{	//So synth doesn't bleed through
+			Synthesizer synth = getSynthesizer();
+			synth.unloadAllInstruments(synth.getDefaultSoundbank());
+			Soundbank sb;
+			try {
+				sb = MidiSystem.getSoundbank(new File("./FluidR3 GM2-2.SF2"));
+				System.out.println(sb.toString());
+				synth.loadAllInstruments(sb);
+				System.out.println("Soundbank Loaded");
+			} catch (InvalidMidiDataException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		while (true) {
 			try {
 				Thread.sleep(10);
+								
+				if(!model.isPlaying()) {
+					continue;
+				}
+				
+				if(soundsToPlay.size() > 0) {
+					PlayableSound s;
+					while((s = soundsToPlay.poll()) != null) {
+						s.play(getSynthesizer(), song.getTempo());
+						System.out.println("Playing note "+s.toString());
+					}
+				}
+				
 				Synthesizer synth = getSynthesizer();
 				if(tick > synth.getMicrosecondPosition()) continue;
 				else {
@@ -122,6 +132,7 @@ public class SoundThread implements Runnable {
 				nTicks++;
 				model.updateTick((int) nTicks);
 				GUI.getInstance().redraw();
+				
 				Receiver rcvr = synth.getReceiver();
 				// ch0.programChange(song.getLayers().iterator().next().getVoice().getMidiVoice());
 				ShortMessage msg = new ShortMessage();
