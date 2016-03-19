@@ -171,8 +171,6 @@ public class LoadConfigMode extends DeviceMode {
 			// Loads the song from the SongBuilder into the song.
 			model.getSong().loadFrom(song);
 			
-
-			//TODO: EXAMPLE LOOK AT ME
 			model.enqueueSound(BankOfSounds.GOOD_SOUND);
 			
 			// Change back to performance mode and reset the view.
@@ -183,8 +181,6 @@ public class LoadConfigMode extends DeviceMode {
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
 			filename += "|";
-			
-			//TODO: EXAMPLE LOOK AT ME
 			model.enqueueSound(BankOfSounds.BAD_SOUND);
 		}
 	}

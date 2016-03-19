@@ -32,8 +32,7 @@ public class MasterSlaveMode extends DeviceMode {
     	}
     }
     
-    void onChangedTo() {    	
-    	new MasterSlaveClient(model.getSong(), model.getInstanceID()).start();
+    void onChangedTo() {
     	instance.startTime = System.currentTimeMillis();
     	instance.setLCDMessage("Searching...");
     	new MasterSlaveClient(model.getSong(), model.getInstanceID(), new Runnable() {

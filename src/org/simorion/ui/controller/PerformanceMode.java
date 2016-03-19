@@ -258,31 +258,4 @@ public class PerformanceMode extends DeviceMode {
 		model.startPlaying();
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}
-	
-	/*private class ClockHand extends Thread {
-		
-		private boolean[] isLit = new boolean[] { false, false, false, false };
-		
-		@Override
-		public void run() {			
-			while (SoundSystem.getInstance().isPlaying()) {
-				
-				int col = SoundSystem.getInstance().getCurrentColumn();
-				
-				int prev = 0;
-				if (col == 0) prev = 15;
-				else prev = col - 1;
-				
-				for (int i = 0; i < DefaultView.MATRIX_SIZE.right; i += 5) {
-
-					if (isLit[i / 5]) model.getCurrentLayer().getRow(i).setLit(prev);
-					else model.getCurrentLayer().getRow(i).setUnlit(prev);
-					
-					isLit[i / 5] = model.getCurrentLayer().getRow(i).isLit(col);
-					model.getCurrentLayer().getRow(i).setLit(col);
-					
-				}				
-			}
-		}		
-	}*/
 }

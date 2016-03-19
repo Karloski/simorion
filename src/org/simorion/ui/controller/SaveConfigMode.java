@@ -8,6 +8,7 @@ import javax.swing.AbstractButton;
 import org.simorion.common.stream.FileSongWriter;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.StreamFailureException;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
@@ -162,6 +163,9 @@ public class SaveConfigMode extends DeviceMode {
 			// Attempt to serialize the song data.
 			fsw.write(SongFormats.PREFERRED_FORMAT, model.getSong());
 			
+			// Successfully wrote the song, play the happy sound (yey).
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			
 			// If successfully, change back to the performance mode and update the user via the LCD display.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
 			
@@ -172,6 +176,7 @@ public class SaveConfigMode extends DeviceMode {
 			// On error, display the error and add the pipe back to the string.
 			model.setLCDDisplay(ex.getMessage());
 			filename += "|";
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
 		}
 	}
 

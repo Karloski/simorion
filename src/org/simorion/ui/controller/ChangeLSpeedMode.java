@@ -1,7 +1,7 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
-import org.simorion.common.SoundSystem;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -75,13 +75,17 @@ public class ChangeLSpeedMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(button != -1) {
-			model.setBPM((byte)(button <= 160 ? button : 160));
+		if (button > 160) {
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
+			model.setLCDDisplay("Tempo cannot exceed 160.");
 		}
-		
-		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Loop speed set to " + (model.getBPM() & 0xff));
-		reset();
+		else {
+			model.setBPM((byte) button);
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Loop speed set to " + (model.getBPM() & 0xff));
+			reset();
+		}
 	}
 
 	/**
@@ -90,7 +94,7 @@ public class ChangeLSpeedMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = y * 16 + x;
-		model.setLCDDisplay(Integer.toString(button <= 160 ? button : 160));
+		model.setLCDDisplay(Integer.toString(button));
 	}
     
 	/**

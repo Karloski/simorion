@@ -1,6 +1,7 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -74,12 +75,17 @@ public class ChangeNVMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {		
-		if (button != -1) {
-			model.setVelocity(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
+		if (button > 127) {
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
+			model.setLCDDisplay("Velocity cannot exceed 127.");
 		}		
-		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Velocity set to " + (model.getCurrentLayer().getVelocity() & 0xff));
-		reset();
+		else {
+			model.setVelocity(model.getCurrentLayer(), (byte) button);
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Velocity set to " + (model.getCurrentLayer().getVelocity() & 0xff));
+			reset();
+		}
 	}
 
 	/**
@@ -88,8 +94,7 @@ public class ChangeNVMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = (y * 16 + x);
-		byte display = (byte) (button <= 127 ? button : 127);		
-		model.setLCDDisplay(Byte.toString(display));
+		model.setLCDDisplay(Integer.toString(button));
 	}
 	
 	/**
