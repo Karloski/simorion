@@ -41,7 +41,7 @@ public abstract class DeviceMode implements Controller {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		GUI.getInstance().update();
+		// No default behaviour.
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public abstract class DeviceMode implements Controller {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
-		GUI.getInstance().update();
+		// No default behaviour.
 	}
 	
 	/**

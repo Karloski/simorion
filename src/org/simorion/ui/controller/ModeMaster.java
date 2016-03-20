@@ -30,6 +30,11 @@ public class ModeMaster implements Controller {
 	}
 
 	public void changeMode(DeviceMode newMode) {
+		if (newMode == PERFORMANCE_MODE) {
+			deviceMode = TRANSITION_MODE;
+			deviceMode.register(model);
+			deviceMode.onChangedTo();
+		}
 		deviceMode = newMode;
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
@@ -61,6 +66,7 @@ public class ModeMaster implements Controller {
 	public static DeviceMode CHANGE_VELOCITY_MODE;
 	public static DeviceMode CHANGE_VOICE_MODE;
 	public static DeviceMode SHOP_BOY_MODE;
+	public static DeviceMode TRANSITION_MODE;
 	
 	public static void init() {
 		instance = new ModeMaster();
@@ -77,6 +83,7 @@ public class ModeMaster implements Controller {
 		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
 		SHOP_BOY_MODE = new ShopMode(instance);
+		TRANSITION_MODE = new TransitionMode(instance);
 		
 		instance.changeMode(ON_OFF_MODE);
 	}

@@ -45,7 +45,8 @@ public class PerformanceMode extends DeviceMode {
     	@Override
     	public boolean isLit(int x, int y) {
     		int loop = model.getCurrentLayer().getLoopPoint();
-    		loop = loop == 0?16:loop;
+    		loop = loop == 0 ? 16 : loop;
+    		// FIXME: When BPM is 0, tick increases continually, making the dots race across the screen.
     		return model.getCurrentLayer().getRow(y).isLit(x) || (model.getTick() % loop == x && (y == 0 || y == 5 || y == 10 || y == 15));
     	}
 

@@ -28,7 +28,7 @@ public class OnOffMode extends DeviceMode {
     }
      
     @Override
-    public void onOnOffButtonPress(MouseEvent e){
+    public void onOnOffButtonPress(MouseEvent e) {
         changeMode(ModeMaster.PERFORMANCE_MODE);
     }
 

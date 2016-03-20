@@ -140,29 +140,29 @@ public class GUI extends JFrame {
 		// Get the current view.
 		View view = ModeMaster.getInstance().getView();
 		synchronized(buttonLock) {
-		// Retrieve new button data and iterate over each button on the view.
-		MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
-		assert(newMidiButtons.length == midiButtons.length);
-		for (int r = 0; r < 16; r++) {			
-			for (int c = 0; c < 16; c++) {
-				// Change the content of each button on the GUI based on this view's data.
-				if (view.isLit(r, c)) {
-					midiButtons[c * 16 + r].setBackground(MidiButton.LIT_COLOUR);
-					midiButtons[c * 16 + r].setBorder(DefaultView.LIT_BORDER);
-				}
-				// Unlit state for the view.
-				else {
-					midiButtons[c * 16 + r].setBackground(newMidiButtons[c * 16 + r].getBackground());
-					midiButtons[c * 16 + r].setBorder(newMidiButtons[c * 16 + r].getBorder());
-				}
-				
-				// Only really applies to Save/Load views.
-				midiButtons[c * 16 + r].setText(newMidiButtons[c * 16 + r].getText());
-			}			
-		}
-		
-		// Update the LCD for this view.
-		dispLCD.setText(view.getLCDMessage());
+			// Retrieve new button data and iterate over each button on the view.
+			MidiButton[] newMidiButtons = (MidiButton[]) view.getMidiButtons();
+			assert(newMidiButtons.length == midiButtons.length);
+			for (int r = 0; r < 16; r++) {			
+				for (int c = 0; c < 16; c++) {
+					// Change the content of each button on the GUI based on this view's data.
+					if (view.isLit(r, c)) {
+						midiButtons[c * 16 + r].setBackground(MidiButton.LIT_COLOUR);
+						midiButtons[c * 16 + r].setBorder(DefaultView.LIT_BORDER);
+					}
+					// Unlit state for the view.
+					else {
+						midiButtons[c * 16 + r].setBackground(newMidiButtons[c * 16 + r].getBackground());
+						midiButtons[c * 16 + r].setBorder(newMidiButtons[c * 16 + r].getBorder());
+					}
+					
+					// Only really applies to Save/Load views.
+					midiButtons[c * 16 + r].setText(newMidiButtons[c * 16 + r].getText());
+				}			
+			}
+			
+			// Update the LCD for this view.
+			dispLCD.setText(view.getLCDMessage());
 		}
 	}
 

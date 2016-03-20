@@ -110,7 +110,9 @@ public class SoundThread implements Runnable {
 			try {
 				Thread.sleep(10);
 				
-				//|| model.getBPM() == 0
+				//FIXME: Currently has no effect.
+				// You can stop the Simorion by doing: || model.getBPM() == 0 in the if statement.
+				// Not sure if this is the intended way to do this, however.
 				if(!model.isPlaying()) {
 					continue;
 				}

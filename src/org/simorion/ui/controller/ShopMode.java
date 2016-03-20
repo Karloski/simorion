@@ -124,7 +124,7 @@ public class ShopMode extends DeviceMode {
 		@Override
 		public boolean isLit(int x, int y) {
 			int loop = model.getCurrentLayer().getLoopPoint();
-    		loop = loop == 0?16:loop;
+    		loop = loop == 0 ? 16 : loop;
     		return model.getCurrentLayer().getRow(y).isLit(x) || (model.getTick() % loop == x && y % 5 == 0);
 		}
 		
