@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
@@ -110,7 +109,8 @@ public class SoundThread implements Runnable {
 		while (true) {
 			try {
 				Thread.sleep(10);
-								
+				
+				//|| model.getBPM() == 0
 				if(!model.isPlaying()) {
 					continue;
 				}
@@ -131,7 +131,7 @@ public class SoundThread implements Runnable {
 				}
 				nTicks++;
 				model.updateTick((int) nTicks);
-				GUI.getInstance().redraw();
+				GUI.getInstance().update();
 				
 				Receiver rcvr = synth.getReceiver();
 				// ch0.programChange(song.getLayers().iterator().next().getVoice().getMidiVoice());

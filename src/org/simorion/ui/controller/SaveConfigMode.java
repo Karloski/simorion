@@ -8,6 +8,7 @@ import javax.swing.AbstractButton;
 import org.simorion.common.stream.FileSongWriter;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.StreamFailureException;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.DefaultView;
@@ -153,19 +154,29 @@ public class SaveConfigMode extends DeviceMode {
      */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		
+		// Create a new song writer for the given filename.
+		// Remove the pipe.
 		filename = filename.substring(0, filename.length()-1);
-		
 		FileSongWriter fsw = new FileSongWriter(new File(filename + ".song"));
 		
 		try {
+			// Attempt to serialize the song data.
 			fsw.write(SongFormats.PREFERRED_FORMAT, model.getSong());
+			
+			// Successfully wrote the song, play the happy sound (yey).
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			
+			// If successfully, change back to the performance mode and update the user via the LCD display.
 			changeMode(ModeMaster.PERFORMANCE_MODE);
+			
+			// Reset this mode.
 			model.setLCDDisplay("Song '" + filename + "' saved.");
-			button = -1;
+			reset();
 		} catch (StreamFailureException ex) {
+			// On error, display the error and add the pipe back to the string.
 			model.setLCDDisplay(ex.getMessage());
 			filename += "|";
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
 		}
 	}
 
@@ -174,11 +185,14 @@ public class SaveConfigMode extends DeviceMode {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
+		// The array index location of this button press.
 		button = y * 16 + x;
 		
+		// If the button represents a character, get the character it represents.
 		if (isCharacter(button))
 			filename = filename.substring(0, filename.length()-1) + getCharacter(x, y, shift) + "|";
 		
+		// Update the display.
 		model.setLCDDisplay(filename);
 		shift = false;
 	}

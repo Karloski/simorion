@@ -2,6 +2,7 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -66,10 +67,15 @@ public class ChangeLayerMode extends DeviceMode {
 	public void onOKButtonPress(MouseEvent e) {
 		if(layer != -1 && layer <= 16) {
 			model.setTopmostLayer(layer);
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Layer changed to " + model.getCurrentLayerId());
+			reset();
 		}
-		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Layer changed to " + model.getCurrentLayerId());
-		reset();
+		else {
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
+			model.setLCDDisplay("Please click a matrix button first.");
+		}
 	}
 
 	/**

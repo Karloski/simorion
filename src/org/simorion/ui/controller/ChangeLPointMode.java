@@ -1,6 +1,7 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -70,12 +71,17 @@ public class ChangeLPointMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(button != -1) {
-			model.setLoopPoint(model.getCurrentLayer(), (byte) (button <= 127 ? button : 127));
+		if (button <= 0 || button > 16) {
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
+			model.setLCDDisplay("Please click a matrix button first.");
 		}
-		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Loop point set to " + model.getCurrentLayer().getLoopPoint());
-		reset();
+		else {
+			model.setLoopPoint(model.getCurrentLayer(), (byte) button);
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Loop point set to " + model.getCurrentLayer().getLoopPoint());
+			reset();
+		}
 	}
 
 	/**
@@ -84,7 +90,7 @@ public class ChangeLPointMode extends DeviceMode {
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
 		button = x+1;
-		model.setLCDDisplay(Integer.toString(button <= 127 ? button : 127));
+		model.setLCDDisplay(Integer.toString(button));
 	}
 	
 	/**

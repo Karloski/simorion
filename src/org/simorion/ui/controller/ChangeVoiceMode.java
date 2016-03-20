@@ -2,11 +2,13 @@ package org.simorion.ui.controller;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import javax.sound.midi.MidiSystem;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.simorion.engine.MIDIVoices;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
@@ -82,13 +84,18 @@ public class ChangeVoiceMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(voice != -1) {
+		if (voice > 176) {
+			model.enqueueSound(BankOfSounds.BAD_SOUND);
+			model.setLCDDisplay("Cannot use " + MIDIVoices.getVoice(voice).getName());
+		}		
+		else {
 			model.setVoice(model.getCurrentLayer(),
-				MIDIVoices.getVoice(voice));
-		}
-		changeMode(ModeMaster.PERFORMANCE_MODE);
-		model.setLCDDisplay("Instrument changed to " + MIDIVoices.getVoice(voice).getName());
-		reset();															
+					MIDIVoices.getVoice(voice));
+			model.enqueueSound(BankOfSounds.GOOD_SOUND);
+			changeMode(ModeMaster.PERFORMANCE_MODE);
+			model.setLCDDisplay("Instrument changed to " + MIDIVoices.getVoice(voice).getName());
+			reset();
+		}									
 	}
 
 	/**
@@ -96,7 +103,7 @@ public class ChangeVoiceMode extends DeviceMode {
 	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y) {
-		voice = y * 16 + x + 1;		
+		voice = y * 16 + x + 1;	
 		model.setLCDDisplay(MIDIVoices.getVoice(voice).getName());						
 	}
 	
