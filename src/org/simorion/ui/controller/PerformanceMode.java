@@ -3,9 +3,9 @@ package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
 import org.simorion.common.util.Util;
-import org.simorion.sound.BankOfSounds;
 import org.simorion.sound.SingleSound;
 import org.simorion.sound.SoundSystem;
+import org.simorion.ui.view.AnimationView;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -26,6 +26,7 @@ public class PerformanceMode extends DeviceMode {
 	private PerformanceView instance = new PerformanceView();
 	
     public View getView() {
+    	if(isFresh) return new AnimationView();
         return instance;
     }
      
@@ -254,7 +255,6 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		isFresh = true;
 		model.startPlaying();
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}

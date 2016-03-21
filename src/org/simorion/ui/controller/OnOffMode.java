@@ -28,6 +28,8 @@ public class OnOffMode extends DeviceMode {
      
     @Override
     public void onOnOffButtonPress(MouseEvent e){
+    	if(e.getClickCount() == 2) System.exit(0);
+    	((PerformanceMode)ModeMaster.PERFORMANCE_MODE).isFresh = true;
         changeMode(ModeMaster.PERFORMANCE_MODE);
     }
 

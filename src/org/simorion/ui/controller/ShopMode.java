@@ -86,7 +86,7 @@ public class ShopMode extends DeviceMode {
 				
 				model.startPlaying();
 				// Continuously load the next part for 30 seconds
-				while (System.currentTimeMillis() < startTime + SONG_DELAY) {
+				while (System.currentTimeMillis() < startTime + SONG_DELAY && isRunning) {
 					// Next tick will loop to start: hot-replace the song
 					int loop = model.getCurrentLayer().getLoopPoint();
 					loop = (loop == 0) ? 16 : loop;

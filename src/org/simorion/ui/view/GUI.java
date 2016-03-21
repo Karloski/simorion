@@ -1,6 +1,7 @@
 
 package org.simorion.ui.view;
 
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +9,14 @@ import javax.swing.AbstractButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.simorion.ui.controller.ModeMaster;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
 import org.simorion.ui.view.ButtonFactory.ModeButton;
 import org.simorion.ui.view.ButtonFactory.OKButton;
 import org.simorion.ui.view.ButtonFactory.ONButton;
+
+import com.sun.awt.AWTUtilities;
 
 /**
  * GUI for the SimoriOn
@@ -50,6 +51,12 @@ public class GUI extends JFrame {
 		// Get the current view.
 		// For the constructor, this will be the ONOFF view.
 		View view = new DefaultView();
+		
+		setUndecorated(true);
+		AWTUtilities.setWindowShape(this, 
+				new RoundRectangle2D.Double(0, 0, 
+						DefaultView.SIZE.left, DefaultView.SIZE.right,
+						DefaultView.ROUNDING.left, DefaultView.ROUNDING.right));
 		
 		// Draw the Simori-ON based on the current view.
 		setTitle(view.getTitle()); // Set the title.
