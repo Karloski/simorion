@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.AbstractButton;
 
 import org.simorion.common.SongBuilder;
+import org.simorion.common.Voice;
 import org.simorion.common.stream.FileSongReader;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.sound.BankOfSounds;
@@ -170,8 +171,6 @@ public class LoadConfigMode extends DeviceMode {
 			// Loads the song from the SongBuilder into the song.
 			model.getSong().loadFrom(song);
 			
-
-			//TODO: EXAMPLE LOOK AT ME
 			model.enqueueSound(BankOfSounds.GOOD_SOUND);
 			
 			// Change back to performance mode and reset the view.
@@ -182,8 +181,6 @@ public class LoadConfigMode extends DeviceMode {
 		} catch (Exception ex) {
 			model.setLCDDisplay(ex.getMessage());
 			filename += "|";
-			
-			//TODO: EXAMPLE LOOK AT ME
 			model.enqueueSound(BankOfSounds.BAD_SOUND);
 		}
 	}
@@ -225,7 +222,7 @@ public class LoadConfigMode extends DeviceMode {
 			filename = "";
 			changeMode(ModeMaster.PERFORMANCE_MODE);
 		}
-		
+
 		model.setLCDDisplay(filename);
 		GUI.getInstance().update();
 	}

@@ -1,13 +1,10 @@
 package org.simorion.sound;
 
-import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
-
-import org.simorion.common.ImmutableRow;
 
 public class SingleSound implements PlayableSound {
 
@@ -32,6 +29,7 @@ public class SingleSound implements PlayableSound {
 
 			int channel;
 			long now = synth.getMicrosecondPosition() - synth.getLatency();
+			//TODO: Should these sounds depend on the tempo at all?
 			float beat = 1000000 / tempo;
 
 			if (voice <= 128) {
@@ -57,11 +55,14 @@ public class SingleSound implements PlayableSound {
 			// Equal to a note off since velocity = 0
 			msg.setMessage(ShortMessage.NOTE_ON, channel, note, 0);
 			rcvr.send(msg, now + (long)(beat * durationInBeats));
+			
 		} catch (InvalidMidiDataException e) {
-			// TODO Auto-generated catch block
+			//This is Programmer-defined, so in practice ought to be impossible
 			e.printStackTrace();
 		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
+			//If this fails, a much larger problem has reared, so this would be
+			//like extinguishing a burning building by closing a fire door, can
+			//be left unhandled
 			e.printStackTrace();
 		}
 	}

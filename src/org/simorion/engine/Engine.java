@@ -7,9 +7,6 @@ import org.simorion.ui.model.MutableModel;
 
 public interface Engine extends MutableModel {
 
-	
-	//TODO
-	//public void attach(final SoundSystem s);
 	/**
 	 * Load a song from the given SongReader using the given format
 	 * @param stream The SongReader to receive the Song from

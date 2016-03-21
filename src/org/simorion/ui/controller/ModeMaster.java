@@ -67,14 +67,14 @@ public class ModeMaster implements Controller {
 		instance.register(new EngineImpl());
 		ON_OFF_MODE = new OnOffMode(instance);
 		EXAMPLE = new ExampleMode(instance);
-		PERFORMANCE_MODE = new PerformanceMode(instance); //TODO
+		PERFORMANCE_MODE = new PerformanceMode(instance);
 		CHANGE_LAYER_MODE = new ChangeLayerMode(instance);
 		SAVE_CONFIG_MODE = new SaveConfigMode(instance);
 		LOAD_CONFIG_MODE = new LoadConfigMode(instance);
 		MASTER_SLAVE_MODE = new MasterSlaveMode(instance);
 		CHANGE_LOOP_POINT_MODE = new ChangeLPointMode(instance);
 		CHANGE_LOOP_SPEED_MODE = new ChangeLSpeedMode(instance);
-		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);// TODO confirm
+		CHANGE_VELOCITY_MODE = new ChangeNVMode(instance);
 		CHANGE_VOICE_MODE = new ChangeVoiceMode(instance);
 		SHOP_BOY_MODE = new ShopMode(instance);
 		

@@ -31,7 +31,7 @@ public class PerformanceMode extends DeviceMode {
      
     /**
      * Implementation of the View interface for the PerformanceView
-     * @author Karl Brown, Petar Krstic
+     * @author Karl Brown
      *
      */
     private class PerformanceView extends DefaultView {
@@ -214,7 +214,7 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
-		if(isFresh) {
+		if (isFresh) {
 			changeMode(ModeMaster.SHOP_BOY_MODE);
 		} else {
 			model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
