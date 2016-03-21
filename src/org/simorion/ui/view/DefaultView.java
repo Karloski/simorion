@@ -1,15 +1,26 @@
 package org.simorion.ui.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
 import org.simorion.common.util.Util.Pair;
@@ -45,6 +56,7 @@ public class DefaultView implements View {
 	
 	// Dimensions
 	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 630);
+	public static final Pair<Integer, Integer> ROUNDING = new Pair<Integer, Integer>(100,100);
 	public static final Pair<Integer, Integer> MATRIX_SIZE = new Pair<Integer, Integer>(16, 16);
 	public static final int NO_BUTTONS = MATRIX_SIZE.left * MATRIX_SIZE.right;
 
@@ -78,6 +90,11 @@ public class DefaultView implements View {
 		outerPanel.setBorder(UNLIT_BORDER);
 		outerPanel.setLayout(null);
 		outerPanel.setBackground(BACKGROUND_COLOUR);
+		
+		MouseHandler handler = new MouseHandler();
+		outerPanel.addMouseListener(handler);
+		outerPanel.addMouseMotionListener(handler);
+		outerPanel.setBorder(new RoundBorder());
 		
 		return outerPanel;
 		
@@ -311,4 +328,46 @@ public class DefaultView implements View {
 		return 0;
 	} 
 
+	static class MouseHandler implements MouseListener, MouseMotionListener {
+		Point relativeLocation;
+		@Override
+		public void mouseDragged(MouseEvent me) {
+			JFrame frame = GUI.getInstance();
+			frame.setLocation(frame.getX() + me.getX() - relativeLocation.x,
+					frame.getY() + me.getY() - relativeLocation.y);
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent me) {}
+
+		@Override
+		public void mouseClicked(MouseEvent me) {}
+
+		@Override
+		public void mouseEntered(MouseEvent me) {}
+
+		@Override
+		public void mouseExited(MouseEvent me) {}
+
+		@Override
+		public void mousePressed(MouseEvent me) {
+			relativeLocation = me.getPoint();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent me) {}
+		
+	}
+	
+	static class RoundBorder extends AbstractBorder {
+		
+		@Override
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        ((Graphics2D) g).setRenderingHint(
+	            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	        g.setColor(Color.BLACK);
+	        g.drawRoundRect(x, y, width - 1, height - 1, ROUNDING.left, ROUNDING.right);
+	    }
+	}
+	
 }
