@@ -8,6 +8,8 @@ import javax.swing.AbstractButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.simorion.ui.controller.ModeMaster;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
@@ -75,7 +77,6 @@ public class GUI extends JFrame {
 		for (AbstractButton button : midiButtons) {
 			buttonPanel.add(button);
 		}
-		
 	}
 	
 	/**
@@ -173,12 +174,18 @@ public class GUI extends JFrame {
 	 * @param argv Not used.
 	 */
 	public static void main(String[] argv) {
+		Splash splashScreen = new Splash("splash.png");
+		splashScreen.open();
+		
 		ModeMaster.init();
+		
 		GUI frame = getInstance();
-		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		splashScreen.close();
+		frame.setVisible(true);
 	}
 	
 	private static GUI instance;

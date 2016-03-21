@@ -5,6 +5,14 @@ import org.simorion.common.ImmutableSong;
 import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongWriter;
 
+/**
+ * Modelling a proper const system, this provides an immutable view of a model,
+ * complete with immutable views of its layers.
+ * 
+ * @author Edmund Smith
+ * @author Karl Brown
+ *
+ */
 public interface ImmutableModel {
 
 	/**

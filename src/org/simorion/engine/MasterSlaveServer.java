@@ -12,8 +12,8 @@ import org.simorion.common.util.Util;
 
 /**
  * Server that listens for a new song constantly, and if it receives one,
- * updates the engine to the new song. Does not yet have user-visible error
- * reporting. TODO
+ * updates the engine to the new song. Any errors are reported to the LCD
+ * screen.
  * 
  * @author Edmund Smith
  */
@@ -40,17 +40,19 @@ public class MasterSlaveServer extends Thread {
 				Socket master = null;
 				try {
 					master = slave.accept();
+					//Initial declaration of instanceID
 					master.getOutputStream().write(Util.toBytes(engine.getInstanceID()));
 					
 					SongReader reader = new NetworkSongReaderWriter(master);
 					engine.receiveFromStream(reader, reader.predictFormat());
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (StreamFailureException e) {
+					engine.setLCDDisplay("Failed to accept networked song");
 					e.printStackTrace();
 				} catch (UnsupportedSongFormatException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
+					engine.setLCDDisplay("Networked song format unsupported");
 					e.printStackTrace();
 				} finally {
 					if(master != null) master.close();

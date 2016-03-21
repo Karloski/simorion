@@ -24,7 +24,6 @@ import org.simorion.ui.view.GUI;
 /**
  * Implementation for the Engine, using StandardSong and BasicLayer.
  * @author Edmund Smith
- * @author ...
  */
 public class EngineImpl implements Engine {
 
@@ -69,6 +68,7 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void setLoopPoint(MutableLayer l, byte loopPoint) {
+		//Loop point is universal, rather than per-layer
 		for (MutableLayer layer : song.getLayers()) {
 			layer.setLoopPoint(loopPoint);
 		}
@@ -142,7 +142,6 @@ public class EngineImpl implements Engine {
 			stream.write(f, song);
 		} catch (StreamFailureException e) {
 			lcdText = e.getLocalizedMessage();
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -157,14 +156,11 @@ public class EngineImpl implements Engine {
 		} catch (UnsupportedSongFormatException e) {
 			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
-			//TODO
 		} catch (InsufficientSongDataException e) {
 			setLCDDisplay(e.getLocalizedMessage());
 			e.printStackTrace();
-			//TODO
 		} catch (StreamFailureException e) {
 			setLCDDisplay(e.getLocalizedMessage());
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -205,7 +201,6 @@ public class EngineImpl implements Engine {
 	@Override
 	public void setBPM(byte bpm) {
 		song.setBPM(bpm);
-		//TODO: SoundSystem integration
 	}
 	
 	@Override

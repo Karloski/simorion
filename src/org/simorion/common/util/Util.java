@@ -1,6 +1,10 @@
 
 package org.simorion.common.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
 
@@ -272,5 +276,18 @@ public final class Util {
 	 */
 	public static <T> Iterable<T> slice(T[] ts, int start, int end) {
 		return new Slice<T>(ts, start, end);
+	}
+	
+	/**
+	 * Reads the initial byte in a File f
+	 * @param f The File to read
+	 * @return The inital byte in f
+	 * @throws IOException
+	 */
+	public static byte initialByte(File f) throws IOException {
+		FileInputStream fis = new FileInputStream(f);
+		byte b = (byte) fis.read();
+		fis.close();
+		return b;
 	}
 }

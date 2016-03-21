@@ -15,7 +15,6 @@ public class ChangeLSpeedMode extends DeviceMode {
  
     public ChangeLSpeedMode(ModeMaster m) {
 		super(m);
-		// TODO Auto-generated constructor stub
 	}
 
 	private ChangeLSpeedView instance = new ChangeLSpeedView();

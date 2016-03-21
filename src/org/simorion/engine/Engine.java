@@ -5,11 +5,12 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.ui.model.MutableModel;
 
+/**
+ * MutableModel with the added ability to serialise the Model and with a special
+ * instance ID as well.
+ */
 public interface Engine extends MutableModel {
 
-	
-	//TODO
-	//public void attach(final SoundSystem s);
 	/**
 	 * Load a song from the given SongReader using the given format
 	 * @param stream The SongReader to receive the Song from

@@ -10,7 +10,7 @@ import org.simorion.common.ImmutableRow;
 import org.simorion.common.ImmutableSong;
 import org.simorion.common.SongBuilder;
 /**
- * Initial exploratory attempt at a song serialiser
+ * Song serialiser with backwards compatibility
  * 
  * Format:
  * Version number (1 byte)
@@ -22,8 +22,10 @@ import org.simorion.common.SongBuilder;
  * 		Layer voice MIDI number (1 byte)
  * 		Layer velocity MIDI number (1 byte)
  * 		Layer loop point (1 byte), 0 for no loop
+ * 		foreach (1..row count + 1)
+ * 			Row note (1 byte)
+ * 			Row lit cells (2 bytes)
  * 
- * 	EOF?
  * @author Edmund Smith
  */
 
@@ -90,7 +92,9 @@ public class SongFormat_1 implements SongFormat {
 
 	@Override
 	public String getFormatName() {
-		return "Standin-1";
+		//Everyone knows vets make the best violinists
+		//Very few others can make cats bow to their every chirp
+		return "Vetinary";
 	}
 
 	@Override

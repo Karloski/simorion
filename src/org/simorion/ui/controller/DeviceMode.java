@@ -9,7 +9,7 @@ import org.simorion.ui.view.View;
 
 /**
  * Base class for all device modes
- * @author Edmund Smith, Karl Brown
+ * @author Karl Brown
  */
 
 public abstract class DeviceMode implements Controller {
@@ -63,7 +63,7 @@ public abstract class DeviceMode implements Controller {
 	 */
 	@Override
 	public void onLButtonPress(MouseEvent e, int buttonNum) {
-		//TODO: Change mode logic
+		//Do nothing; only performance mode routinely handles L buttons
 	}
 
 	/**
@@ -73,7 +73,7 @@ public abstract class DeviceMode implements Controller {
 	 */
 	@Override
 	public void onRButtonPress(MouseEvent e, int buttonNum) {
-		//TODO: Change mode logic
+		//Do nothing; only performance mode routinely handles R buttons
 	}
 
 

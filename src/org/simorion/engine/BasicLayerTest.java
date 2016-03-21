@@ -9,6 +9,11 @@ import org.junit.Test;
 import org.simorion.common.MutableRow;
 import org.simorion.common.Voice;
 
+/**
+ * Basic tests for BasicLayer
+ * 
+ * @author Edmund Smith
+ */
 public class BasicLayerTest {
 
 	private BasicLayer layer;

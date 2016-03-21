@@ -1,14 +1,16 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 
 import org.simorion.common.SongBuilder;
-import org.simorion.common.Voice;
 import org.simorion.common.stream.FileSongReader;
+import org.simorion.common.stream.SongFormat;
 import org.simorion.common.stream.SongFormats;
+import org.simorion.common.util.Util;
 import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.ButtonFactory;
 import org.simorion.ui.view.ButtonFactory.MidiButton;
@@ -158,7 +160,8 @@ public class LoadConfigMode extends DeviceMode {
 		filename = filename.substring(0, filename.length()-1);
 		
 		// Create a new FileSongReader from the filename.
-		FileSongReader fsr = new FileSongReader(new File(filename + ".song"));
+		File songFile = new File(filename + ".song");
+		FileSongReader fsr = new FileSongReader(songFile);
 		
 		// The song to read to.
 		SongBuilder song = new SongBuilder();
@@ -166,7 +169,7 @@ public class LoadConfigMode extends DeviceMode {
 		// Attempt to read the song. Report any errors to the user.
 		try {
 			// Reads the songs contents into the SongBuilder.
-			fsr.readTo(SongFormats.PREFERRED_FORMAT, song);
+			fsr.readTo(SongFormats.getFormatFor(Util.initialByte(songFile)), song);
 			
 			// Loads the song from the SongBuilder into the song.
 			model.getSong().loadFrom(song);

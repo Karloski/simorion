@@ -10,7 +10,7 @@ import org.simorion.common.util.Util;
 import org.simorion.common.util.Util.Pair;
 
 /**
- * Implementation for a Layer, using an array of WritableRows as the backing
+ * Implementation for a Layer, using an array of MutableRows as the backing
  * 
  * @author Edmund Smith
  */

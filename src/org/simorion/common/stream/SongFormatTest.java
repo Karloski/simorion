@@ -18,6 +18,10 @@ import org.simorion.common.SongBuilder;
 import org.simorion.common.StandardSong;
 import org.simorion.common.util.Util;
 
+/**
+ * Test the song formats 100 times with random data
+ * @author Edmund Smith
+ */
 @RunWith(Parameterized.class)
 public class SongFormatTest {
 

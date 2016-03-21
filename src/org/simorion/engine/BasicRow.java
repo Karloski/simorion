@@ -5,6 +5,7 @@ import org.simorion.common.MutableRow;
 /**
  * Basic implementation of a Row and WritableRow. Is backed by an integer, where
  * each bit corresponds to that cell being on or off
+ * 
  * @author Edmund Smith
  */
 public class BasicRow implements MutableRow {

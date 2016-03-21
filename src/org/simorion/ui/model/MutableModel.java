@@ -8,8 +8,9 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.sound.PlayableSound;
 
 /**
- * Class allowing a Model to be written to for the middle-end, primarily
- * for Stream use. Not for use within the View section of code.
+ * A view to the mutating methods in a Model, counterpart to the ImmutableModel
+ * 
+ * 
  * @author Edmund Smith
  */
 public interface MutableModel extends ImmutableModel {

@@ -14,9 +14,7 @@ import org.simorion.common.util.Util;
 
 /**
  * Thread that finds other SimoriONs on the local area network in the range
- * 192.168.0.0/24 and sends them the current song loaded.
- * 
- * Does not yet have any error reporting on exception, TODO
+ * selected and sends them the current song loaded.
  * 
  * @author Edmund Smith
  */
@@ -25,6 +23,9 @@ public class MasterSlaveClient extends Thread {
 	private final ImmutableSong song;
 	private final int instanceID;
 	private final Runnable onSent;
+	
+	private static final String BLUE_ROOM_SUBNET = "144.173.36.";
+	private static final String LAN_DEFAULT_SUBNET = "192.168.0.";
 	
 	/**
 	 * Constructs and initialises the fields ready for the run method
@@ -62,14 +63,18 @@ public class MasterSlaveClient extends Thread {
 			//always being chosen
 			int start = new Random().nextInt(256);
 			for (int i = 0; i < 256; i++) {
-				String address = "144.173.36." + ((start+i) % 256);
+				String address = BLUE_ROOM_SUBNET + ((start+i) % 256);
 				if (InetAddress.getByName(address).isReachable(50)) {
 					Socket slave = null;
 					try {
 						slave = new Socket(InetAddress.getByName(address), MasterSlaveServer.PORT);
+						
+						//Receive declaration of SimoriON id
 						byte[] buf = new byte[4];
 						slave.getInputStream().read(buf);
 						int otherInstanceID = Util.toInt(buf);
+						
+						//Is that SimoriON this SimoriON?
 						if(instanceID == otherInstanceID) {
 							continue;
 						} else {

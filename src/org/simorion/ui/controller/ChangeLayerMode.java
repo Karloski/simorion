@@ -12,7 +12,6 @@ import org.simorion.ui.view.View;
  */
 public class ChangeLayerMode extends DeviceMode {
 	
-	// FIXME: Replace with model.getCurrentLayerId()
 	int layer = -1;
  
     public ChangeLayerMode(ModeMaster m) {
