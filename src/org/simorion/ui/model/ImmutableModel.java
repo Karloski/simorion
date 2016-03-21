@@ -72,4 +72,10 @@ public interface ImmutableModel {
 	 */
 	public byte getBPM();
 	
+	/**
+	 * Gets whether the engine is currently playing music
+	 * @return
+	 */
+	public boolean isPlaying();
+	
 }
