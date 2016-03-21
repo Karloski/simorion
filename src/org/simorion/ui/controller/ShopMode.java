@@ -2,6 +2,7 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 
 import org.simorion.common.SongBuilder;
 import org.simorion.common.stream.FileSongReader;
@@ -9,12 +10,22 @@ import org.simorion.common.stream.InsufficientSongDataException;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
+import org.simorion.common.util.Util;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
 
+/**
+ * Loads a song from the list of songs and plays each one for 30 seconds.
+ * Every 16 beats, the next 16 are loaded, giving the illusion of continuous
+ * play.
+ * 
+ * @author Edmund Smith
+ * @author Karl Brown
+ *
+ */
 public class ShopMode extends DeviceMode {
 
-	public String[] fileNames = {
+	public static final String[] fileNames = {
 			"fleenstones_#.song"
 	};
 	
@@ -42,9 +53,18 @@ public class ShopMode extends DeviceMode {
 		changeMode(ModeMaster.PERFORMANCE_MODE);
 	}
 
+	/**
+	 * Runnable that does the bulk of the work, swapping out the song from
+	 * underneath the SimoriON every 16 beats and every 30 seconds.
+	 * 
+	 * @author Edmund Smith
+	 *
+	 */
 	class ShopBoyRunnable implements Runnable {
 		public void run() {
 			int offset = 0;
+			
+			//Prepare to overwrite the existing song
 			model.stopPlaying();
 			model.reset();
 			while (isRunning) {
@@ -53,22 +73,17 @@ public class ShopMode extends DeviceMode {
 
 				// Load part 1 of the song
 				String nextFile = fileNames[offset].replace("#", "1");
-				FileSongReader fsr = new FileSongReader(new File("./demos/"
-						+ nextFile));
+				File demoFile = new File("./demos/" + nextFile);
+				FileSongReader fsr = new FileSongReader(demoFile);
 				SongBuilder sb = new SongBuilder();
 				try {
-					fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
+					fsr.readTo(SongFormats.getFormatFor(Util.initialByte(demoFile)), sb);
 					model.getSong().loadFrom(sb);
-				} catch (UnsupportedSongFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InsufficientSongDataException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (StreamFailureException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
+					model.setLCDDisplay("Error loading ShopBoyMode");
 					e.printStackTrace();
 				}
+				
 				model.startPlaying();
 				// Continuously load the next part for 30 seconds
 				while (System.currentTimeMillis() < startTime + SONG_DELAY) {
@@ -85,20 +100,20 @@ public class ShopMode extends DeviceMode {
 							fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
 							model.getSong().loadFrom(sb);
 						} catch (UnsupportedSongFormatException e) {
-							// TODO Auto-generated catch block
+							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
 							e.printStackTrace();
 						} catch (InsufficientSongDataException e) {
-							// TODO Auto-generated catch block
+							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
 							e.printStackTrace();
 						} catch (StreamFailureException e) {
-							// TODO Auto-generated catch block
+							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
 							e.printStackTrace();
 						}
 					}
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						model.setLCDDisplay("ShopBoyMode interrupted");
 						e.printStackTrace();
 					}
 				}
@@ -121,10 +136,11 @@ public class ShopMode extends DeviceMode {
 			return "Shop Boy Mode";
 		}
 		
+		//Same as performance mode
 		@Override
 		public boolean isLit(int x, int y) {
 			int loop = model.getCurrentLayer().getLoopPoint();
-    		loop = loop == 0?16:loop;
+    		loop = loop == 0 ? 16 : loop;
     		return model.getCurrentLayer().getRow(y).isLit(x) || (model.getTick() % loop == x && y % 5 == 0);
 		}
 		

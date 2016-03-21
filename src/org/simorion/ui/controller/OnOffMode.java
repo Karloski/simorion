@@ -8,7 +8,6 @@ public class OnOffMode extends DeviceMode {
  
     public OnOffMode(ModeMaster m) {
 		super(m);
-		// TODO Auto-generated constructor stub
 	}
 
 	private OnOffView instance = new OnOffView();

@@ -5,6 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * Series of tests for BasicRow aimed at edge cases
+ *  
+ * @author Edmund Smith
+ */
 public class BasicRowTest {
 
 	private BasicRow row;

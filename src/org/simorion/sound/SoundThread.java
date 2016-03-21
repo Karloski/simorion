@@ -2,12 +2,10 @@
 package org.simorion.sound;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.sound.midi.Instrument;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
@@ -17,7 +15,6 @@ import org.simorion.common.ImmutableLayer;
 import org.simorion.common.ImmutableRow;
 import org.simorion.common.Song;
 import org.simorion.ui.model.MutableModel;
-import org.simorion.ui.view.CrashScreen;
 import org.simorion.ui.view.GUI;
 
 /** 
@@ -132,12 +129,8 @@ public class SoundThread implements Runnable {
 			try {
 				Thread.sleep(10);
 				
-<<<<<<< HEAD
 				//Don't play when stopped
-=======
-				//|| model.getBPM() == 0
->>>>>>> 790a395d76cc91e523fe96d6d6f7aa9d887c48c5
-				if(!model.isPlaying()) {
+				if(!model.isPlaying() || model.getBPM() == 0) {
 					continue;
 				}
 				
@@ -145,7 +138,7 @@ public class SoundThread implements Runnable {
 				if(soundsToPlay.size() > 0) {
 					PlayableSound s;
 					while((s = soundsToPlay.poll()) != null) {
-						s.play(synthesizer, song.getTempo());
+						s.play(synthesizer);
 					}
 				}
 				

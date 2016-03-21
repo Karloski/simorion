@@ -7,6 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+/**
+ * Simple Splash Screen for displaying while loading
+ * 
+ * @author Edmund Smith
+ */
 public class Splash {
 
 	private final String fileName;

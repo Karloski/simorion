@@ -13,6 +13,13 @@ import org.simorion.engine.BasicLayer;
 import org.simorion.engine.BasicRow;
 import org.simorion.engine.MIDIVoices;
 
+/**
+ * Standard container to hold the song being played, is little more than a
+ * collection of layers with a tempo really. Implements the entirety of Song.
+ *  
+ * @author Edmund Smith
+ *
+ */
 public class StandardSong implements Song {
 
 	private BasicLayer[] layers;
@@ -37,6 +44,7 @@ public class StandardSong implements Song {
 		tempo = 1f;
 	}
 	
+	@Override
 	public void loadFrom(final SongBuilder sb) {
 		layers = new BasicLayer[sb.getLayerCount()];
 		

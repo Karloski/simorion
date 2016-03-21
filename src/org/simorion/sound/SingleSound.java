@@ -6,15 +6,24 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 
+/**
+ * Representation of a single note in a given voice and velocity. It can be 
+ * combined with others using the {@link Tune} class. As a data-oriented class,
+ * the single play method is intended only for use by the sound thread.
+ * 
+ * @see Tune
+ * @author Edmund Smith
+ *
+ */
 public class SingleSound implements PlayableSound {
 
 	int note, voice, velocity;
-	float durationInBeats;
+	float durationInSeconds;
 
-	public SingleSound(int voice, int note, float durationInBeats, int velocity) {
+	public SingleSound(int voice, int note, float durationInSeconds, int velocity) {
 		this.note = note;
 		this.voice = voice;
-		this.durationInBeats = durationInBeats;
+		this.durationInSeconds = durationInSeconds;
 		this.velocity = velocity;
 	}
 
@@ -22,15 +31,20 @@ public class SingleSound implements PlayableSound {
 		this(voice, note, durationInBeats, 80);
 	}
 
-	public void play(Synthesizer synth, float tempo) {
+	/**
+	 * Plays this single note to the synthesizer. Only to be called from the
+	 * Sound Thread, since it has no thread safety awareness, due to being
+	 * designed to only be called from the sound thread. 
+	 */
+	@Override
+	public void play(Synthesizer synth) {
 		try {
 			ShortMessage msg;			
 			Receiver rcvr = synth.getReceiver();
 
 			int channel;
 			long now = synth.getMicrosecondPosition() - synth.getLatency();
-			//TODO: Should these sounds depend on the tempo at all?
-			float beat = 1000000 / tempo;
+			float beat = 1000000;
 
 			if (voice <= 128) {
 				msg = new ShortMessage();
@@ -54,7 +68,7 @@ public class SingleSound implements PlayableSound {
 			msg = new ShortMessage();
 			// Equal to a note off since velocity = 0
 			msg.setMessage(ShortMessage.NOTE_ON, channel, note, 0);
-			rcvr.send(msg, now + (long)(beat * durationInBeats));
+			rcvr.send(msg, now + (long)(beat * durationInSeconds));
 			
 		} catch (InvalidMidiDataException e) {
 			//This is Programmer-defined, so in practice ought to be impossible

@@ -28,7 +28,6 @@ public class SaveConfigMode extends DeviceMode {
  
     public SaveConfigMode(ModeMaster m) {
 		super(m);
-		// TODO Auto-generated constructor stub
 	}
 
 	private SaveConfigView instance = new SaveConfigView();

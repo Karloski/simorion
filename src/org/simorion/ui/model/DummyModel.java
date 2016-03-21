@@ -294,19 +294,17 @@ public class DummyModel implements MutableModel {
 
 	@Override
 	public void startPlaying() {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
 	public void stopPlaying() {
-		// TODO Auto-generated method stub
-		
+		//Do nothing
 	}
 
 	@Override
 	public boolean isPlaying() {
-		// TODO Auto-generated method stub
+		//Do nothing
 		return false;
 	}
 }

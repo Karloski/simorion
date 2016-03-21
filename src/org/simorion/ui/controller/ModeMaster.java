@@ -7,6 +7,19 @@ import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
 
+/**
+ * Class containing static instances of every mode, since every mode should be
+ * able to be left and re-entered repeatedly. This class's instance acts to
+ * dispatch the Controller interface to the currently selected Mode, which is
+ * itself a Controller.
+ * 
+ * @see Controller 
+ * 
+ * @author Edmund Smith
+ * @author Karl Brown
+ * @author George Young
+ *
+ */
 public class ModeMaster implements Controller {
 	
 	private static ModeMaster instance;

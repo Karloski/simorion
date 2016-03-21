@@ -16,7 +16,6 @@ import org.simorion.common.util.Util;
  * Thread that finds other SimoriONs on the local area network in the range
  * selected and sends them the current song loaded.
  * 
- * 
  * @author Edmund Smith
  */
 public class MasterSlaveClient extends Thread {

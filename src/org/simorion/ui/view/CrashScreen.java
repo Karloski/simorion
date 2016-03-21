@@ -13,12 +13,16 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
 
 import org.simorion.common.stream.FileSongWriter;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.ui.model.MutableModel;
 
+/**
+ * Fatal error handler, displaying the error and offering a recovery option
+ * 
+ * @author Edmund Smith
+ */
 public class CrashScreen {
 
 	/**
@@ -89,8 +93,6 @@ public class CrashScreen {
 		
 		errorFrame.pack();
 		errorFrame.setVisible(true);
-		//panel.setLayout();
-		//errorFrame.add
 	}
 	
 }

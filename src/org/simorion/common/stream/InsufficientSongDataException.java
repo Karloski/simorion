@@ -6,9 +6,6 @@ public class InsufficientSongDataException extends Exception {
 		super(s);
 	}
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6216195741825577834L;
 
 }

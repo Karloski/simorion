@@ -4,6 +4,7 @@ import org.simorion.common.Voice;
 
 /**
  * Dummy Voice implementation, with the same identical responses
+ * 
  * @author Edmund Smith
  */
 public class DummyVoice implements Voice {

@@ -68,6 +68,7 @@ public class EngineImpl implements Engine {
 
 	@Override
 	public void setLoopPoint(MutableLayer l, byte loopPoint) {
+		//Loop point is universal, rather than per-layer
 		for (MutableLayer layer : song.getLayers()) {
 			layer.setLoopPoint(loopPoint);
 		}

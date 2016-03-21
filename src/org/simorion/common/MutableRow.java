@@ -1,5 +1,10 @@
 package org.simorion.common;
 
+/**
+ * Modelling a *proper* const system, this provides a mutable view to a Row
+ * 
+ * @author Edmund Smith
+ */
 public interface MutableRow extends ImmutableRow {
 
 	/**

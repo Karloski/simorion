@@ -5,6 +5,10 @@ import org.simorion.common.stream.SongReader;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.ui.model.MutableModel;
 
+/**
+ * MutableModel with the added ability to serialise the Model and with a special
+ * instance ID as well.
+ */
 public interface Engine extends MutableModel {
 
 	/**
