@@ -3,8 +3,8 @@ package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
 import org.simorion.common.util.Util;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.sound.SingleSound;
-import org.simorion.sound.SoundSystem;
 import org.simorion.ui.view.AnimationView;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
@@ -16,7 +16,6 @@ import org.simorion.ui.view.View;
  */
 public class PerformanceMode extends DeviceMode {
 	
-	SoundSystem soundSystem = SoundSystem.getInstance();
 	boolean isFresh = false;
  
     public PerformanceMode(ModeMaster m) {
@@ -155,11 +154,19 @@ public class PerformanceMode extends DeviceMode {
     }
           
     @Override
+    /**
+     * @author Petar, Karl
+     * This is when the off button is pressed since the Simorion is currently in performance mode
+     * Plays the off sound and resets the system
+     */
     public void onOnOffButtonPress(MouseEvent e) {
-    	
-    	// FIXME: State of the program should be completely cleared when turned off.
-    	// model.PerformOffOperation();
     	// Clears all matrix buttons for all layers etc.
+    	try {
+        	model.enqueueSound(BankOfSounds.OFF_SOUND);
+			Thread.sleep(10);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
     	model.stopPlaying();
     	model.reset();
         changeMode(ModeMaster.ON_OFF_MODE);
@@ -236,7 +243,6 @@ public class PerformanceMode extends DeviceMode {
 				model.getCurrentLayer().getVelocity()));
 		
 		model.getCurrentLayer().getRow(y).toggleLit(x);
-		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**
@@ -247,7 +253,6 @@ public class PerformanceMode extends DeviceMode {
 		isFresh = false;
 		if (lit) model.getCurrentLayer().getRow(y).setLit(x);
 		else model.getCurrentLayer().getRow(y).setUnlit(x);
-		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**

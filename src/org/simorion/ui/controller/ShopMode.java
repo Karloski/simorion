@@ -21,12 +21,13 @@ import org.simorion.ui.view.View;
  * 
  * @author Edmund Smith
  * @author Karl Brown
+ * @author Petar Krstic
  *
  */
 public class ShopMode extends DeviceMode {
 
 	public static final String[] fileNames = {
-			"fleenstones_#.song"
+			"fleenstones_#.song", "Smoke_#.song"
 	};
 	
 	public Runnable shopBoyRunnable;
