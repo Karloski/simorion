@@ -6,7 +6,7 @@ import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
 /**
- * 
+ * Device Mode implementation for the Master/Slave Mode.
  * @author Karl Brown
  *
  */
@@ -20,21 +20,28 @@ public class MasterSlaveMode extends DeviceMode {
      
     /**
      * Implementation of the View interface for the MasterSlaveView
-     * @author Karl Brown
+     * @author Karl Brown, Edmund Smith
      *
      */
     private class MasterSlaveView extends DefaultView {
-    	// No implementation.
     	long startTime = 0;
+    	
+    	/**
+    	 * Continually sets matrix buttons as the mode searches for other Simori-ONs.
+    	 */
     	@Override
     	public boolean isLit(int x, int y) {
     		return ((System.currentTimeMillis() - startTime) / 50) % 256 > (x*16+y); 
     	}
     }
     
+	/**
+	 * Begins a search for local Simori-ONs to send song data to.
+	 * Updates in the LCD on failure or success.
+	 */
     void onChangedTo() {
     	instance.startTime = System.currentTimeMillis();
-    	instance.setLCDMessage("Searching...");
+    	model.setLCDDisplay("Searching...");
     	new MasterSlaveClient(model.getSong(), model.getInstanceID(), new Runnable() {
     		public void run() {
     			changeMode(ModeMaster.PERFORMANCE_MODE);
@@ -42,7 +49,7 @@ public class MasterSlaveMode extends DeviceMode {
     		}
     	}).start();
     }
-     
+    
     public View getView() {
         return instance;
     }

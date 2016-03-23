@@ -2,7 +2,6 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
 import org.simorion.common.SongBuilder;
 import org.simorion.common.stream.FileSongReader;
@@ -26,7 +25,7 @@ import org.simorion.ui.view.View;
 public class ShopMode extends DeviceMode {
 
 	public static final String[] fileNames = {
-			"fleenstones_#.song"
+			//"fleenstones_#.song"
 	};
 	
 	public Runnable shopBoyRunnable;

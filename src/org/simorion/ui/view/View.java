@@ -4,12 +4,9 @@ import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 
 import org.simorion.common.util.Util.Pair;
-import org.simorion.ui.view.ButtonFactory.MidiButton;
 
 /**
  * View interface which defines methods for a view for the Simori-On.
- * <p>TODO: Exceptions. I wanted to do some concrete implementations first to get
- * a better feel for what exceptions would make sense.</p>
  * @author Karl
  *
  */
@@ -103,41 +100,4 @@ public interface View {
 	 * @return The textual output of the LCD.
 	 */
 	public String getLCDMessage();
-
-	/**
-	 * Retrieves and returns the MIDI ID of the currently applied instrument.
-	 * @return The MIDI ID of the currently applied instrument for this view.
-	 */
-	public int getVoiceId();
-
-	/**
-	 * Retrieves and returns the name of the currently applied instrument.
-	 * @return The name of the currently applied instrument for this view
-	 */
-	public String getVoiceName();
-
-	/**
-	 * Retrieves and returns the ID of the currently applied layer.
-	 * @return The ID of the currently applied layer for this view.
-	 */
-	public int getCurrentLayerId();
-
-	/**
-	 * Retrieves and returns the current loop point.
-	 * @return The current loop point for this view.
-	 */
-	public int getLoopPoint();
-
-	/**
-	 * Retrieves and returns the current velocity for notes played.
-	 * @return The current velocity for notes played on this view.
-	 */
-	public int getVelocity();
-	
-	/**
-	 * Retrieves and returns the current note for row {@code y}.
-	 * @param y The row to check.
-	 * @return The current note for row {@code y}
-	 */
-	public byte getNote(int y);
 }

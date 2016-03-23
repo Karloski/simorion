@@ -28,28 +28,50 @@ public class ModeMaster implements Controller {
 	
 	private DeviceMode deviceMode;
 	
+	/**
+	 * Get the current mode.
+	 * @return The current mode.
+	 */
 	public DeviceMode getMode() {
 		return deviceMode;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public View getView() {
 		return deviceMode.getView();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void register(MutableModel model) {
 		this.model = model;
 	}
 
+	/**
+	 * Sets the current mode to the passed mode, registers the model with it and redraws the GUI.
+	 * @param newMode The mode to change to.
+	 */
 	public void changeMode(DeviceMode newMode) {
+		if (newMode == ON_OFF_MODE) {
+	    	model.stopPlaying();
+	    	model.reset();
+		}		
 		deviceMode = newMode;
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
 		GUI.getInstance().redraw();
-		System.out.println("Mode changed to "+newMode.getClass().getName());
+		//System.out.println("Mode changed to "+newMode.getClass().getName());
 	}
 	
+	/**
+	 * Returns the current instance of ModeMaster.
+	 * @return The current instance.
+	 */
 	public static ModeMaster getInstance() {
 		if(instance == null) {
 			synchronized(instance) {
@@ -75,6 +97,9 @@ public class ModeMaster implements Controller {
 	public static DeviceMode CHANGE_VOICE_MODE;
 	public static DeviceMode SHOP_BOY_MODE;
 	
+	/**
+	 * Class initialiser. Caches each mode and sets the On/Off mode as the current mode.
+	 */
 	public static void init() {
 		instance = new ModeMaster();
 		instance.register(new EngineImpl());
@@ -94,31 +119,49 @@ public class ModeMaster implements Controller {
 		instance.changeMode(ON_OFF_MODE);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onLButtonPress(MouseEvent e, int buttonNum) {
 		deviceMode.onLButtonPress(e, buttonNum);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onRButtonPress(MouseEvent e, int buttonNum) {
 		deviceMode.onRButtonPress(e, buttonNum);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		deviceMode.onOKButtonPress(e);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onOnOffButtonPress(MouseEvent e) {
 		deviceMode.onOnOffButtonPress(e);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int buttonColumn, int buttonRow) {
 		deviceMode.onMatrixButtonPress(e, buttonColumn, buttonRow);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMatrixButtonPress(MouseEvent e, int x, int y, boolean lit) {
 		deviceMode.onMatrixButtonPress(e, x, y, lit);

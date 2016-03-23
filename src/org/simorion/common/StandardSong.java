@@ -26,11 +26,14 @@ public class StandardSong implements Song {
 	private float tempo;
 	private byte bpm;
 	
+	private static final int[] C = {0,2,4,5,7,9,11};
+	private static final int[] Bb = {-2,0,2,3,5,7,9};
+	
 	public StandardSong() {
 		layers = new BasicLayer[16];
 		for(int i = 0; i < 16; i++) {
 			Collection<MutableRow> rows = new ArrayList<MutableRow>();
-			int[] scale = new int[] {0,2,4,5,7,9,11};
+			int[] scale = Bb;
 			for(int j = 0; j < 16; j++) {
 				BasicRow row = new BasicRow();
 				//row.setNote((byte)(j+56));

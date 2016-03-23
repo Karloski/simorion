@@ -10,7 +10,6 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -268,65 +267,6 @@ public class DefaultView implements View {
 	public String getLCDMessage() {
 		return lcdDisplay;
 	}
-	
-	public void setLCDMessage(String message) {
-		lcdDisplay = message;
-	}
-
-	/**
-	 * Retrieves and returns the MIDI ID of the currently applied instrument.
-	 * @return The MIDI ID of the currently applied instrument for this view.
-	 */
-	@Override
-	public int getVoiceId() {
-		return 0;
-	}
-
-	/**
-	 * Retrieves and returns the name of the currently applied instrument.
-	 * @return The name of the currently applied instrument for this view
-	 */
-	@Override
-	public String getVoiceName() {
-		return null;
-	}
-
-	/**
-	 * Retrieves and returns the ID of the currently applied layer.
-	 * @return The ID of the currently applied layer for this view.
-	 */
-	@Override
-	public int getCurrentLayerId() {
-		return 0;
-	}
-
-	/**
-	 * Retrieves and returns the current loop point.
-	 * @return The current loop point for this view.
-	 */
-	@Override
-	public int getLoopPoint() {
-		return 0;
-	}
-
-	/**
-	 * Retrieves and returns the current velocity for notes played.
-	 * @return The current velocity for notes played on this view.
-	 */
-	@Override
-	public int getVelocity() {
-		return 0;
-	}
-	
-	/**
-	 * Retrieves and returns the current note for row {@code y}.
-	 * @param y The row to check.
-	 * @return The current note for row {@code y}
-	 */
-	@Override
-	public byte getNote(int y) {
-		return 0;
-	} 
 
 	static class MouseHandler implements MouseListener, MouseMotionListener {
 		Point relativeLocation;
