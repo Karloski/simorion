@@ -17,6 +17,7 @@ public class MasterSlaveMode extends DeviceMode {
 	}
 
 	private MasterSlaveView instance = new MasterSlaveView();
+	private MasterSlaveClient client;
      
     /**
      * Implementation of the View interface for the MasterSlaveView
@@ -26,21 +27,35 @@ public class MasterSlaveMode extends DeviceMode {
     private class MasterSlaveView extends DefaultView {
     	// No implementation.
     	long startTime = 0;
+    	long messageAge = 5000;
     	@Override
     	public boolean isLit(int x, int y) {
-    		return ((System.currentTimeMillis() - startTime) / 50) % 256 > (x*16+y); 
+    		return (client.alreadySearched) % 256 > (x*16+y); 
+    	}
+    	
+    	@Override
+    	public String getLCDMessage() {
+    		messageAge++;
+    		return messageAge < 500 ? model.getLCDDisplay() : super.getLCDMessage();
+    	}
+    	
+    	@Override
+    	public void setLCDMessage(String message) {
+    		messageAge = 0;
+    		super.setLCDMessage(message);
     	}
     }
     
     void onChangedTo() {
     	instance.startTime = System.currentTimeMillis();
     	instance.setLCDMessage("Searching...");
-    	new MasterSlaveClient(model.getSong(), model.getInstanceID(), new Runnable() {
+    	instance.messageAge = 5000;
+    	client = new MasterSlaveClient(model, model.getSong(), model.getInstanceID(), new Runnable() {
     		public void run() {
     			changeMode(ModeMaster.PERFORMANCE_MODE);
-    			model.setLCDDisplay("Song sent.");
     		}
-    	}).start();
+    	});
+    	client.start();
     }
      
     public View getView() {

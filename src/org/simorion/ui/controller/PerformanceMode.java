@@ -18,6 +18,7 @@ public class PerformanceMode extends DeviceMode {
 	
 	SoundSystem soundSystem = SoundSystem.getInstance();
 	boolean isFresh = false;
+	long age = 0;
  
     public PerformanceMode(ModeMaster m) {
 		super(m);
@@ -94,7 +95,8 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public String getLCDMessage() {
-    		return model.getCurrentLayer().getVoice().getName();
+    		age++;
+    		return (age < 500) ? model.getLCDDisplay() : model.getCurrentLayer().getVoice().getName();
     	}
 
     	/**
@@ -251,6 +253,7 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
+		age = 0;
 		model.startPlaying();
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}
