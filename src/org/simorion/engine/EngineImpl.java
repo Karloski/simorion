@@ -15,12 +15,15 @@ import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
 import org.simorion.sound.PlayableSound;
+import org.simorion.sound.SoundSystem;
 import org.simorion.sound.SoundThread;
 import org.simorion.ui.view.GUI;
 
+//TODO: who's worked on this file? Add yourselves as authors  -Ed
+
 /**
  * Implementation for the Engine, using StandardSong and BasicLayer.
- * @author Edmund Smith, Karl Brown, Peter Krstic
+ * @author Edmund Smith
  */
 public class EngineImpl implements Engine {
 
@@ -31,6 +34,8 @@ public class EngineImpl implements Engine {
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
 	protected boolean isPlaying;
+	
+	SoundSystem soundSystem = SoundSystem.getInstance();
 	
 	public SoundThread soundThread;
 	
@@ -52,11 +57,13 @@ public class EngineImpl implements Engine {
 	@Override
 	public void setVoice(MutableLayer l, Voice voice) {
 		l.setVoice(voice);
+		soundSystem.setVoices(l.getLayerNumber(), voice.getMidiVoice());
 	}
 
 	@Override
 	public void setVelocity(MutableLayer l, byte velocity) {
 		l.setVelocity(velocity);
+		soundSystem.setVoices(l.getLayerNumber(), velocity);
 	}
 
 	@Override
@@ -65,11 +72,14 @@ public class EngineImpl implements Engine {
 		for (MutableLayer layer : song.getLayers()) {
 			layer.setLoopPoint(loopPoint);
 		}
+		//l.setLoopPoint(loopPoint);
+		soundSystem.setLoopPoint(loopPoint);
 	}
 
 	@Override
 	public void setTempo(float beatsPerSecond) {
 		song.setTempo(beatsPerSecond);
+		soundSystem.setLoopSpeed(beatsPerSecond);
 	}
 
 	@Override
