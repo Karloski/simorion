@@ -103,6 +103,12 @@ public class PerformanceMode extends DeviceMode {
 
     }
           
+
+    /**
+     * @author Petar, Karl
+     * This is when the off button is pressed since the Simorion is currently in performance mode
+     * Plays the off sound and resets the system
+     */
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
     	// Clears all matrix buttons for all layers etc.

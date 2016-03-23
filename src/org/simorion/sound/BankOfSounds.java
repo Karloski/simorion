@@ -22,5 +22,4 @@ public class BankOfSounds {
 			 			new SingleSound(3, 48, 0.25f),
 			 			new SingleSound(3, 50, 0.25f),
 			 			new SingleSound(3, 48, 0.25f));
-	
 }

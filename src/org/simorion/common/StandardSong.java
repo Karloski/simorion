@@ -17,7 +17,7 @@ import org.simorion.engine.MIDIVoices;
  * Standard container to hold the song being played, is little more than a
  * collection of layers with a tempo really. Implements the entirety of Song.
  *  
- * @author Edmund Smith, Peter Krstic
+ * @author Edmund Smith, Petar Krstic
  *
  */
 public class StandardSong implements Song {
