@@ -16,5 +16,11 @@ public class BankOfSounds {
 			new SingleSound(3, 62, 0.25f),
 			new SingleSound(3, 59, 0.25f),
 			new SingleSound(3, 67, 0.25f));
+	public static final PlayableSound OFF_SOUND = new Tune(
+			 			new SingleSound(3, 48, 0.25f),
+			 			new SingleSound(3, 48, 0.25f), 
+			 			new SingleSound(3, 48, 0.25f),
+			 			new SingleSound(3, 50, 0.25f),
+			 			new SingleSound(3, 48, 0.25f));
 	
 }

@@ -5,8 +5,6 @@ import java.awt.event.MouseEvent;
 import org.simorion.common.util.Util;
 import org.simorion.sound.BankOfSounds;
 import org.simorion.sound.SingleSound;
-import org.simorion.sound.SoundSystem;
-import org.simorion.ui.view.AnimationView;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -17,7 +15,6 @@ import org.simorion.ui.view.View;
  */
 public class PerformanceMode extends DeviceMode {
 	
-	SoundSystem soundSystem = SoundSystem.getInstance();
 	boolean isFresh = false;
 	long age = 0;
  
@@ -109,6 +106,12 @@ public class PerformanceMode extends DeviceMode {
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
     	// Clears all matrix buttons for all layers etc.
+    	try {
+	     	model.enqueueSound(BankOfSounds.OFF_SOUND);
+			Thread.sleep(10);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
         changeMode(ModeMaster.ON_OFF_MODE);
     }
      
@@ -183,7 +186,6 @@ public class PerformanceMode extends DeviceMode {
 				model.getCurrentLayer().getVelocity()));
 		
 		model.getCurrentLayer().getRow(y).toggleLit(x);
-		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**
@@ -194,7 +196,6 @@ public class PerformanceMode extends DeviceMode {
 		isFresh = false;
 		if (lit) model.getCurrentLayer().getRow(y).setLit(x);
 		else model.getCurrentLayer().getRow(y).setUnlit(x);
-		soundSystem.updateSequence(model.getCurrentLayerId(), x, y);
 	}
 	
 	/**

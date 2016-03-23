@@ -65,7 +65,6 @@ public class ModeMaster implements Controller {
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
 		GUI.getInstance().redraw();
-		//System.out.println("Mode changed to "+newMode.getClass().getName());
 	}
 	
 	/**

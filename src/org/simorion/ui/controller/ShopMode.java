@@ -26,9 +26,7 @@ import org.simorion.ui.view.View;
 public class ShopMode extends DeviceMode {
 
 	public static final String[] fileNames = {
-			//"fleenstones_#.song",
-			"reallyLongFileName_#.song",
-			"test_#.song"
+			"fleenstones_#.song", "Smoke_#.song"
 	};
 	
 	public Runnable shopBoyRunnable;
