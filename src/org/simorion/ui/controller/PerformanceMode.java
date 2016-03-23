@@ -26,7 +26,7 @@ public class PerformanceMode extends DeviceMode {
 	private PerformanceView instance = new PerformanceView();
 	
     public View getView() {
-    	if(isFresh) return new AnimationView();
+    	//if(isFresh) return new AnimationView();
         return instance;
     }
      
@@ -94,7 +94,7 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public String getLCDMessage() {
-    		return model.getLCDDisplay();
+    		return model.getCurrentLayer().getVoice().getName();
     	}
 
     	/**
@@ -156,14 +156,10 @@ public class PerformanceMode extends DeviceMode {
           
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
-    	
-    	// FIXME: State of the program should be completely cleared when turned off.
-    	// model.PerformOffOperation();
-    	// Clears all matrix buttons for all layers etc.
+    	if(e.getClickCount() == 2) System.exit(0);
     	model.stopPlaying();
     	model.reset();
         changeMode(ModeMaster.ON_OFF_MODE);
-        
     }
      
 	/**

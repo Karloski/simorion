@@ -55,7 +55,7 @@ public class DefaultView implements View {
 	public static final Color BACKGROUND_COLOUR = Color.white;
 	
 	// Dimensions
-	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 630);
+	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 605);
 	public static final Pair<Integer, Integer> ROUNDING = new Pair<Integer, Integer>(100,100);
 	public static final Pair<Integer, Integer> MATRIX_SIZE = new Pair<Integer, Integer>(16, 16);
 	public static final int NO_BUTTONS = MATRIX_SIZE.left * MATRIX_SIZE.right;
@@ -83,8 +83,11 @@ public class DefaultView implements View {
 	@Override
 	public JComponent getOuterPanel() {
 		
+		if(outerPanel != null) return outerPanel;
+		
 		// Create and define the outer JPanel.
 		outerPanel = new JPanel();
+		
 		
 		outerPanel.setBounds(0, 0, SIZE.left, SIZE.right);
 		outerPanel.setBorder(UNLIT_BORDER);
@@ -104,6 +107,8 @@ public class DefaultView implements View {
 	@Override
 	public JComponent getButtonPanel() {
 		
+		if(buttonPanel != null) return buttonPanel;
+		
 		// Create and define the inner JPanel.
 		buttonPanel = new JPanel();
 		
@@ -119,6 +124,7 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton getOnButton() {
+		if(buttonOn != null) return buttonOn;
 		
 		// Use the ButtonFactory to create the ON/OFF button.
 		buttonOn = (ONButton) ButtonFactory.createButton("ON", ButtonFactory.Button.ONOFF);
@@ -135,7 +141,8 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton getOKButton() {
-		
+		if(buttonOK != null) return buttonOK;
+			
 		// Use the ButtonFactory to create the OK button.
 		buttonOK = (OKButton) ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
 		
@@ -152,32 +159,33 @@ public class DefaultView implements View {
 	public Iterable<AbstractButton> getModeButtons() {			
 		
 		// A list of buttons to return as an iterable.
-		modeButtons = new ArrayList<AbstractButton>();
+		if(modeButtons == null) {
+			modeButtons = new ArrayList<AbstractButton>();
 		
-		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
-		modeButtons.add(b);
-		
+			AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
+			modeButtons.add(b);
+		}
 		return modeButtons;
 		
 	}
@@ -185,7 +193,7 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton[] getMidiButtons() {
-		
+		if(midiButtons != null) return midiButtons;
 		midiButtons = new MidiButton[256];
 		
 		// FIXME: Matrix size takes from model, however there is as of yet no model implementations.
@@ -217,11 +225,11 @@ public class DefaultView implements View {
 		// Create and define the LCD screen.
 		dispLCD = new JTextField();
 		
-		dispLCD.setBounds(120, 545, 240, 50);
+		dispLCD.setBounds(100, 545, 320, 50);
 		dispLCD.setEditable(false);
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(UNLIT_BORDER);
-		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 18));
+		dispLCD.setFont(new Font("Courier", Font.PLAIN, 16));
 		
 		return dispLCD;
 		

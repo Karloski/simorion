@@ -128,7 +128,11 @@ public class SoundThread implements Runnable {
 		while (true) {
 			try {
 				Thread.sleep(10);
-				
+
+				//Update the GUI, since this will have updated the clock hand
+				//and the MIDI internal clock is the master clock
+				GUI.getInstance().update();
+
 				//Don't play when stopped
 				if(!model.isPlaying() || model.getBPM() == 0) {
 					continue;
@@ -152,9 +156,7 @@ public class SoundThread implements Runnable {
 				
 				//Tell the model the new tick
 				model.updateTick((int) (nTicks % 720720));
-				
-				//Update the GUI, since this will have updated the clock hand
-				GUI.getInstance().update();
+							
 				
 				Receiver rcvr = synthesizer.getReceiver();
 				ShortMessage msg = new ShortMessage();

@@ -2,8 +2,8 @@ package org.simorion.ui.controller;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
+import org.simorion.common.ImmutableLayer;
 import org.simorion.common.SongBuilder;
 import org.simorion.common.stream.FileSongReader;
 import org.simorion.common.stream.InsufficientSongDataException;
@@ -26,12 +26,15 @@ import org.simorion.ui.view.View;
 public class ShopMode extends DeviceMode {
 
 	public static final String[] fileNames = {
-			"fleenstones_#.song"
+			//"fleenstones_#.song",
+			"reallyLongFileName_#.song",
+			"test_#.song"
 	};
 	
 	public Runnable shopBoyRunnable;
 	private boolean isRunning = false;
 	private ShopModeView view;
+	private int offset = 0;
 	
 	public static final long SONG_DELAY = 30*1000;
 	
@@ -62,7 +65,6 @@ public class ShopMode extends DeviceMode {
 	 */
 	class ShopBoyRunnable implements Runnable {
 		public void run() {
-			int offset = 0;
 			
 			//Prepare to overwrite the existing song
 			model.stopPlaying();
@@ -99,6 +101,8 @@ public class ShopMode extends DeviceMode {
 						try {
 							fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
 							model.getSong().loadFrom(sb);
+							//Sleep a beat
+							Thread.sleep((long)(1000 * model.getTempo())+100);
 						} catch (UnsupportedSongFormatException e) {
 							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
 							e.printStackTrace();
@@ -107,6 +111,9 @@ public class ShopMode extends DeviceMode {
 							e.printStackTrace();
 						} catch (StreamFailureException e) {
 							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -133,13 +140,19 @@ public class ShopMode extends DeviceMode {
 		
 		@Override
 		public String getLCDMessage() {
-			return "Shop Boy Mode";
+			String songFile = fileNames[offset % fileNames.length];
+			String song = "Playing: " + songFile.substring(0, songFile.length() - 7) + " |";
+			int strOffset = (int) ((System.currentTimeMillis() / 500) % song.length());
+			String loop = (song +" "+ song).substring(strOffset, strOffset+Math.min(song.length(), 16));
+			return "Shop Boy Mode |" + loop;
 		}
 		
 		//Same as performance mode
 		@Override
 		public boolean isLit(int x, int y) {
-			int loop = model.getCurrentLayer().getLoopPoint();
+			ImmutableLayer layer = model.getCurrentLayer();
+			if(layer == null) return false;
+			int loop = layer.getLoopPoint();
     		loop = loop == 0 ? 16 : loop;
     		return model.getCurrentLayer().getRow(y).isLit(x) || (model.getTick() % loop == x && y % 5 == 0);
 		}

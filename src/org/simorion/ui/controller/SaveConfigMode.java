@@ -78,11 +78,10 @@ public class SaveConfigMode extends DeviceMode {
     	@Override
     	public AbstractButton[] getMidiButtons() {
     		
-    		midiButtons = new MidiButton[256];
+    		if(midiButtons != null) return midiButtons;
     		
-    		// FIXME: Matrix size takes from model, however there is as of yet no model implementations.
-    		//int noButtons = matrixSize().left * matrixSize().right;
-    		int noButtons = 256; // 16 * 16
+    		int noButtons = NO_BUTTONS;
+    		midiButtons = new MidiButton[noButtons];
     		
     		// j is a variable which is incremented when the end of the grid is reached (every 16 buttons)
     		int j = -1;
@@ -90,15 +89,15 @@ public class SaveConfigMode extends DeviceMode {
     		for (int k = 0; k < noButtons; k++) {
     			
     			// Create new MidiButton with it's location parameters
-    			if (k % 16 == 0){
+    			if (k % MATRIX_SIZE.left == 0){
     				// Increment j every 16 buttons
     				j++;
     			}
     			
-    			MidiButton b = ButtonFactory.createButton(k % 16, j);
+    			MidiButton b = ButtonFactory.createButton(k % MATRIX_SIZE.left, j);
     			
     			if (isCharacter(k)) {
-    				b.setText("" + getCharacter(k % 16, j, shift));
+    				b.setText("" + getCharacter(k % MATRIX_SIZE.left, j, shift));
     			}
     			
     			midiButtons[k] = b;

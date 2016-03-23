@@ -168,7 +168,7 @@ public class EngineImpl implements Engine {
 	@Override
 	public void setLCDDisplay(String text) {
 		if(!text.equals(lcdText)) {
-			lcdText = text;
+			lcdText = text.substring(0, Math.min(32, text.length()));
 			GUI.getInstance().update();
 		}
 	}
