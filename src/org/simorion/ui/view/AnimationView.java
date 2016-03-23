@@ -1,6 +1,5 @@
 package org.simorion.ui.view;
 
-import java.util.Random;
 
 public class AnimationView extends DefaultView {
 

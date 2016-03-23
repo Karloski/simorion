@@ -142,6 +142,7 @@ public class GUI extends JFrame {
 	
 	/**
 	 * Updates the GUI with information from the current view.
+	 * @author Karl Brown.
 	 */
 	public void update() {
 		
@@ -179,6 +180,7 @@ public class GUI extends JFrame {
 	 * Initialises the ModeMaster (creates instances of each mode).
 	 * Creates a (the) new GUI, and sets its parameters.
 	 * @param argv Not used.
+	 * @author Edmund Smith, Karl Brown
 	 */
 	public static void main(String[] argv) {
 		Splash splashScreen = new Splash("splash.png");
