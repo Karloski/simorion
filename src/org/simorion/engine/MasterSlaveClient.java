@@ -11,6 +11,7 @@ import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.util.Util;
+import org.simorion.ui.model.MutableModel;
 
 /**
  * Thread that finds other SimoriONs on the local area network in the range
@@ -20,9 +21,11 @@ import org.simorion.common.util.Util;
  */
 public class MasterSlaveClient extends Thread {
 
+	private final MutableModel model;
 	private final ImmutableSong song;
 	private final int instanceID;
 	private final Runnable onSent;
+	public int alreadySearched;
 	
 	private static final String BLUE_ROOM_SUBNET = "144.173.36.";
 	private static final String LAN_DEFAULT_SUBNET = "192.168.0.";
@@ -32,7 +35,8 @@ public class MasterSlaveClient extends Thread {
 	 * @param song
 	 * @param instanceID
 	 */
-	public MasterSlaveClient(final ImmutableSong song, final int instanceID, final Runnable onSent) {
+	public MasterSlaveClient(final MutableModel model, final ImmutableSong song, final int instanceID, final Runnable onSent) {
+		this.model = model;
 		this.song = song;
 		this.instanceID = instanceID;
 		this.onSent = onSent;
@@ -43,9 +47,10 @@ public class MasterSlaveClient extends Thread {
 	 */
 	public void run() {
 		try {
-			sendMasterToSlave(song, instanceID, onSent);
+			sendMasterToSlave(model, song, instanceID, onSent, 
+					new Runnable() { public void run() {alreadySearched++;}});
 		} catch (StreamFailureException e) {
-			e.printStackTrace();
+			model.setLCDDisplay(e.getMessage());
 		}
 	}
 	
@@ -57,12 +62,13 @@ public class MasterSlaveClient extends Thread {
 	 * song to itself
 	 * @throws StreamFailureException
 	 */
-	public static void sendMasterToSlave(final ImmutableSong song, final int instanceID, final Runnable onSent) throws StreamFailureException {
+	public static void sendMasterToSlave(final MutableModel model, final ImmutableSong song, final int instanceID, final Runnable onSent, final Runnable updater) throws StreamFailureException {
 		try {
 			//Start searching from a random offset to avoid having one device
 			//always being chosen
 			int start = new Random().nextInt(256);
 			for (int i = 0; i < 256; i++) {
+				updater.run();
 				String address = BLUE_ROOM_SUBNET + ((start+i) % 256);
 				if (InetAddress.getByName(address).isReachable(50)) {
 					Socket slave = null;

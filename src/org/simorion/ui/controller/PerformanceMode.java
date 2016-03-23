@@ -6,6 +6,7 @@ import org.simorion.common.util.Util;
 import org.simorion.sound.BankOfSounds;
 import org.simorion.sound.SingleSound;
 import org.simorion.sound.SoundSystem;
+import org.simorion.ui.view.AnimationView;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -18,6 +19,7 @@ public class PerformanceMode extends DeviceMode {
 	
 	SoundSystem soundSystem = SoundSystem.getInstance();
 	boolean isFresh = false;
+	long age = 0;
  
     public PerformanceMode(ModeMaster m) {
 		super(m);
@@ -25,7 +27,12 @@ public class PerformanceMode extends DeviceMode {
     
 	private PerformanceView instance = new PerformanceView();
 	
+	/**
+	 * Gets the current view.
+	 */
     public View getView() {
+    	// Decided not to include transition animation.
+    	// if(isFresh) return new AnimationView();
         return instance;
     }
      
@@ -93,76 +100,16 @@ public class PerformanceMode extends DeviceMode {
     	 */
     	@Override
     	public String getLCDMessage() {
-    		return model.getLCDDisplay();
-    	}
-
-    	/**
-    	 * Retrieves and returns the MIDI ID of the currently applied instrument.
-    	 * @return The MIDI ID of the currently applied instrument for this view.
-    	 */
-    	@Override
-    	public int getVoiceId() {
-    		return model.getCurrentLayer().getVoice().getMidiVoice();
-    	}
-
-    	/**
-    	 * Retrieves and returns the name of the currently applied instrument.
-    	 * @return The name of the currently applied instrument for this view
-    	 */
-    	@Override
-    	public String getVoiceName() {
-    		return model.getCurrentLayer().getVoice().getName();
-    	}
-
-    	/**
-    	 * Retrieves and returns the ID of the currently applied layer.
-    	 * @return The ID of the currently applied layer for this view.
-    	 */
-    	@Override
-    	public int getCurrentLayerId() {
-    		return model.getCurrentLayer().getLayerNumber();
-    	}
-
-    	/**
-    	 * Retrieves and returns the current loop point.
-    	 * @return The current loop point for this view.
-    	 */
-    	@Override
-    	public int getLoopPoint() {
-    		return model.getCurrentLayer().getLoopPoint();
-    	}
-
-    	/**
-    	 * Retrieves and returns the current velocity for notes played.
-    	 * @return The current velocity for notes played on this view.
-    	 */
-    	@Override
-    	public int getVelocity() {
-    		return model.getCurrentLayer().getVelocity();
-    	}
-    	
-    	/**
-    	 * Retrieves and returns the current note for row {@code y}.
-    	 * @param y The row to check.
-    	 * @return The current note for row {@code y}
-    	 */
-    	@Override
-    	public byte getNote(int y) {
-    		return model.getCurrentLayer().getRow(y).getNote();
+    		age++;
+    		return (age < 500) ? model.getLCDDisplay() : model.getCurrentLayer().getVoice().getName();
     	}
 
     }
           
     @Override
     public void onOnOffButtonPress(MouseEvent e) {
-    	
-    	// FIXME: State of the program should be completely cleared when turned off.
-    	// model.PerformOffOperation();
     	// Clears all matrix buttons for all layers etc.
-    	model.stopPlaying();
-    	model.reset();
         changeMode(ModeMaster.ON_OFF_MODE);
-        
     }
      
 	/**
@@ -210,7 +157,8 @@ public class PerformanceMode extends DeviceMode {
     }
 
 	/**
-	 * {@inheritDoc}
+	 * If the Simori-ON was just turned on, the OK button will send the user to Shop Boy Mode.
+	 * Otherwise it resets the message to the default.
 	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
@@ -254,7 +202,7 @@ public class PerformanceMode extends DeviceMode {
 	 */
 	@Override
 	void onChangedTo() {
-		isFresh = true;
+		age = 0;
 		model.startPlaying();
 		model.setLCDDisplay("Layer " + model.getCurrentLayerId() + " | " + model.getCurrentLayer().getVoice().getName());
 	}

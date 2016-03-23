@@ -1,15 +1,25 @@
 package org.simorion.ui.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
 import org.simorion.common.util.Util.Pair;
@@ -44,7 +54,8 @@ public class DefaultView implements View {
 	public static final Color BACKGROUND_COLOUR = Color.white;
 	
 	// Dimensions
-	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 630);
+	public static final Pair<Integer, Integer> SIZE = new Pair<Integer, Integer>(605, 605);
+	public static final Pair<Integer, Integer> ROUNDING = new Pair<Integer, Integer>(100,100);
 	public static final Pair<Integer, Integer> MATRIX_SIZE = new Pair<Integer, Integer>(16, 16);
 	public static final int NO_BUTTONS = MATRIX_SIZE.left * MATRIX_SIZE.right;
 
@@ -71,13 +82,21 @@ public class DefaultView implements View {
 	@Override
 	public JComponent getOuterPanel() {
 		
+		if(outerPanel != null) return outerPanel;
+		
 		// Create and define the outer JPanel.
 		outerPanel = new JPanel();
+		
 		
 		outerPanel.setBounds(0, 0, SIZE.left, SIZE.right);
 		outerPanel.setBorder(UNLIT_BORDER);
 		outerPanel.setLayout(null);
 		outerPanel.setBackground(BACKGROUND_COLOUR);
+		
+		MouseHandler handler = new MouseHandler();
+		outerPanel.addMouseListener(handler);
+		outerPanel.addMouseMotionListener(handler);
+		outerPanel.setBorder(new RoundBorder());
 		
 		return outerPanel;
 		
@@ -86,6 +105,8 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public JComponent getButtonPanel() {
+		
+		if(buttonPanel != null) return buttonPanel;
 		
 		// Create and define the inner JPanel.
 		buttonPanel = new JPanel();
@@ -102,6 +123,7 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton getOnButton() {
+		if(buttonOn != null) return buttonOn;
 		
 		// Use the ButtonFactory to create the ON/OFF button.
 		buttonOn = (ONButton) ButtonFactory.createButton("ON", ButtonFactory.Button.ONOFF);
@@ -118,7 +140,8 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton getOKButton() {
-		
+		if(buttonOK != null) return buttonOK;
+			
 		// Use the ButtonFactory to create the OK button.
 		buttonOK = (OKButton) ButtonFactory.createButton("OK", ButtonFactory.Button.OK);
 		
@@ -135,32 +158,33 @@ public class DefaultView implements View {
 	public Iterable<AbstractButton> getModeButtons() {			
 		
 		// A list of buttons to return as an iterable.
-		modeButtons = new ArrayList<AbstractButton>();
+		if(modeButtons == null) {
+			modeButtons = new ArrayList<AbstractButton>();
 		
-		AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
-		modeButtons.add(b);
-		
-		b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
-		modeButtons.add(b);
-		
+			AbstractButton b = ButtonFactory.createButton("L1", ButtonFactory.Mode.L1);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L2", ButtonFactory.Mode.L2);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L3", ButtonFactory.Mode.L3);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("L4", ButtonFactory.Mode.L4);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R1", ButtonFactory.Mode.R1);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R2", ButtonFactory.Mode.R2);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R3", ButtonFactory.Mode.R3);
+			modeButtons.add(b);
+			
+			b = ButtonFactory.createButton("R4", ButtonFactory.Mode.R4);
+			modeButtons.add(b);
+		}
 		return modeButtons;
 		
 	}
@@ -168,7 +192,7 @@ public class DefaultView implements View {
 	/** {@inheritDoc} */
 	@Override
 	public AbstractButton[] getMidiButtons() {
-		
+		if(midiButtons != null) return midiButtons;
 		midiButtons = new MidiButton[256];
 		
 		// FIXME: Matrix size takes from model, however there is as of yet no model implementations.
@@ -200,11 +224,11 @@ public class DefaultView implements View {
 		// Create and define the LCD screen.
 		dispLCD = new JTextField();
 		
-		dispLCD.setBounds(120, 545, 240, 50);
+		dispLCD.setBounds(100, 545, 320, 50);
 		dispLCD.setEditable(false);
 		dispLCD.setBackground(Color.WHITE);
 		dispLCD.setBorder(UNLIT_BORDER);
-		dispLCD.setFont(new Font("Cambria", Font.PLAIN, 18));
+		dispLCD.setFont(new Font("Courier", Font.PLAIN, 16));
 		
 		return dispLCD;
 		
@@ -251,64 +275,47 @@ public class DefaultView implements View {
 	public String getLCDMessage() {
 		return lcdDisplay;
 	}
-	
-	public void setLCDMessage(String message) {
-		lcdDisplay = message;
-	}
 
-	/**
-	 * Retrieves and returns the MIDI ID of the currently applied instrument.
-	 * @return The MIDI ID of the currently applied instrument for this view.
-	 */
-	@Override
-	public int getVoiceId() {
-		return 0;
-	}
+	static class MouseHandler implements MouseListener, MouseMotionListener {
+		Point relativeLocation;
+		@Override
+		public void mouseDragged(MouseEvent me) {
+			JFrame frame = GUI.getInstance();
+			frame.setLocation(frame.getX() + me.getX() - relativeLocation.x,
+					frame.getY() + me.getY() - relativeLocation.y);
+		}
 
-	/**
-	 * Retrieves and returns the name of the currently applied instrument.
-	 * @return The name of the currently applied instrument for this view
-	 */
-	@Override
-	public String getVoiceName() {
-		return null;
-	}
+		@Override
+		public void mouseMoved(MouseEvent me) {}
 
-	/**
-	 * Retrieves and returns the ID of the currently applied layer.
-	 * @return The ID of the currently applied layer for this view.
-	 */
-	@Override
-	public int getCurrentLayerId() {
-		return 0;
-	}
+		@Override
+		public void mouseClicked(MouseEvent me) {}
 
-	/**
-	 * Retrieves and returns the current loop point.
-	 * @return The current loop point for this view.
-	 */
-	@Override
-	public int getLoopPoint() {
-		return 0;
-	}
+		@Override
+		public void mouseEntered(MouseEvent me) {}
 
-	/**
-	 * Retrieves and returns the current velocity for notes played.
-	 * @return The current velocity for notes played on this view.
-	 */
-	@Override
-	public int getVelocity() {
-		return 0;
+		@Override
+		public void mouseExited(MouseEvent me) {}
+
+		@Override
+		public void mousePressed(MouseEvent me) {
+			relativeLocation = me.getPoint();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent me) {}
+		
 	}
 	
-	/**
-	 * Retrieves and returns the current note for row {@code y}.
-	 * @param y The row to check.
-	 * @return The current note for row {@code y}
-	 */
-	@Override
-	public byte getNote(int y) {
-		return 0;
-	} 
-
+	static class RoundBorder extends AbstractBorder {
+		
+		@Override
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        ((Graphics2D) g).setRenderingHint(
+	            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	        g.setColor(Color.BLACK);
+	        g.drawRoundRect(x, y, width - 1, height - 1, ROUNDING.left, ROUNDING.right);
+	    }
+	}
+	
 }

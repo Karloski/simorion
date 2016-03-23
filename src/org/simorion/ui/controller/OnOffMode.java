@@ -1,6 +1,7 @@
 package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
  
@@ -25,9 +26,16 @@ public class OnOffMode extends DeviceMode {
     public View getView() {
         return instance;
     }
-     
+    
+    /**
+     * Functionality for the On/Off button.
+     * Two quick clicks will turn the Simori-ON off.
+     */
     @Override
     public void onOnOffButtonPress(MouseEvent e){
+    	if(e.getClickCount() == 2) System.exit(0);
+    	((PerformanceMode)ModeMaster.PERFORMANCE_MODE).isFresh = true;
+    	model.enqueueSound(BankOfSounds.ON_SOUND);
         changeMode(ModeMaster.PERFORMANCE_MODE);
     }
 

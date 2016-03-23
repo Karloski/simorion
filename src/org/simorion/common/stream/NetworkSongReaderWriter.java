@@ -58,7 +58,6 @@ public class NetworkSongReaderWriter implements SongWriter, SongReader {
 			int initialByte = buf[0];
 			return SongFormats.getFormatFor(initialByte);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new StreamFailureException(e.getMessage());
 		}
 	}

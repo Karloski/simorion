@@ -50,10 +50,8 @@ public class MasterSlaveServer extends Thread {
 					e.printStackTrace();
 				} catch (StreamFailureException e) {
 					engine.setLCDDisplay("Failed to accept networked song");
-					e.printStackTrace();
 				} catch (UnsupportedSongFormatException e) {
 					engine.setLCDDisplay("Networked song format unsupported");
-					e.printStackTrace();
 				} finally {
 					if(master != null) master.close();
 				}

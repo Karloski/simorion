@@ -182,6 +182,9 @@ public class ButtonFactory {
 			
 			addMouseListener(new MouseAdapter(){				
 				public void mousePressed(MouseEvent me) {
+					int dx = me.getX() - radius;
+					int dy = me.getY() - radius;
+					if(dx * dx + dy * dy > (radius * radius + radius)) return;
 					if (ModeMaster.getInstance().getMode() != ModeMaster.ON_OFF_MODE) {
 						ModeMaster.getInstance().getMode().onMatrixButtonPress(me, x, y);
 						GUI.getInstance().update();
