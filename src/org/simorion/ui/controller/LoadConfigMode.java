@@ -81,8 +81,6 @@ public class LoadConfigMode extends DeviceMode {
     	@Override
     	public AbstractButton[] getMidiButtons() {
     		
-    		if(midiButtons != null) return midiButtons;
-    		
     		int noButtons = NO_BUTTONS;
     		midiButtons = new MidiButton[noButtons];
     		
@@ -219,14 +217,13 @@ public class LoadConfigMode extends DeviceMode {
 		// Space. Adds a space by first removing the pipe, then adding a space and the pipe.
 		if (buttonNum == 3) filename = filename.substring(0, filename.length()-1) + " " + "|";
 		
+		model.setLCDDisplay(filename);
+		
 		// Cancel. Goes back to performance mode and updates nothing.
 		if (buttonNum == 4) {
 			filename = "";
 			changeMode(ModeMaster.PERFORMANCE_MODE);
 		}
-
-		model.setLCDDisplay(filename);
-		GUI.getInstance().update();
 	}
 	
 	/**

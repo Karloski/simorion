@@ -106,8 +106,7 @@ public abstract class DeviceMode implements Controller {
 	 * @return The character from the character set.
 	 */
 	protected char getCharacter(int x, int y, boolean shift) {
-		int loc = y * 16 + x;
-		
+		int loc = y * 16 + x;		
 		return CharacterMap.getCharacter(loc, shift);
 	}
 	

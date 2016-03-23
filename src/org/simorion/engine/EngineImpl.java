@@ -15,7 +15,6 @@ import org.simorion.common.stream.SongWriter;
 import org.simorion.common.stream.StreamFailureException;
 import org.simorion.common.stream.UnsupportedSongFormatException;
 import org.simorion.sound.PlayableSound;
-import org.simorion.sound.SoundSystem;
 import org.simorion.sound.SoundThread;
 import org.simorion.ui.view.GUI;
 
@@ -34,8 +33,6 @@ public class EngineImpl implements Engine {
 	protected String lcdText;
 	protected MasterSlaveServer masterSlaveServer;
 	protected boolean isPlaying;
-	
-	SoundSystem soundSystem = SoundSystem.getInstance();
 	
 	public SoundThread soundThread;
 	
@@ -57,13 +54,11 @@ public class EngineImpl implements Engine {
 	@Override
 	public void setVoice(MutableLayer l, Voice voice) {
 		l.setVoice(voice);
-		soundSystem.setVoices(l.getLayerNumber(), voice.getMidiVoice());
 	}
 
 	@Override
 	public void setVelocity(MutableLayer l, byte velocity) {
 		l.setVelocity(velocity);
-		soundSystem.setVoices(l.getLayerNumber(), velocity);
 	}
 
 	@Override
@@ -72,14 +67,11 @@ public class EngineImpl implements Engine {
 		for (MutableLayer layer : song.getLayers()) {
 			layer.setLoopPoint(loopPoint);
 		}
-		//l.setLoopPoint(loopPoint);
-		soundSystem.setLoopPoint(loopPoint);
 	}
 
 	@Override
 	public void setTempo(float beatsPerSecond) {
 		song.setTempo(beatsPerSecond);
-		soundSystem.setLoopSpeed(beatsPerSecond);
 	}
 
 	@Override
@@ -169,8 +161,8 @@ public class EngineImpl implements Engine {
 	public void setLCDDisplay(String text) {
 		if(!text.equals(lcdText)) {
 			lcdText = text.substring(0, Math.min(32, text.length()));
-			GUI.getInstance().update();
 		}
+		GUI.getInstance().update();
 	}
 
 	@Override

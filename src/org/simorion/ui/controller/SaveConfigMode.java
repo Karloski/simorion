@@ -78,8 +78,6 @@ public class SaveConfigMode extends DeviceMode {
     	@Override
     	public AbstractButton[] getMidiButtons() {
     		
-    		if(midiButtons != null) return midiButtons;
-    		
     		int noButtons = NO_BUTTONS;
     		midiButtons = new MidiButton[noButtons];
     		

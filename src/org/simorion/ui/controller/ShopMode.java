@@ -27,13 +27,17 @@ import org.simorion.ui.view.View;
 public class ShopMode extends DeviceMode {
 
 	public static final String[] fileNames = {
-			"fleenstones_#.song", "Smoke_#.song"
+		    "fleenstones_#.song", 
+			"Smoke_#.song",
+			"rock_#.song",
+			"mary_#"
 	};
 	
 	public Runnable shopBoyRunnable;
 	private boolean isRunning = false;
 	private ShopModeView view;
 	private int offset = 0;
+	private Thread shopBoyThread;
 	
 	public static final long SONG_DELAY = 30*1000;
 	
@@ -46,20 +50,32 @@ public class ShopMode extends DeviceMode {
 	@Override
 	public void onChangedTo() {
 		isRunning = true;
-		new Thread(shopBoyRunnable).start();
+		shopBoyThread = new Thread(shopBoyRunnable);
+		shopBoyThread.start();
 	}
 	
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		isRunning = false;
+		shopBoyThread.interrupt();
+		model.reset();
+		model.startPlaying();
 		changeMode(ModeMaster.PERFORMANCE_MODE);
+	}
+	
+	@Override
+	public void onOnOffButtonPress(MouseEvent e) {
+		isRunning = false;
+		shopBoyThread.interrupt();
+		model.reset();
+		changeMode(ModeMaster.ON_OFF_MODE);		
 	}
 
 	/**
 	 * Runnable that does the bulk of the work, swapping out the song from
 	 * underneath the SimoriON every 16 beats and every 30 seconds.
 	 * 
-	 * @author Edmund Smith
+	 * @author Edmund Smith, Karl Brown
 	 *
 	 */
 	class ShopBoyRunnable implements Runnable {
@@ -68,59 +84,55 @@ public class ShopMode extends DeviceMode {
 			//Prepare to overwrite the existing song
 			model.stopPlaying();
 			model.reset();
+			model.startPlaying();
 			while (isRunning) {
 				long startTime = System.currentTimeMillis();
-				int part = 2;
+				int part = 1;
 
 				// Load part 1 of the song
-				String nextFile = fileNames[offset].replace("#", "1");
+				String nextFile = fileNames[offset].replace("#", Integer.toString(part));
+				System.out.println("At start: "+nextFile);
 				File demoFile = new File("./demos/" + nextFile);
 				FileSongReader fsr = new FileSongReader(demoFile);
 				SongBuilder sb = new SongBuilder();
 				try {
 					fsr.readTo(SongFormats.getFormatFor(Util.initialByte(demoFile)), sb);
 					model.getSong().loadFrom(sb);
+					model.updateTick(0);
 				} catch (Exception e) {
 					model.setLCDDisplay("Error loading ShopBoyMode");
 					e.printStackTrace();
 				}
 				
-				model.startPlaying();
 				// Continuously load the next part for 30 seconds
 				while (System.currentTimeMillis() < startTime + SONG_DELAY && isRunning) {
 					// Next tick will loop to start: hot-replace the song
 					int loop = model.getCurrentLayer().getLoopPoint();
 					loop = (loop == 0) ? 16 : loop;
 					if (model.getTick() > 1 && (model.getTick()+1) % loop == 0) {
+						part++;
 						nextFile = fileNames[offset].replace("#",
 								Integer.toString(part));
-						fsr = new FileSongReader(new File("./demos/"
-								+ nextFile));
-						sb = new SongBuilder();
+						System.out.println("During: "+nextFile);
 						try {
+							fsr = new FileSongReader(new File("./demos/"
+									+ nextFile));
+							sb = new SongBuilder();
 							fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
 							model.getSong().loadFrom(sb);
 							//Sleep a beat
 							Thread.sleep((long)(1000 * model.getTempo())+100);
-						} catch (UnsupportedSongFormatException e) {
-							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
-							e.printStackTrace();
-						} catch (InsufficientSongDataException e) {
-							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
-							e.printStackTrace();
-						} catch (StreamFailureException e) {
-							model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						} catch (Exception e) {
+							System.out.println("Break");
+							break;
+							//model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
+							//e.printStackTrace();
+						} 
 					}
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						model.setLCDDisplay("ShopBoyMode interrupted");
-						e.printStackTrace();
 					}
 				}
 

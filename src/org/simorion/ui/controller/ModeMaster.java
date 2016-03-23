@@ -3,6 +3,7 @@ package org.simorion.ui.controller;
 import java.awt.event.MouseEvent;
 
 import org.simorion.engine.EngineImpl;
+import org.simorion.sound.BankOfSounds;
 import org.simorion.ui.model.MutableModel;
 import org.simorion.ui.view.GUI;
 import org.simorion.ui.view.View;
@@ -58,9 +59,18 @@ public class ModeMaster implements Controller {
 	 */
 	public void changeMode(DeviceMode newMode) {
 		if (newMode == ON_OFF_MODE) {
+			if (model.isPlaying()) {
+			   	try {
+			     	model.enqueueSound(BankOfSounds.OFF_SOUND);
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
 	    	model.stopPlaying();
 	    	model.reset();
-		}		
+		}
+		System.out.println(newMode.getClass().getSimpleName());
 		deviceMode = newMode;
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
