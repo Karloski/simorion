@@ -30,7 +30,7 @@ public class ShopMode extends DeviceMode {
 		    "fleenstones_#.song", 
 			"Smoke_#.song",
 			"rock_#.song",
-			"mary_#"
+			"mary_#.song"
 	};
 	
 	public Runnable shopBoyRunnable;
@@ -39,7 +39,7 @@ public class ShopMode extends DeviceMode {
 	private int offset = 0;
 	private Thread shopBoyThread;
 	
-	public static final long SONG_DELAY = 30*1000;
+	public static final long SONG_DELAY = 10*1000;
 	
 	public ShopMode(ModeMaster m) {
 		super(m);
@@ -98,10 +98,8 @@ public class ShopMode extends DeviceMode {
 				try {
 					fsr.readTo(SongFormats.getFormatFor(Util.initialByte(demoFile)), sb);
 					model.getSong().loadFrom(sb);
-					model.updateTick(0);
 				} catch (Exception e) {
 					model.setLCDDisplay("Error loading ShopBoyMode");
-					e.printStackTrace();
 				}
 				
 				// Continuously load the next part for 30 seconds
@@ -113,21 +111,23 @@ public class ShopMode extends DeviceMode {
 						part++;
 						nextFile = fileNames[offset].replace("#",
 								Integer.toString(part));
-						System.out.println("During: "+nextFile);
-						try {
-							fsr = new FileSongReader(new File("./demos/"
-									+ nextFile));
-							sb = new SongBuilder();
-							fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
-							model.getSong().loadFrom(sb);
-							//Sleep a beat
-							Thread.sleep((long)(1000 * model.getTempo())+100);
-						} catch (Exception e) {
-							System.out.println("Break");
-							break;
-							//model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
-							//e.printStackTrace();
-						} 
+							try {
+								fsr = new FileSongReader(new File("./demos/"
+										+ nextFile));
+								sb = new SongBuilder();
+								fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
+								model.getSong().loadFrom(sb);
+								//Sleep a beat
+								Thread.sleep((long)(1000 * model.getTempo())+100);
+							} catch (StreamFailureException e) {
+								// File not found - we're at the end of the song chain.
+								// Go back to start. We will exit when the 30 second timer is met.
+								part = 0;
+							} catch (Exception e) {
+								// Failed to load the song. Move onto the next one.
+								model.setLCDDisplay("Error loading song " + (offset + 1) + " part " + part);
+								break;
+							}
 					}
 					try {
 						Thread.sleep(10);
