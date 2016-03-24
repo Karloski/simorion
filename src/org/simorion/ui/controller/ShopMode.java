@@ -6,10 +6,8 @@ import java.io.File;
 import org.simorion.common.ImmutableLayer;
 import org.simorion.common.SongBuilder;
 import org.simorion.common.stream.FileSongReader;
-import org.simorion.common.stream.InsufficientSongDataException;
 import org.simorion.common.stream.SongFormats;
 import org.simorion.common.stream.StreamFailureException;
-import org.simorion.common.stream.UnsupportedSongFormatException;
 import org.simorion.common.util.Util;
 import org.simorion.ui.view.DefaultView;
 import org.simorion.ui.view.View;
@@ -39,7 +37,7 @@ public class ShopMode extends DeviceMode {
 	private int offset = 0;
 	private Thread shopBoyThread;
 	
-	public static final long SONG_DELAY = 10*1000;
+	public static final long SONG_DELAY = 30*1000;  // 30 seconds.
 	
 	public ShopMode(ModeMaster m) {
 		super(m);
@@ -47,6 +45,9 @@ public class ShopMode extends DeviceMode {
 		shopBoyRunnable = new ShopBoyRunnable();
 	}
 
+	/**
+	 * On changed to, set the flag for the thread as running and start it.
+	 */
 	@Override
 	public void onChangedTo() {
 		isRunning = true;
@@ -54,6 +55,10 @@ public class ShopMode extends DeviceMode {
 		shopBoyThread.start();
 	}
 	
+	/**
+	 * When the OK button is pressed, interrupt the thread, reset the Simori-ON and send
+	 * us back to the performance mode.
+	 */
 	@Override
 	public void onOKButtonPress(MouseEvent e) {
 		isRunning = false;
@@ -63,6 +68,9 @@ public class ShopMode extends DeviceMode {
 		changeMode(ModeMaster.PERFORMANCE_MODE);
 	}
 	
+	/**
+	 * If the OnOff button is pressed, stop the Simori-ON and send us to the On/Off Mode.
+	 */
 	@Override
 	public void onOnOffButtonPress(MouseEvent e) {
 		isRunning = false;
@@ -81,47 +89,48 @@ public class ShopMode extends DeviceMode {
 	class ShopBoyRunnable implements Runnable {
 		public void run() {
 			
-			//Prepare to overwrite the existing song
-			model.stopPlaying();
-			model.reset();
-			model.startPlaying();
 			while (isRunning) {
-
+				// Prepare to overwrite the existing song
 				model.stopPlaying();
 				model.reset();
 				model.startPlaying();
-				long startTime = System.currentTimeMillis();
-				int part = 1;
-
-				// Load part 1 of the song
-				String nextFile = fileNames[offset].replace("#", Integer.toString(part));
 				
+				// Reset the time to now.
+				long startTime = System.currentTimeMillis();
+				
+				// Set the loop to 16 - this is default.
+				int loop = 16;
+				
+				// Set the part to the start and load it.
+				int part = 1;
+				String nextFile = fileNames[offset].replace("#", Integer.toString(part));  // Replace # with part number.
 				File demoFile = new File("./demos/" + nextFile);
 				FileSongReader fsr = new FileSongReader(demoFile);
 				SongBuilder sb = new SongBuilder();
 				try {
 					fsr.readTo(SongFormats.getFormatFor(Util.initialByte(demoFile)), sb);
 					model.getSong().loadFrom(sb);
+					loop = model.getCurrentLayer().getLoopPoint() == 0 ? 16 : model.getCurrentLayer().getLoopPoint();
 				} catch (Exception e) {
 					model.setLCDDisplay("Error loading ShopBoyMode");
 				}
 				
-				// Continuously load the next part for 30 seconds
+				// Continuously play the song for 30 seconds
 				while (System.currentTimeMillis() < startTime + SONG_DELAY && isRunning) {
-					// Next tick will loop to start: hot-replace the song
-					int loop = model.getCurrentLayer().getLoopPoint();
-					loop = (loop == 0) ? 16 : loop;
+					// If we're at the end of the loop (tick % loop = 0), move to next part.
 					if (model.getTick() > 1 && (model.getTick()+1) % loop == 0) {
 						part++;
-						nextFile = fileNames[offset].replace("#",
-								Integer.toString(part));
+						nextFile = fileNames[offset].replace("#", Integer.toString(part));
 							try {
 								fsr = new FileSongReader(new File("./demos/"
 										+ nextFile));
 								sb = new SongBuilder();
 								fsr.readTo(SongFormats.PREFERRED_FORMAT, sb);
+								
+								// Get the song and reset the loop, based on the song.
 								model.getSong().loadFrom(sb);
-								//Sleep a beat
+								loop = model.getCurrentLayer().getLoopPoint() == 0 ? 16 : model.getCurrentLayer().getLoopPoint();
+								// Sleep a beat
 								Thread.sleep((long)(1000 * model.getTempo())+100);
 							} catch (StreamFailureException e) {
 								// File not found - we're at the end of the song chain.
@@ -151,8 +160,18 @@ public class ShopMode extends DeviceMode {
 		return view;
 	}
 	
+	/**
+	 * View specifics for the ShopBoy Mode.
+	 * @author Edmund Smith
+	 *
+	 */
 	class ShopModeView extends DefaultView {
 		
+		
+		/**
+		 * Returns the current mode, appended by the song name.
+		 * The song name will marquee across the screen.
+		 */
 		@Override
 		public String getLCDMessage() {
 			String songFile = fileNames[offset % fileNames.length];
@@ -162,7 +181,10 @@ public class ShopMode extends DeviceMode {
 			return "Shop Boy Mode |" + loop;
 		}
 		
-		//Same as performance mode
+		/**
+		 * Returns true if the button is set as lit in the model or is one of the four buttons where the clock hand
+		 * currently resides.
+		 */
 		@Override
 		public boolean isLit(int x, int y) {
 			ImmutableLayer layer = model.getCurrentLayer();

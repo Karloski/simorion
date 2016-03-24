@@ -33,6 +33,7 @@ public class MasterSlaveMode extends DeviceMode {
     	 */
     	@Override
     	public boolean isLit(int x, int y) {
+    		if (client == null) return false;
     		return (client.alreadySearched) % 256 > (x*16+y); 
     	}
     	
