@@ -86,12 +86,16 @@ public class ShopMode extends DeviceMode {
 			model.reset();
 			model.startPlaying();
 			while (isRunning) {
+
+				model.stopPlaying();
+				model.reset();
+				model.startPlaying();
 				long startTime = System.currentTimeMillis();
 				int part = 1;
 
 				// Load part 1 of the song
 				String nextFile = fileNames[offset].replace("#", Integer.toString(part));
-				System.out.println("At start: "+nextFile);
+				
 				File demoFile = new File("./demos/" + nextFile);
 				FileSongReader fsr = new FileSongReader(demoFile);
 				SongBuilder sb = new SongBuilder();

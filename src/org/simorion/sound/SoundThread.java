@@ -77,7 +77,6 @@ public class SoundThread implements Runnable {
 		synthesizer.unloadAllInstruments(synthesizer.getDefaultSoundbank());
 		try {
 			Soundbank sb = MidiSystem.getSoundbank(new File("./FluidR3 GM2-2.SF2"));
-			System.out.println(sb.toString());
 			synthesizer.loadAllInstruments(sb);
 			System.out.println("Soundbank Loaded");
 		} catch (Exception e) {

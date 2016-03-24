@@ -42,7 +42,8 @@ public class MIDIVoices {
 		try {
 			synthesizer = MidiSystem.getSynthesizer();
 		} catch(Exception ex) {
-			System.out.println(ex); System.exit(1);
+			ex.printStackTrace();
+			System.exit(1);
 		}
 		return synthesizer;
 	}

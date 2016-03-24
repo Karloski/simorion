@@ -70,7 +70,7 @@ public class ModeMaster implements Controller {
 	    	model.stopPlaying();
 	    	model.reset();
 		}
-		System.out.println(newMode.getClass().getSimpleName());
+		
 		deviceMode = newMode;
 		deviceMode.register(model);
 		deviceMode.onChangedTo();
