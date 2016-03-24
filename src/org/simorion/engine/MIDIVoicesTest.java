@@ -13,13 +13,13 @@ public class MIDIVoicesTest {
 	@Test
 	public void testReturningVoice() {
 		// You cannot ever do getVoice(0)
-		assertEquals("Piano 1", MIDIVoices.getVoice(1).getName());
+		assertEquals("Acoustic Grand Piano", MIDIVoices.getVoice(1).getName());
 		
 		// Try an instrument in the mid range - 77 should be Bottle Blow
-		assertEquals("Bottle Blow", MIDIVoices.getVoice(77).getName());
+		assertEquals("Blown Bottle", MIDIVoices.getVoice(77).getName());
 		
 		// 128 should be the last instrument - Gun Shot
-		assertEquals("Gun Shot", MIDIVoices.getVoice(128).getName());
+		assertEquals("Gunshot", MIDIVoices.getVoice(128).getName());
 		
 		// 129 should be the first drum sound - Bass Drum 2
 		assertEquals("Bass Drum 2", MIDIVoices.getVoice(129).getName());
